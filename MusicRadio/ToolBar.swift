@@ -83,11 +83,15 @@ struct ToolsView: View {
             .padding(.top, 8)
             
             Text(selectedTool.icon)
-                .font(.system(size: 80))
+                .font(.system(size: 60))
                 .shadow(radius: 5)
+                .frame(height: 66)
+                .padding(10)
             
             Spacer()
         }
+        .frame(height: 111)
+        .padding(.top, 15)
         .sheet(isPresented: $showSettings) {
             Text("settings")
         }
