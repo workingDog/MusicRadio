@@ -10,14 +10,15 @@ import SwiftData
 
 @main
 struct MusicRadioApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
+    var sharedModelContainer: ModelContainer = {
+        let appSupportDir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).last
+        let storeURL: URL = appSupportDir?.appending(path: "database.sqlite") ?? URL.documentsDirectory.appending(path: "database.sqlite")
+        print("---> database: \(storeURL.absoluteString)")
+        let schema = Schema([Item.self])
+        let config = ModelConfiguration(schema: schema, url: storeURL)
         do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+            return try ModelContainer(for: schema, configurations: config)
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
