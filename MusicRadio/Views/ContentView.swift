@@ -13,10 +13,7 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     
     @State private var audioPlayer = AudioPlayerModel()
-    
-    @Query private var stations: [RadioStation]
- //   @Query private var countries: [Country]
-    
+
     let network = Networker()
     
     @State private var selectedTool: ToolTypes = .favorite
@@ -34,8 +31,8 @@ struct ContentView: View {
             VStack {
                 ToolsView(selectedTool: $selectedTool)
                 switch selectedTool {
-                    case .favorite: FavoriteView(stations: stations)
-                    case .radio: Text("no implemented")
+                    case .favorite: FavoriteView()
+                    case .radio: AllStationsView()
                     case .podcasts: Text("no implemented")
                 }
             }

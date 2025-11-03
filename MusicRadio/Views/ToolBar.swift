@@ -9,8 +9,8 @@ import SwiftData
 
 
 enum ToolTypes: String, CaseIterable, Identifiable {
-    case favorite = "Favorite"
-    case radio = "Radio"
+    case favorite = "Favorites"
+    case radio = "Radios"
     case podcasts = "Podcasts"
     
     var id: String { rawValue }

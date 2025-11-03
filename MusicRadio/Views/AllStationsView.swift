@@ -1,5 +1,5 @@
 //
-//  FavoriteView.swift
+//  AllStationsView.swift
 //  MusicRadio
 //
 //  Created by Ringo Wathelet on 2025/11/03.
@@ -8,19 +8,22 @@ import SwiftUI
 import SwiftData
 
 
-struct FavoriteView: View {
+
+struct AllStationsView: View {
     @Environment(AudioPlayerModel.self) var audioPlayer
-    let stations: [RadioStation]
+
+    @Query private var stations: [RadioStation]
     
-    let columns = [GridItem(.flexible()), GridItem(.flexible())]
     @State private var selectedStation: RadioStation?
+    
+    let columns = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
     
     var body: some View {
         if stations.isEmpty {
             Text("no favorite 🎵")
         } else {
             ScrollView {
-                LazyVGrid(columns: columns, spacing: 12) {
+                LazyVGrid(columns: columns, spacing: 8) {
                     ForEach(stations) { station in
                         Button {
                             // click on same station to deselect
@@ -61,3 +64,4 @@ struct FavoriteView: View {
         }
     }
 }
+
