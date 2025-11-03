@@ -38,6 +38,9 @@ struct ContentView: View {
                     case .countries: CountriesView()
                 }
             }
+            .onAppear {
+                print("-----> stations: \(stations.count)")
+            }
         }
         .environment(playerManager)
 

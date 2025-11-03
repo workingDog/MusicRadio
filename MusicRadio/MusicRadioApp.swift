@@ -18,7 +18,7 @@ struct MusicRadioApp: App {
     var sharedModelContainer: ModelContainer = {
         let appSupportDir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).last
         let storeURL: URL = appSupportDir?.appending(path: "database.sqlite") ?? URL.documentsDirectory.appending(path: "database.sqlite")
-        print("---> database: \(storeURL.absoluteString)")
+        print("---> database: \(storeURL.absoluteString)\n")
         let schema = Schema([RadioStation.self, Country.self])
         let config = ModelConfiguration(schema: schema, url: storeURL)
         do {

@@ -209,6 +209,7 @@ final class RadioStation: Codable {
     }
     
     func fetchFavicon() async {
+        if favicon == "null" || favicon.isEmpty { return }
         guard let faviconURL = URL(string: favicon) else { return }
         do {
             let (data, _) = try await URLSession.shared.data(from: faviconURL)
