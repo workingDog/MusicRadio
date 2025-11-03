@@ -9,7 +9,8 @@ import SwiftData
 
 
 struct StationView: View {
-    @Environment(SelectionModel.self) var selector
+    @Environment(AudioPlayerModel.self) var audioPlayer
+
     var station: RadioStation
 
     var body: some View {
@@ -41,10 +42,11 @@ struct StationView: View {
         }
         .contentShape(RoundedRectangle(cornerRadius: 12))
         .onTapGesture {
-            if selector.selectedStation == station {
-                selector.selectedStation = nil
+            if audioPlayer.station == station {
+                audioPlayer.station = nil
+                audioPlayer.pause()
             } else {
-                selector.selectedStation = station
+                audioPlayer.station = station
             }
         }
         .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 12))

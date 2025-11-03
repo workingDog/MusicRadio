@@ -11,13 +11,12 @@ import AVFoundation
 
 struct MiniPlayer: View {
     @Environment(AudioPlayerModel.self) var audioPlayer
-    @Environment(SelectionModel.self) var selector
     
     
     var body: some View {
         HStack(spacing: 12) {
             Group {
-                if selector.selectedStation == nil {
+                if audioPlayer.station == nil {
                     Image(uiImage: RadioStation.defaultImg)
                         .renderingMode(.template)
                         .resizable()
@@ -27,7 +26,7 @@ struct MiniPlayer: View {
                         .shadow(radius: 3)
                         .foregroundStyle(.red.opacity(0.6))
                 } else {
-                    Image(uiImage: selector.selectedStation!.faviconImage())
+                    Image(uiImage: audioPlayer.station!.faviconImage())
                         .resizable()
                         .scaledToFit()
                         .frame(width: 45, height: 45)
@@ -40,6 +39,12 @@ struct MiniPlayer: View {
                 Text(audioPlayer.station?.name ?? "no station")
                     .font(.headline)
                     .lineLimit(1)
+            }
+            
+            Spacer()
+            
+            if audioPlayer.isPlaying {
+                EqualizerView().tint(.blue)
             }
             
             Spacer()
@@ -60,16 +65,11 @@ struct MiniPlayer: View {
         .background(.regularMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .shadow(radius: 5)
-        .onAppear {
-            if selector.selectedStation != nil {
-                audioPlayer.setupPlayerFor(selector.selectedStation!)
+        .onChange(of: audioPlayer.station?.id) {
+            if audioPlayer.station != nil {
+                audioPlayer.setupPlayerFor(audioPlayer.station!)
             }
-        }
-        .onChange(of: selector.selectedStation?.id) {
-            if selector.selectedStation != nil {
-                audioPlayer.isPlaying = false
-                audioPlayer.setupPlayerFor(selector.selectedStation!)
-            } else {
+            else {
                 audioPlayer.station = nil
                 audioPlayer.isPlaying = false
             }

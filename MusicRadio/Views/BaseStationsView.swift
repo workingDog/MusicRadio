@@ -10,7 +10,6 @@ import SwiftData
 
 struct BaseStationsView: View {
     @Environment(AudioPlayerModel.self) var audioPlayer
-    @Environment(SelectionModel.self) var selector
     
     var stations: [RadioStation]
     let columns: [GridItem]
@@ -30,7 +29,7 @@ struct BaseStationsView: View {
                         StationView(station: station)
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
-                                .stroke(selector.selectedStation == station ? Color.blue.opacity(0.7) : .clear,
+                                .stroke(audioPlayer.station == station ? Color.blue.opacity(0.7) : .clear,
                                         lineWidth: 8)
                         )
                     }

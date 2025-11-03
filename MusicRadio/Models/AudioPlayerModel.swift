@@ -22,13 +22,9 @@ class AudioPlayerModel {
     
     func setupPlayerFor(_ radioStation: RadioStation) {
         self.station = radioStation
-
         if let station = station {
-       //     let theUrl = station.url.replacingOccurrences(of: "http://", with: "https://")
-            // guard let url = URL(string: theUrl) else { return }
-
             guard let url = URL(string: station.url) else { return }
-            print("---> url: \(url.absoluteString)")
+            print("---> station url: \(url.absoluteString)")
             player = AVPlayer(url: url)
         }
     }
@@ -47,6 +43,11 @@ class AudioPlayerModel {
         if player == nil {
             player = AVPlayer(url: url)
         }
+        player?.play()
+        isPlaying = true
+    }
+    
+    func play() {
         player?.play()
         isPlaying = true
     }

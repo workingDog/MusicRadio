@@ -44,6 +44,8 @@ enum ToolTypes: String, CaseIterable, Identifiable {
 
 
 struct ToolsView: View {
+    @Environment(AudioPlayerModel.self) var audioPlayer
+    
     @Binding var selectedTool: ToolTypes
     
     enum Segment: String, CaseIterable, Identifiable {
@@ -81,14 +83,20 @@ struct ToolsView: View {
             .shadow(radius: 2)
             .padding(.horizontal)
             .padding(.top, 8)
-            
-            Text(selectedTool.icon)
-                .font(.system(size: 60))
-                .shadow(radius: 5)
-                .frame(height: 66)
-                .padding(10)
-            
-            Spacer()
+
+//            if audioPlayer.isPlaying {
+//                EqualizerView()
+//                    .frame(height: 60)
+//                    .tint(.blue)
+//            } else {
+//                Text(selectedTool.icon)
+//                    .font(.system(size: 50))
+//                    .shadow(radius: 5)
+//                    .frame(height: 50)
+//                    .padding(10)
+//            }
+//            
+//            Spacer()
         }
         .frame(height: 111)
         .padding(.top, 15)
