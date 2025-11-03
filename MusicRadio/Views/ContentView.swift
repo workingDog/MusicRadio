@@ -13,10 +13,10 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     
     @State private var audioPlayer = AudioPlayerModel()
+    @State private var selector = SelectionModel()
+    @State private var selectedTool: ToolTypes = .favorite
 
     let network = Networker()
-    
-    @State private var selectedTool: ToolTypes = .favorite
 
     
     var body: some View {
@@ -34,10 +34,11 @@ struct ContentView: View {
                     case .favorite: FavoriteView()
                     case .radio: AllStationsView()
                     case .podcasts: Text("no implemented")
-                }
+                } 
             }
         }
         .environment(audioPlayer)
+        .environment(selector)
 //        .task {
 //            do {
 //                let stacions = try await network.getStationsForCountry(country: "Australia")

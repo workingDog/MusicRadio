@@ -11,13 +11,13 @@ import AVFoundation
 
 struct MiniPlayer: View {
     @Environment(AudioPlayerModel.self) var audioPlayer
-    @Binding var station: RadioStation?
-
+    @Environment(SelectionModel.self) var selector
+    
     
     var body: some View {
         HStack(spacing: 12) {
             Group {
-                if station == nil {
+                if selector.selectedStation == nil {
                     Image(uiImage: RadioStation.defaultImg)
                         .renderingMode(.template)
                         .resizable()
@@ -27,7 +27,7 @@ struct MiniPlayer: View {
                         .shadow(radius: 3)
                         .foregroundStyle(.red.opacity(0.6))
                 } else {
-                    Image(uiImage: station!.faviconImage())
+                    Image(uiImage: selector.selectedStation!.faviconImage())
                         .resizable()
                         .scaledToFit()
                         .frame(width: 45, height: 45)
@@ -61,14 +61,14 @@ struct MiniPlayer: View {
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .shadow(radius: 5)
         .onAppear {
-            if station != nil {
-                audioPlayer.setupPlayerFor(station!)
+            if selector.selectedStation != nil {
+                audioPlayer.setupPlayerFor(selector.selectedStation!)
             }
         }
-        .onChange(of: station) {
-            if station != nil {
-                audioPlayer.isPlaying = false 
-                audioPlayer.setupPlayerFor(station!)
+        .onChange(of: selector.selectedStation?.id) {
+            if selector.selectedStation != nil {
+                audioPlayer.isPlaying = false
+                audioPlayer.setupPlayerFor(selector.selectedStation!)
             } else {
                 audioPlayer.station = nil
                 audioPlayer.isPlaying = false
