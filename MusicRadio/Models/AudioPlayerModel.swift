@@ -20,7 +20,7 @@ class AudioPlayerModel {
     var progress: Double = 0
 
     
-    func setupPlayerFor(_ radioStation: RadioStation) {
+    func setStation(_ radioStation: RadioStation) {
         self.station = radioStation
         if let station = station {
             guard let url = URL(string: station.url) else { return }

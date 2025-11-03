@@ -46,6 +46,7 @@ struct StationView: View {
                 audioPlayer.station = nil
                 audioPlayer.pause()
             } else {
+                audioPlayer.pause()
                 audioPlayer.station = station
             }
         }

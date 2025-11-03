@@ -67,11 +67,11 @@ struct MiniPlayer: View {
         .shadow(radius: 5)
         .onChange(of: audioPlayer.station?.id) {
             if audioPlayer.station != nil {
-                audioPlayer.setupPlayerFor(audioPlayer.station!)
+                audioPlayer.setStation(audioPlayer.station!)
             }
             else {
                 audioPlayer.station = nil
-                audioPlayer.isPlaying = false
+                audioPlayer.pause()
             }
         }
     }
