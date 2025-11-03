@@ -68,9 +68,9 @@ final class RadioStation: Codable {
     var lastcheckok: Int
     var lastchecktime: String
     var lastchecktimeIso8601: Date?
-    var lastcheckoktime: String
+    var lastcheckoktime: String?
     var lastcheckoktimeIso8601: Date?
-    var lastlocalchecktime: String
+    var lastlocalchecktime: String?
     var lastlocalchecktimeIso8601: Date?
     
     var clicktimestamp: String?
@@ -132,11 +132,11 @@ final class RadioStation: Codable {
         hls = try container.decode(Int.self, forKey: .hls)
         lastcheckok = try container.decode(Int.self, forKey: .lastcheckok)
         lastchecktime = try container.decode(String.self, forKey: .lastchecktime)
-        lastchecktimeIso8601 = try container.decode(Date.self, forKey: .lastchecktimeIso8601)
-        lastcheckoktime = try container.decode(String.self, forKey: .lastcheckoktime)
-        lastcheckoktimeIso8601 = try container.decode(Date.self, forKey: .lastcheckoktimeIso8601)
-        lastlocalchecktime = try container.decode(String.self, forKey: .lastlocalchecktime)
-        lastlocalchecktimeIso8601 = try container.decode(Date.self, forKey: .lastlocalchecktimeIso8601)
+        lastchecktimeIso8601 = try container.decodeIfPresent(Date.self, forKey: .lastchecktimeIso8601)
+        lastcheckoktime = try container.decodeIfPresent(String.self, forKey: .lastcheckoktime)
+        lastcheckoktimeIso8601 = try container.decodeIfPresent(Date.self, forKey: .lastcheckoktimeIso8601)
+        lastlocalchecktime = try container.decodeIfPresent(String.self, forKey: .lastlocalchecktime)
+        lastlocalchecktimeIso8601 = try container.decodeIfPresent(Date.self, forKey: .lastlocalchecktimeIso8601)
         clicktimestamp = try container.decodeIfPresent(String.self, forKey: .clicktimestamp)
         clicktimestampIso8601 = try container.decodeIfPresent(Date.self, forKey: .clicktimestampIso8601)
         clickcount = try container.decodeIfPresent(Int.self, forKey: .clickcount)

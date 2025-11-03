@@ -12,14 +12,15 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     
+    @State private var audioPlayer = AudioPlayerModel()
+    
     @Query private var stations: [RadioStation]
-    @Query private var countries: [Country]
+ //   @Query private var countries: [Country]
     
     let network = Networker()
     
     @State private var selectedTool: ToolTypes = .favorite
-    
-    let columns = [GridItem(.flexible()), GridItem(.flexible())]
+
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -33,51 +34,37 @@ struct ContentView: View {
             VStack {
                 ToolsView(selectedTool: $selectedTool)
                 switch selectedTool {
-                    case .favorite: favoritesView
+                    case .favorite: FavoriteView(stations: stations)
                     case .radio: Text("no implemented")
                     case .podcasts: Text("no implemented")
                 }
             }
         }
-    }
-    
-    @ViewBuilder
-    var favoritesView: some View {
-        if stations.isEmpty {
-            Text("no favorite")
-        } else {
-            ScrollView {
-                LazyVGrid(columns: columns, spacing: 16) {
-                    ForEach(stations) { station in
-                        Button {
-     
-                        } label: {
-                            Text(station.name)
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 111)
-                                .padding()
-                                .background(.thinMaterial)
-                                .clipShape(RoundedRectangle(cornerRadius: 8))
-                        }
-                    }
-                }
-            }
-        }
+        .environment(audioPlayer)
+
+        
     }
     
 }
 
 
 
-//                Divider()
-//                if countries.isEmpty {
-//                    ProgressView()
-//                } else {
-//                    List(countries) { country in
-//                        Text("country at \(country.name)")
-//                            .foregroundStyle(Color.blue)
-//                    }
-//                }
+//    .task {
+//        do {
+//            let stacions = try await network.getStationsForCountry(country: "Australia")
+//  //          self.stations = stacions.prefix(24)
+//  //          print("-----> Australia: \(stations.count)")
+//            
+//            for station in stacions.prefix(24) {
+//                modelContext.insert(station)
+//                print("-----> Australia: \(station.url)")
+//            }
+//            
+//        } catch {
+//            print(error)
+//        }
+//    }
+
 
 //        .task {
 //            do {

@@ -8,6 +8,10 @@
 import SwiftUI
 import SwiftData
 
+
+// https://de1.api.radio-browser.info/#General
+// https://de1.api.radio-browser.info/json/
+
 @main
 struct MusicRadioApp: App {
 
