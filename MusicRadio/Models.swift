@@ -40,7 +40,9 @@ final class Country: Codable {
 
 @Model
 final class RadioStation: Codable {
+
     // not decoded
+    static var defaultImg = UIImage(systemName: "radio.fill")!
     var isFavourite: Bool = false
     var isPlaying: Bool = false
     var faviconData: Data? = nil
@@ -189,12 +191,20 @@ final class RadioStation: Codable {
         try container.encodeIfPresent(hasExtendedInfo, forKey: .hasExtendedInfo)
     }
     
-    func faviconImage() -> UIImage? {
+    func faviconImage() -> UIImage {
         if faviconData == nil {
             Task { await fetchFavicon() }
-            return (faviconData != nil) ? UIImage(data: faviconData!) : UIImage(systemName: "radio.fill")
+            if faviconData != nil, let img = UIImage(data: faviconData!) {
+                return img
+            } else {
+                return RadioStation.defaultImg
+            }
         } else {
-            return UIImage(data: faviconData!)
+            if let img = UIImage(data: faviconData!) {
+                return img
+            } else {
+                return RadioStation.defaultImg
+            }
         }
     }
     

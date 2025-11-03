@@ -15,8 +15,6 @@ struct FavoriteView: View {
     let columns = [GridItem(.flexible()), GridItem(.flexible())]
     @State private var selectedStation: RadioStation?
     
-    let defaultImg = UIImage(systemName: "radio.fill")!
-    
     var body: some View {
         if stations.isEmpty {
             Text("no favorite 🎵")
@@ -33,7 +31,7 @@ struct FavoriteView: View {
                             }
                         } label: {
                             VStack {
-                                Image(uiImage: station.faviconImage() ?? defaultImg)
+                                Image(uiImage: station.faviconImage())
                                     .resizable()
                                     .scaledToFit()
                                     .frame(maxWidth: .infinity)
@@ -63,34 +61,3 @@ struct FavoriteView: View {
         }
     }
 }
-
-
-
-/*
- 
- 
- .background(
-     Image(uiImage: station!.faviconImage() ?? defaultImg)
-         .resizable()
-         .scaledToFit()
-         .opacity(0.15)
-         .frame(width: 80, height: 80)
- )
- 
- 
- 
- I have this SwiftUI code:
- "Button {
-     // ...
- } label: {
-     Text(station.name)
-         .foregroundStyle(.black)
-         .frame(maxWidth: .infinity)
-         .frame(height: 123)
-         .padding()
-         .clipShape(RoundedRectangle(cornerRadius: 12))
- }" and I want to have a "Image(systemName: "globe")" as
- the background of the Button. How to do this?
- 
- 
- */

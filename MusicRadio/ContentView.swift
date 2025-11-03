@@ -41,8 +41,16 @@ struct ContentView: View {
             }
         }
         .environment(audioPlayer)
-
-        
+//        .task {
+//            do {
+//                let stacions = try await network.getStationsForCountry(country: "Australia")
+//                for station in stacions.prefix(24) {
+//                    print("-----> Australia: \(station.url)")
+//                }
+//            } catch {
+//                print(error)
+//            }
+//        }
     }
     
 }
