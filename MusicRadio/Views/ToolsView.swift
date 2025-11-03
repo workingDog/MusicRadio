@@ -11,7 +11,7 @@ import SwiftData
 enum ToolTypes: String, CaseIterable, Identifiable {
     case favorites = "Favorites"
     case countries = "Countries"
- //   case stations = "Stations"
+    case stations = "Stations"
     
     var id: String { rawValue }
     
@@ -20,24 +20,24 @@ enum ToolTypes: String, CaseIterable, Identifiable {
         let opa = 0.5
         switch self {
         case .favorites: return [.pink.opacity(opa), .purple.opacity(opa)]
-//        case .stations: return [.blue.opacity(opa), .cyan.opacity(opa)]
+        case .stations: return [.blue.opacity(opa), .cyan.opacity(opa)]
         case .countries: return [.orange.opacity(opa), .red.opacity(opa)]
         }
     }
     
     var icon: String {
         switch self {
-        case .favorites: return "🎵"
-//        case .stations: return "📻"
-        case .countries: return "🎙️"
+            case .favorites: return "🎵"
+            case .stations: return "📻"
+            case .countries: return "🎙️"
         }
     }
     
     var description: String {
         switch self {
-        case .favorites: return "Enjoy your favorite songs."
- //       case .stations: return "Listen to live stations."
-        case .countries: return "Check all countries' radio stations."
+            case .favorites: return "Enjoy your favorite songs."
+            case .stations: return "Listen to live stations."
+            case .countries: return "Check all countries' radio stations."
         }
     }
 }

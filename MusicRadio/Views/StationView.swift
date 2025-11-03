@@ -6,6 +6,7 @@
 //
 import SwiftUI
 import SwiftData
+import WebKit
 
 
 struct StationView: View {
@@ -13,24 +14,41 @@ struct StationView: View {
     @Environment(PlayerManager.self) var playerManager
 
     var station: RadioStation
-
+    @State private var showWeb: Bool = false
+    
     var body: some View {
         VStack {
-            Button {
-                station.isFavourite.toggle()
-                if !station.isFavourite {
-                    Utils.findAndRemove(station: station, in: modelContext)
-                } else {
-                    Utils.findOrInsert(station: station, in: modelContext)
+            HStack {
+                Button {
+                    station.isFavourite.toggle()
+                    print("\n---> station.isFavourite: \(station.isFavourite)\n")
+                    if !station.isFavourite {
+                        print("---> findAndRemove")
+                        Utils.findAndRemove(station: station, in: modelContext)
+                    } else {
+                        print("---> findOrInsert")
+                        Utils.findOrInsert(station: station, in: modelContext)
+                    }
+                } label: {
+                    Image(systemName: station.isFavourite ? "star.fill" : "star.slash")
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundStyle(.mint)
+                        .frame(width: 30, height: 30)
+             //           .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(5)
                 }
-            } label: {
-                Image(systemName: station.isFavourite ? "star.fill" : "star.slash")
-                    .resizable()
-                    .scaledToFit()
-                    .foregroundStyle(.mint)
-                    .frame(width: 25, height: 25)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(5)
+                Spacer()
+                Button {
+                    showWeb = true
+                } label: {
+                    Image(systemName: "house.circle")
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundStyle(.primary)
+                        .frame(width: 30, height: 30)
+                        .padding(5)
+                }
             }
             
             Image(uiImage: station.faviconImage())
@@ -57,5 +75,8 @@ struct StationView: View {
             }
         }
         .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 12))
+        .fullScreenCover(isPresented: $showWeb) {
+            WebView(url: URL(string: station.homepage))
+        }
     }
 }

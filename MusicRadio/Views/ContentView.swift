@@ -33,7 +33,7 @@ struct ContentView: View {
                 switch selectedTool {
                     case .favorites: StationListView(stations: stations.filter({$0.isFavourite}), columns: 2)
                     
-  //                  case .stations: StationListView(stations: stations, columns: 3)
+                    case .stations: StationListView(stations: stations, columns: 3)
                     
                     case .countries: CountriesView()
                 }
