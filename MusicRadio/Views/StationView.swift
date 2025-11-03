@@ -18,7 +18,11 @@ struct StationView: View {
         VStack {
             Button {
                 station.isFavourite.toggle()
-                RadioStation.findOrInsert(station: station, in: modelContext)
+                if !station.isFavourite {
+                    Utils.findAndRemove(station: station, in: modelContext)
+                } else {
+                    Utils.findOrInsert(station: station, in: modelContext)
+                }
             } label: {
                 Image(systemName: station.isFavourite ? "star.fill" : "star.slash")
                     .resizable()

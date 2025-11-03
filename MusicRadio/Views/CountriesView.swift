@@ -31,19 +31,19 @@ struct CountriesView: View {
                     .listRowBackground(Color.clear)
                     .searchable(text: $searchText, prompt: "Search countries")
                     .onSubmit(of: .search) {
-                        applySearch()
+                        doSearch()
                     }
                 }
                 .scrollContentBackground(.hidden)
             }
             .navigationBarTitle("Countries")
         }
-        .onAppear{
+        .onAppear {
             filteredCountries = countries
         }
     }
     
-    private func applySearch() {
+    private func doSearch() {
         let trimmed = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
         if trimmed.isEmpty {
             filteredCountries = countries
