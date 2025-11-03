@@ -1,5 +1,5 @@
 //
-//  BaseStationView.swift
+//  BaseStationsView.swift
 //  MusicRadio
 //
 //  Created by Ringo Wathelet on 2025/11/03.
@@ -8,12 +8,17 @@ import SwiftUI
 import SwiftData
 
 
-struct BaseStationView: View {
+struct BaseStationsView: View {
     @Environment(AudioPlayerModel.self) var audioPlayer
     @Environment(SelectionModel.self) var selector
     
     var stations: [RadioStation]
     let columns: [GridItem]
+    
+    init(stations: [RadioStation], columns: Int) {
+        self.stations = stations
+        self.columns = Array(repeating: GridItem(.flexible()), count: columns)
+    }
     
     var body: some View {
         if stations.isEmpty {

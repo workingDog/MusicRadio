@@ -18,6 +18,7 @@ struct ContentView: View {
 
     let network = Networker()
 
+    @Query private var stations: [RadioStation]
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -31,8 +32,10 @@ struct ContentView: View {
             VStack {
                 ToolsView(selectedTool: $selectedTool)
                 switch selectedTool {
-                    case .favorite: FavoriteView()
-                    case .radio: AllStationsView()
+                    case .favorite: BaseStationsView(stations: stations.filter({$0.isFavourite}), columns: 2)
+                    
+                    case .radio: BaseStationsView(stations: stations, columns: 3)
+                    
                     case .podcasts: Text("no implemented")
                 } 
             }
