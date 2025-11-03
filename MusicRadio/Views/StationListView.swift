@@ -1,5 +1,5 @@
 //
-//  BaseStationsView.swift
+//  StationListView.swift
 //  MusicRadio
 //
 //  Created by Ringo Wathelet on 2025/11/03.
@@ -8,8 +8,8 @@ import SwiftUI
 import SwiftData
 
 
-struct BaseStationsView: View {
-    @Environment(AudioPlayerModel.self) var audioPlayer
+struct StationListView: View {
+    @Environment(PlayerManager.self) var playerManager
     
     var stations: [RadioStation]
     let columns: [GridItem]
@@ -29,7 +29,7 @@ struct BaseStationsView: View {
                         StationView(station: station)
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
-                                .stroke(audioPlayer.station == station ? Color.blue.opacity(0.7) : .clear,
+                                .stroke(playerManager.station == station ? Color.blue.opacity(0.7) : .clear,
                                         lineWidth: 8)
                         )
                     }

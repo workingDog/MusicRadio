@@ -9,7 +9,8 @@ import SwiftData
 
 
 struct StationView: View {
-    @Environment(AudioPlayerModel.self) var audioPlayer
+    @Environment(\.modelContext) private var modelContext
+    @Environment(PlayerManager.self) var playerManager
 
     var station: RadioStation
 
@@ -17,6 +18,7 @@ struct StationView: View {
         VStack {
             Button {
                 station.isFavourite.toggle()
+                RadioStation.findOrInsert(station: station, in: modelContext)
             } label: {
                 Image(systemName: station.isFavourite ? "star.fill" : "star.slash")
                     .resizable()
@@ -42,12 +44,12 @@ struct StationView: View {
         }
         .contentShape(RoundedRectangle(cornerRadius: 12))
         .onTapGesture {
-            if audioPlayer.station == station {
-                audioPlayer.station = nil
-                audioPlayer.pause()
+            if playerManager.station == station {
+                playerManager.station = nil
+                playerManager.pause()
             } else {
-                audioPlayer.pause()
-                audioPlayer.station = station
+                playerManager.pause()
+                playerManager.station = station
             }
         }
         .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 12))

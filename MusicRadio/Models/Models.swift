@@ -220,16 +220,20 @@ final class RadioStation: Codable {
     
 }
 
-
-
-
-
-
-@Model
-final class Item {
-    var timestamp: Date
+extension RadioStation {
     
-    init(timestamp: Date) {
-        self.timestamp = timestamp
+    static func findOrInsert(station: RadioStation, in context: ModelContext) {
+        var descriptor = FetchDescriptor<RadioStation>(
+            predicate: #Predicate { $0.stationuuid == station.stationuuid }
+        )
+        descriptor.fetchLimit = 1
+        
+        // if already in SwiftData
+        if let existing = try? context.fetch(descriptor).first {
+            return
+        }
+        // else insert this station in SwiftData
+        context.insert(station)
     }
+    
 }

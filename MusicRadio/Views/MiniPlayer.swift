@@ -10,13 +10,13 @@ import AVFoundation
 
 
 struct MiniPlayer: View {
-    @Environment(AudioPlayerModel.self) var audioPlayer
+    @Environment(PlayerManager.self) var playerManager
     
     
     var body: some View {
         HStack(spacing: 12) {
             Group {
-                if audioPlayer.station == nil {
+                if playerManager.station == nil {
                     Image(uiImage: RadioStation.defaultImg)
                         .renderingMode(.template)
                         .resizable()
@@ -26,7 +26,7 @@ struct MiniPlayer: View {
                         .shadow(radius: 3)
                         .foregroundStyle(.red.opacity(0.6))
                 } else {
-                    Image(uiImage: audioPlayer.station!.faviconImage())
+                    Image(uiImage: playerManager.station!.faviconImage())
                         .resizable()
                         .scaledToFit()
                         .frame(width: 45, height: 45)
@@ -36,14 +36,14 @@ struct MiniPlayer: View {
             }
             
             VStack(alignment: .leading, spacing: 4) {
-                Text(audioPlayer.station?.name ?? "no station")
+                Text(playerManager.station?.name ?? "no station")
                     .font(.headline)
                     .lineLimit(1)
             }
             
             Spacer()
             
-            if audioPlayer.isPlaying {
+            if playerManager.isPlaying {
                 EqualizerView().tint(.blue)
             }
             
@@ -51,9 +51,9 @@ struct MiniPlayer: View {
             
             // Play / Pause button
             Button {
-                audioPlayer.togglePlayback()
+                playerManager.togglePlayback()
             } label: {
-                Image(systemName: audioPlayer.isPlaying ? "pause.fill" : "play.fill")
+                Image(systemName: playerManager.isPlaying ? "pause.fill" : "play.fill")
                     .font(.largeTitle)
                     .foregroundStyle(.primary)
                     .padding(6)
@@ -65,13 +65,13 @@ struct MiniPlayer: View {
         .background(.regularMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .shadow(radius: 5)
-        .onChange(of: audioPlayer.station?.id) {
-            if audioPlayer.station != nil {
-                audioPlayer.setStation(audioPlayer.station!)
+        .onChange(of: playerManager.station?.id) {
+            if playerManager.station != nil {
+                playerManager.setStation(playerManager.station!)
             }
             else {
-                audioPlayer.station = nil
-                audioPlayer.pause()
+                playerManager.station = nil
+                playerManager.pause()
             }
         }
     }

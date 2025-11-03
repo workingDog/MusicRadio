@@ -12,8 +12,8 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     
-    @State private var audioPlayer = AudioPlayerModel()
-    @State private var selectedTool: ToolTypes = .favorite
+    @State private var playerManager = PlayerManager()
+    @State private var selectedTool: ToolTypes = .favorites
 
     let network = Networker()
 
@@ -31,21 +31,21 @@ struct ContentView: View {
             VStack {
                 ToolsView(selectedTool: $selectedTool)
                 switch selectedTool {
-                    case .favorite: BaseStationsView(stations: stations.filter({$0.isFavourite}), columns: 2)
+                    case .favorites: StationListView(stations: stations.filter({$0.isFavourite}), columns: 2)
                     
-                    case .radio: BaseStationsView(stations: stations, columns: 3)
+  //                  case .stations: StationListView(stations: stations, columns: 3)
                     
-                    case .podcasts: Text("no implemented")
-                } 
+                    case .countries: CountriesView()
+                }
             }
         }
-        .environment(audioPlayer)
+        .environment(playerManager)
 
 //        .task {
 //            do {
-//                let stacions = try await network.getStationsForCountry(country: "Australia")
-//                for station in stacions.prefix(24) {
-//                    print("-----> Australia: \(station.url)")
+//                let countries = try await network.getAllCountries()
+//                for country in countries {
+//                    modelContext.insert(country)
 //                }
 //            } catch {
 //                print(error)

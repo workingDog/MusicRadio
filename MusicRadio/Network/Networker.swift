@@ -12,7 +12,7 @@ class Networker {
     
     var defaultURL = "https://de1.api.radio-browser.info/json/"
     
-    func getStationsForCountry(country: String) async throws -> [RadioStation] {
+    func getStationsForCountry(_ country: String) async throws -> [RadioStation] {
         if let theUrl = URL(string: "\(defaultURL)stations/bycountryexact/\(country)") {
             print("---> fetching theUrl: \(theUrl.absoluteString)")
             let decoder = JSONDecoder()

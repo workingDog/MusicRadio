@@ -12,7 +12,7 @@ import AVFoundation
 
 @MainActor
 @Observable
-class AudioPlayerModel {
+class PlayerManager {
     
     var station: RadioStation?
     var player: AVPlayer?
