@@ -38,7 +38,7 @@ struct CountriesView: View {
                                 .resizable()
                                 .renderingMode(.original)
                                 .frame(width: 40, height: 30)
-                            Text("\(country.stationcount ?? 0) stations")
+                            Text("\(country.stationcount ?? 0)")
                             Spacer()
                             Text(country.name).bold()
                             Spacer()

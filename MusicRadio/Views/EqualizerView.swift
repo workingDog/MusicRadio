@@ -8,15 +8,14 @@ import SwiftUI
 
 
 struct EqualizerView: View {
-    @State private var barHeights: [Double] = [0.2, 0.5, 0.3, 0.7, 0.4]
-    let barCount = 5
+    @State private var barHeights: [Double] = [0.2, 0.5, 0.3, 0.7, 0.4, 0.2, 0.5]
     
     var body: some View {
         HStack(alignment: .bottom, spacing: 3) {
-            ForEach(0..<barCount, id: \.self) { index in
+            ForEach(0..<barHeights.count, id: \.self) { index in
                 RoundedRectangle(cornerRadius: 2)
                     .fill(.tint)
-                    .frame(width: 6, height: 40 * barHeights[index])
+                    .frame(width: 6, height: 35 * barHeights[index])
                     .scaleEffect(y: barHeights[index], anchor: .bottom)
                     .animation(.easeInOut(duration: 0.3), value: barHeights[index])
             }
