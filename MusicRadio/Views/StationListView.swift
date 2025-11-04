@@ -16,7 +16,7 @@ struct StationListView: View {
     
     init(stations: [RadioStation], columns: Int) {
         self.stations = stations
-        self.columns = Array(repeating: GridItem(.flexible()), count: columns)
+        self.columns = Array(repeating: GridItem(.flexible(), spacing: 12), count: columns)
     }
     
     var body: some View {

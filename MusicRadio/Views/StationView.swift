@@ -50,7 +50,7 @@ struct StationView: View {
                         .padding(5)
                 }
             }
-            .padding(.bottom, 10)
+            .padding(.bottom, 5)
             
             Image(uiImage: station.faviconImage())
                 .resizable()
@@ -60,17 +60,19 @@ struct StationView: View {
             
             Text(station.name)
                 .frame(maxWidth: .infinity)
-                .frame(height: 80)
-                .padding()
+                .frame(height: 60)
+                .padding(5)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
         }
         .contentShape(RoundedRectangle(cornerRadius: 12))
         .onTapGesture {
             if playerManager.station == station {
                 playerManager.station = nil
+                playerManager.currentSong = ""
                 playerManager.pause()
             } else {
                 playerManager.pause()
+                playerManager.currentSong = ""
                 playerManager.station = station
             }
         }

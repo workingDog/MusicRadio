@@ -35,9 +35,14 @@ struct MiniPlayer: View {
                             .shadow(radius: 3)
                     }
                 }
-                Text(playerManager.station?.name ?? "no station")
-                    .font(.headline)
-                    .lineLimit(1)
+                VStack {
+                    Text(playerManager.station?.name ?? "no station")
+                        .font(.headline)
+                        .lineLimit(1)
+                    Text(playerManager.currentSong)
+                        .font(.headline)
+                        .lineLimit(1)
+                }
             }
             HStack(spacing: 8) {
                 Spacer()
@@ -51,10 +56,7 @@ struct MiniPlayer: View {
                 // to update volume in real time
                 Slider(value: Binding(
                     get: { Double(playerManager.volume) },
-                    set: { newValue in
-                        playerManager.volume = Float(newValue)
-                        playerManager.player?.volume = Float(newValue)
-                    }
+                    set: { playerManager.updateVolume($0)}
                 ), in: 0...1)
                 
                 Spacer()
