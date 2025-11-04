@@ -13,8 +13,15 @@ struct CountriesView: View {
     private var countries: [Country]
     
     @State private var searchText = ""
-    @State private var filteredCountries: [Country] = []
-
+    
+    private var filteredCountries: [Country] {
+        let trimmed = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return countries }
+        return countries.filter {
+            $0.name.lowercased().starts(with: searchText.lowercased())
+        }
+    }
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -31,6 +38,7 @@ struct CountriesView: View {
                                 .resizable()
                                 .renderingMode(.original)
                                 .frame(width: 40, height: 30)
+                            Text("\(country.stationcount ?? 0) stations")
                             Spacer()
                             Text(country.name).bold()
                             Spacer()
@@ -41,32 +49,9 @@ struct CountriesView: View {
                 .scrollContentBackground(.hidden)
                 .background(Color.clear)
                 .searchable(text: $searchText, prompt: "Search countries")
-    //            .searchPresentationToolbarBehavior(.avoidHidingContent)
-                .onSubmit(of: .search) {
-                    doSearch()
-                }
-                .onChange(of: searchText) {
-                    if searchText.isEmpty {
-                        filteredCountries = countries
-                    }
-                }
+                //            .searchPresentationToolbarBehavior(.avoidHidingContent)
             }
             .navigationBarTitle("Countries")
-        }
-        .onAppear {
-            filteredCountries = countries
-            print("---> countries: \(countries.count)\n")
-        }
-    }
-    
-    private func doSearch() {
-        let trimmed = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
-        if trimmed.isEmpty {
-            filteredCountries = countries
-        } else {
-            filteredCountries = countries.filter {
-                $0.name.lowercased().starts(with: searchText.lowercased())
-            }
         }
     }
     

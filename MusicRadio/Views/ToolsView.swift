@@ -86,9 +86,10 @@ struct ToolsView: View {
 struct AirPlayButton: UIViewRepresentable {
     func makeUIView(context: Context) -> AVRoutePickerView {
         let view = AVRoutePickerView()
-        view.activeTintColor = .systemBlue // highlighted color
-        view.tintColor = .gray             // normal color
-        view.prioritizesVideoDevices = false // audio only
+ //       view.prioritizesVideoDevices = false    // set to true for Apple TV
+        view.activeTintColor = .systemBlue      // highlighted color
+        view.tintColor = .gray                  // normal color
+        view.prioritizesVideoDevices = false    // audio only
         return view
     }
     

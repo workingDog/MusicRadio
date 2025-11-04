@@ -14,6 +14,16 @@ struct StationListView: View {
     var stations: [RadioStation]
     let columns: [GridItem]
     
+    @State private var searchText = ""
+    
+    private var filteredStations: [RadioStation] {
+        let trimmed = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return stations }
+        return stations.filter {
+            $0.name.lowercased().starts(with: searchText.lowercased())
+        }
+    }
+    
     init(stations: [RadioStation], columns: Int) {
         self.stations = stations
         self.columns = Array(repeating: GridItem(.flexible(), spacing: 12), count: columns)
@@ -21,25 +31,26 @@ struct StationListView: View {
     
     var body: some View {
         if stations.isEmpty {
-            Text("no station 🎵")
+            Text("no stations 🎵")
         } else {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 12) {
-                    ForEach(stations) { station in
+                    ForEach(filteredStations) { station in
                         StationView(station: station)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(playerManager.station == station ? Color.blue.opacity(0.7) : .clear,
-                                        lineWidth: 8)
-                        )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(playerManager.station == station ? Color.blue.opacity(0.7) : .clear,
+                                            lineWidth: 8)
+                            )
                     }
                 }
                 .padding(.horizontal, 10)
+                .searchable(text: $searchText, prompt: "Search station")
             }
             
             MiniPlayer().padding(8)
-        
+            
         }
     }
+    
 }
-
