@@ -42,7 +42,7 @@ struct StationView: View {
                 Button {
                     showWeb = true
                 } label: {
-                    Image(systemName: "house.circle")
+                    Image(systemName: "info.circle")
                         .resizable()
                         .scaledToFit()
                         .foregroundStyle(.primary)
@@ -67,9 +67,9 @@ struct StationView: View {
         .contentShape(RoundedRectangle(cornerRadius: 12))
         .onTapGesture {
             if playerManager.station == station {
-                playerManager.station = nil
-                playerManager.currentSong = ""
                 playerManager.pause()
+                playerManager.currentSong = ""
+                playerManager.station = nil
             } else {
                 playerManager.pause()
                 playerManager.currentSong = ""
