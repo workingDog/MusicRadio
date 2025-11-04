@@ -10,6 +10,12 @@ import AVKit
 import AVFoundation
 
 
+/*
+ 
+ in my SwiftUI code I have a "player = AVPlayer(url: url)", how to I add a volume control to this player?
+ 
+ */
+
 @MainActor
 @Observable
 class PlayerManager {
@@ -18,7 +24,8 @@ class PlayerManager {
     var player: AVPlayer?
     var isPlaying = false
     var progress: Double = 0
-
+    var volume: Float = 0.5
+    
     
     func setStation(_ radioStation: RadioStation) {
         self.station = radioStation

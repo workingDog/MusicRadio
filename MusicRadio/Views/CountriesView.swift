@@ -70,37 +70,3 @@ struct CountriesView: View {
     }
     
 }
-
-
-
-/*
- 
- I have this SwiftUI code, but the background of the List
- is white and I want it to show the LinearGradient under it, how to achieve this?
- 
- "var body: some View {
-     NavigationStack {
-         ZStack {
-             LinearGradient(
-                 gradient: Gradient(colors: ToolTypes.countries.gradient),
-                 startPoint: .topLeading,
-                 endPoint: .bottomTrailing
-             )
-             .ignoresSafeArea()
-             List(filteredCountries) { country in
-                 NavigationLink(destination: CountryView(country: country)) {
-                    Text(country.name).bold()
-                 }
-                 .listRowBackground(Color.clear)
-                 .searchable(text: $searchText, prompt: "Search countries")
-                 .onSubmit(of: .search) {
-                     doSearch()
-                 }
-             }
-             .scrollContentBackground(.hidden)
-         }
-         .navigationBarTitle("Countries")
-     }
- }"
- 
- */

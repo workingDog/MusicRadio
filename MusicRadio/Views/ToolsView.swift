@@ -66,15 +66,12 @@ struct ToolsView: View {
                     Image(systemName: "gear")
                 }.font(.system(size: 30))
             }
-            .padding(.vertical, 10)
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .shadow(radius: 2)
             .padding(.horizontal)
-            .padding(.top, 8)
         }
         .frame(height: 111)
-        .padding(.top, 15)
         .sheet(isPresented: $showSettings) {
             Text("settings")
         }

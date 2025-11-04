@@ -34,10 +34,10 @@ struct StationListView: View {
                         )
                     }
                 }
-                .padding(12)
+                .padding(.horizontal, 10)
             }
             
-            MiniPlayer().padding(10)
+            MiniPlayer().padding(8)
         
         }
     }

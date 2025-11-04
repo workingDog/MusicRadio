@@ -14,54 +14,66 @@ struct MiniPlayer: View {
     
     
     var body: some View {
-        HStack(spacing: 12) {
-            Group {
-                if playerManager.station == nil {
-                    Image(uiImage: RadioStation.defaultImg)
-                        .renderingMode(.template)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 45, height: 45)
-                        .cornerRadius(6)
-                        .shadow(radius: 3)
-                        .foregroundStyle(.red.opacity(0.6))
-                } else {
-                    Image(uiImage: playerManager.station!.faviconImage())
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 45, height: 45)
-                        .cornerRadius(6)
-                        .shadow(radius: 3)
+        VStack(alignment: .leading, spacing: 2) {
+            HStack(spacing: 12) {
+                Group {
+                    if playerManager.station == nil {
+                        Image(uiImage: RadioStation.defaultImg)
+                            .renderingMode(.template)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 45, height: 45)
+                            .cornerRadius(6)
+                            .shadow(radius: 3)
+                            .foregroundStyle(.red.opacity(0.6))
+                    } else {
+                        Image(uiImage: playerManager.station!.faviconImage())
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 45, height: 45)
+                            .cornerRadius(6)
+                            .shadow(radius: 3)
+                    }
                 }
-            }
-            
-            VStack(alignment: .leading, spacing: 4) {
                 Text(playerManager.station?.name ?? "no station")
                     .font(.headline)
                     .lineLimit(1)
             }
-            
-            Spacer()
-            
-            if playerManager.isPlaying {
-                EqualizerView().tint(.blue)
+            HStack(spacing: 8) {
+                Spacer()
+                
+                if playerManager.isPlaying {
+                    EqualizerView().tint(.mint)
+                }
+                
+                Spacer()
+                
+                // to update volume in real time
+                Slider(value: Binding(
+                    get: { Double(playerManager.volume) },
+                    set: { newValue in
+                        playerManager.volume = Float(newValue)
+                        playerManager.player?.volume = Float(newValue)
+                    }
+                ), in: 0...1)
+                
+                Spacer()
+                
+                // Play / Pause button
+                Button {
+                    playerManager.togglePlayback()
+                } label: {
+                    Image(systemName: playerManager.isPlaying ? "pause.fill" : "play.fill")
+                        .font(.largeTitle)
+                        .foregroundStyle(.primary)
+                        .padding(6)
+                        .background(.thickMaterial, in: Circle())
+                }
             }
             
-            Spacer()
-            
-            // Play / Pause button
-            Button {
-                playerManager.togglePlayback()
-            } label: {
-                Image(systemName: playerManager.isPlaying ? "pause.fill" : "play.fill")
-                    .font(.largeTitle)
-                    .foregroundStyle(.primary)
-                    .padding(6)
-                    .background(.thickMaterial, in: Circle())
-            }
-        }
+        } // VStack
         .padding(.horizontal)
-        .padding(.vertical, 8)
+        .padding(.vertical, 4)
         .background(.regularMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .shadow(radius: 5)

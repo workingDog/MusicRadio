@@ -46,6 +46,11 @@ struct ContentView: View {
 
 //        .task {
 //            do {
+//                let stacions = try await network.getStationsForCountry("Australia")
+//                for station in stacions.prefix(24) {
+//                    modelContext.insert(station)
+//                }
+//                
 //                let countries = try await network.getAllCountries()
 //                for country in countries {
 //                    modelContext.insert(country)

@@ -50,6 +50,7 @@ struct StationView: View {
                         .padding(5)
                 }
             }
+            .padding(.bottom, 10)
             
             Image(uiImage: station.faviconImage())
                 .resizable()
@@ -58,9 +59,8 @@ struct StationView: View {
                 .frame(height: 55)
             
             Text(station.name)
-                .foregroundStyle(.black)
                 .frame(maxWidth: .infinity)
-                .frame(height: 100)
+                .frame(height: 80)
                 .padding()
                 .clipShape(RoundedRectangle(cornerRadius: 12))
         }
