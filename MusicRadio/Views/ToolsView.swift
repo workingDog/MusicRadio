@@ -6,6 +6,8 @@
 //
 import SwiftUI
 import SwiftData
+import UIKit
+import AVKit
 
 
 enum ToolTypes: String, CaseIterable, Identifiable {
@@ -50,6 +52,8 @@ struct ToolsView: View {
     var body: some View {
         VStack {
             HStack {
+                AirPlayButton()
+                    .frame(width: 50, height: 50)
                 Spacer()
                 Picker("", selection: $selectedTool) {
                     ForEach(ToolTypes.allCases) { tool in
@@ -64,7 +68,8 @@ struct ToolsView: View {
                     showSettings = true
                 } label: {
                     Image(systemName: "gear")
-                }.font(.system(size: 30))
+                }
+                .font(.system(size: 30))
             }
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 16))
@@ -76,4 +81,24 @@ struct ToolsView: View {
             Text("settings")
         }
     }
+}
+
+struct AirPlayButton: UIViewRepresentable {
+    func makeUIView(context: Context) -> AVRoutePickerView {
+        let view = AVRoutePickerView()
+        view.activeTintColor = .systemBlue // highlighted color
+        view.tintColor = .gray             // normal color
+        view.prioritizesVideoDevices = false // audio only
+        return view
+    }
+    
+    func updateUIView(_ uiView: AVRoutePickerView, context: Context) {
+        // Nothing to update
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator()
+    }
+    
+    class Coordinator {}
 }

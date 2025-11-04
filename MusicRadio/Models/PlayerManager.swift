@@ -61,7 +61,7 @@ class PlayerManager {
     
 }
 
-class RadioPlayer: NSObject, AVPlayerItemMetadataOutputPushDelegate {
+class RadioPlayer: NSObject, AVPlayerItemMetadataOutputPushDelegate, @unchecked Sendable {
     var player: AVPlayer?
     var metadataOutput: AVPlayerItemMetadataOutput?
     weak var observer: PlayerManager?
@@ -80,6 +80,8 @@ class RadioPlayer: NSObject, AVPlayerItemMetadataOutputPushDelegate {
         metadataOutput = output
         
         player = AVPlayer(playerItem: item)
+        
+ //       player?.allowsExternalPlayback = false
     }
     
     func stop() {
@@ -94,7 +96,7 @@ class RadioPlayer: NSObject, AVPlayerItemMetadataOutputPushDelegate {
         // Delegate runs on main queue, safe to update observable
         for group in groups {
             for item in group.items {
-                Task {
+                Task { @MainActor in
                     if let key = item.identifier?.rawValue.lowercased(),
                        key.contains("title"),
                        let title = try? await item.load(.value) as? String {
@@ -107,7 +109,11 @@ class RadioPlayer: NSObject, AVPlayerItemMetadataOutputPushDelegate {
             }
         }
     }
+   
 }
+
+
+
 
 /*
  
