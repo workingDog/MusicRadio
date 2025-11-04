@@ -22,20 +22,20 @@ class PlayerManager {
     var currentSong: String = ""
     
     private var metadataOutput: AVPlayerItemMetadataOutput?
-    private var manager: RadioPlayer?
+    private var radio: RadioPlayer?
     
     
     func setStation(_ radioStation: RadioStation) {
         self.station = radioStation
         if let station = station {
             guard let url = URL(string: station.url) else { return }
-            manager = RadioPlayer(observer: self)
-            manager?.playStream(url: url)
+            radio = RadioPlayer(observer: self)
+            radio?.playStream(url: url)
         }
     }
     
     func togglePlayback() {
-        guard let player = manager?.player else { return }
+        guard let player = radio?.player else { return }
         if isPlaying {
             player.pause()
         } else {
@@ -45,18 +45,18 @@ class PlayerManager {
     }
     
     func play() {
-        manager?.player?.play()
+        radio?.player?.play()
         isPlaying = true
     }
     
     func pause() {
-        manager?.stop()
+        radio?.stop()
         isPlaying = false
     }
     
     func updateVolume(_ newValue: Double) {
         volume = Float(newValue)
-        manager?.player?.volume = volume
+        radio?.player?.volume = volume
     }
     
 }
