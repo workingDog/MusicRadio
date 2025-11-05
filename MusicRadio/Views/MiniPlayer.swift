@@ -66,10 +66,12 @@ struct MiniPlayer: View {
                     playerManager.togglePlayback()
                 } label: {
                     Image(systemName: playerManager.isPlaying ? "pause.fill" : "play.fill")
-                        .font(.largeTitle)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 40, height: 40)
+                        .padding(10)
                         .foregroundStyle(.primary)
                         .background(.thickMaterial, in: Circle())
-                        .padding(6)
                 }
             }.padding(6)
             

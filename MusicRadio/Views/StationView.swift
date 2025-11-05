@@ -52,6 +52,12 @@ struct StationView: View {
                 
                 Spacer()
                 
+                if playerManager.station == station, playerManager.isPlaying {
+                    EqualizerView().tint(.pink)
+                }
+
+                Spacer()
+                
                 Button {
                     showWeb = true
                 } label: {
@@ -64,12 +70,7 @@ struct StationView: View {
                 }.buttonStyle(.borderless)
             }
             
-            let clampedVotes = Double(station.votes).isFinite
-                ? min(max(Double(station.votes), 0), 10000)
-                : 0
-            
-            ProgressView(value: clampedVotes, total: 10000.0)
-                .padding(.horizontal, 10)
+            PopularView(station)
             
             Image(uiImage: station.faviconImage())
                 .resizable()

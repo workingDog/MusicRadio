@@ -23,7 +23,7 @@ enum ToolTypes: String, CaseIterable, Identifiable {
         switch self {
         case .favorites: return [.pink.opacity(opa), .purple.opacity(opa)]
         case .stations: return [.blue.opacity(opa), .cyan.opacity(opa)]
-        case .countries: return [.orange.opacity(opa), .red.opacity(opa)]
+        case .countries: return [.mint.opacity(opa), .mint.opacity(opa)]
         }
     }
     
