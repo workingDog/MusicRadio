@@ -64,6 +64,13 @@ struct StationView: View {
                 }.buttonStyle(.borderless)
             }
             
+            let clampedVotes = Double(station.votes).isFinite
+                ? min(max(Double(station.votes), 0), 10000)
+                : 0
+            
+            ProgressView(value: clampedVotes, total: 10000.0)
+                .padding(.horizontal, 10)
+            
             Image(uiImage: station.faviconImage())
                 .resizable()
                 .scaledToFit()
@@ -90,6 +97,10 @@ struct StationView: View {
         .fullScreenCover(isPresented: $showWeb) {
             WebView(url: URL(string: station.homepage))
         }
+        .onAppear {
+            print("----> station.votes: \(station.votes)")
+        }
+        
     }
 }
 

@@ -47,7 +47,7 @@ struct CountriesView: View {
                     }
                     .listRowBackground(Color.clear)
                 }
-                .searchable(text: $searchText, prompt: "Search countries")
+                .searchable(text: $searchText, placement: .navigationBarDrawer, prompt: "Search countries")
                 .scrollContentBackground(.hidden)
                 .background(Color.clear)
                 // .searchPresentationToolbarBehavior(.avoidHidingContent)
