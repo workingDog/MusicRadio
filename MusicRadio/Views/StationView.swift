@@ -98,10 +98,6 @@ struct StationView: View {
         .fullScreenCover(isPresented: $showWeb) {
             WebView(url: URL(string: station.homepage))
         }
-        .onAppear {
-            print("----> station.votes: \(station.votes)")
-        }
-        
     }
 }
 

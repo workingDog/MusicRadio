@@ -89,5 +89,6 @@ struct MiniPlayer: View {
                 playerManager.pause()
             }
         }
+
     }
 }

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import AVFoundation
 
 
 struct ContentView: View {
@@ -57,6 +58,11 @@ struct ContentView: View {
             } catch {
                 print(error)
             }
+        }
+        .onAppear {
+            let sysvol = AVAudioSession.sharedInstance().outputVolume
+            playerManager.volume = min(1.0, 0.5 / sysvol) / 2.0
+          //  print("---> sysvol: \(sysvol)  app vol: \(playerManager.volume)")
         }
     }
     
