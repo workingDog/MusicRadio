@@ -42,7 +42,8 @@ final class Country: Codable {
 final class RadioStation: Codable {
 
     // not decoded
-    static var defaultImg = UIImage(systemName: "radio.fill")!
+    static var defaultImg = UIImage(named: "radio")!
+    //UIImage(systemName: "radio.fill")!
     var isFavourite: Bool = false
     var isPlaying: Bool = false
     var faviconData: Data? = nil

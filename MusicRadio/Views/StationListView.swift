@@ -26,7 +26,7 @@ struct StationListView: View {
     
     init(stations: [RadioStation], columns: Int) {
         self.stations = stations
-        self.columns = Array(repeating: GridItem(.flexible(), spacing: 6), count: columns)
+        self.columns = Array(repeating: GridItem(.flexible(), spacing: 4), count: columns)
     }
     
     var body: some View {
@@ -39,15 +39,37 @@ struct StationListView: View {
                         ForEach(filteredStations) { station in
                             StationView(station: station)
                                 .overlay(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .stroke(playerManager.station == station ? Color.blue.opacity(0.7) : .clear,
-                                                lineWidth: 8)
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .stroke(playerManager.station == station ? Color.pink : .clear, lineWidth: 4)
                                 )
+                              //  .padding(.horizontal, 4)
                         }
                     }
-                    .padding(.horizontal, 4)
-                    .searchable(text: $searchText, prompt: "Search station")
+                    .contentShape(RoundedRectangle(cornerRadius: 8))
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .padding(.horizontal, 8)
                 }
+                .scrollContentBackground(.hidden)
+                .searchable(text: $searchText, prompt: "Search station")
+                .padding(.horizontal, 8)
+   
+                
+//                List(filteredStations) { station in
+//                    StationView(station: station)
+//                        .overlay(
+//                            RoundedRectangle(cornerRadius: 8)
+//                                .stroke(playerManager.station == station ? Color.white : .clear, lineWidth: 4)
+//                        )
+//                        .listRowSeparator(.hidden)
+//                        .listRowBackground(Color.gray.opacity(0.2))
+//                        .listRowInsets(EdgeInsets(top: 3, leading: 3, bottom: 3, trailing: 3))
+//                        .contentShape(Rectangle())
+//                        .clipShape(RoundedRectangle(cornerRadius: 8))
+//                }
+//                .scrollContentBackground(.hidden)
+//                .background(Color.clear)
+//                .listRowSpacing(10)
+//                .searchable(text: $searchText, prompt: "Search station")
                 
                 MiniPlayer().padding(10)
                 
@@ -57,3 +79,4 @@ struct StationListView: View {
     }
     
 }
+

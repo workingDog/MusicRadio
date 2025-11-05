@@ -49,7 +49,7 @@ struct CountriesView: View {
                 .scrollContentBackground(.hidden)
                 .background(Color.clear)
                 .searchable(text: $searchText, prompt: "Search countries")
-                //            .searchPresentationToolbarBehavior(.avoidHidingContent)
+                // .searchPresentationToolbarBehavior(.avoidHidingContent)
             }
             .navigationBarTitle("Countries")
         }

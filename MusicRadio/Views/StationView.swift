@@ -30,39 +30,51 @@ struct StationView: View {
                         Utils.findOrInsert(station: station, in: modelContext)
                     }
                 } label: {
-                    Image(systemName: station.isFavourite ? "star.fill" : "star.slash")
+                    Image(systemName: station.isFavourite ? "heart.fill" : "heart.slash")
                         .resizable()
-                        .scaledToFit()
+              //          .scaledToFit()
                         .foregroundStyle(.mint)
                         .frame(width: 30, height: 30)
              //           .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(5)
-                }
+                }.buttonStyle(.borderless)
+//                Spacer()
+//
+//                Button {
+//
+//                } label: {
+//                    Image(systemName: "hand.thumbsup.fill")
+//                        .resizable()
+//                        .scaledToFit()
+//                      //  .foregroundStyle(.primary)
+//                        .foregroundStyle(.mint)
+//                        .frame(width: 30, height: 30)
+//                        .padding(5)
+//                }
+                
                 Spacer()
+                
                 Button {
                     showWeb = true
                 } label: {
-                    Image(systemName: "info.circle")
+                    Image(systemName: "network")
                         .resizable()
-                        .scaledToFit()
-                        .foregroundStyle(.primary)
+                        .foregroundStyle(.black)
+                      //  .foregroundStyle(.primary)
                         .frame(width: 30, height: 30)
                         .padding(5)
-                }
+                }.buttonStyle(.borderless)
             }
-            .padding(.bottom, 5)
             
             Image(uiImage: station.faviconImage())
                 .resizable()
                 .scaledToFit()
-                .frame(maxWidth: .infinity)
-                .frame(height: 55)
+                .frame(width: 44, height: 44)
             
             Text(station.name)
-                .frame(maxWidth: .infinity)
-                .frame(height: 60)
+                .lineLimit(1)
                 .padding(5)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
+
         }
         .contentShape(RoundedRectangle(cornerRadius: 12))
         .onTapGesture {
@@ -82,3 +94,17 @@ struct StationView: View {
         }
     }
 }
+
+
+/*
+ if #available(iOS 26.0, *) {
+     WebView(url: URL(string: station.homepage))
+ } else {
+     VStack {
+         Text(station.name).font(.largeTitle)
+         Button("Done") {
+             showWeb = false
+         }.buttonStyle(.borderedProminent)
+     }
+ }
+ */
