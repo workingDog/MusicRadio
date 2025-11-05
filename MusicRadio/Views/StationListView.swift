@@ -19,8 +19,9 @@ struct StationListView: View {
     private var filteredStations: [RadioStation] {
         let trimmed = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return stations }
-        return stations.filter {
-            $0.name.lowercased().starts(with: searchText.lowercased())
+        return stations.filter { station in
+            let cleanName = station.name.trimmingCharacters(in: .whitespacesAndNewlines)
+            return cleanName.lowercased().starts(with: searchText.lowercased())
         }
     }
     

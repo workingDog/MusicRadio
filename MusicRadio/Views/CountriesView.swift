@@ -17,8 +17,9 @@ struct CountriesView: View {
     private var filteredCountries: [Country] {
         let trimmed = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return countries }
-        return countries.filter {
-            $0.name.lowercased().starts(with: searchText.lowercased())
+        return countries.filter { country in
+            let cleanName = country.name.trimmingCharacters(in: .whitespacesAndNewlines)
+            return cleanName.lowercased().starts(with: searchText.lowercased())
         }
     }
     
@@ -46,14 +47,14 @@ struct CountriesView: View {
                     }
                     .listRowBackground(Color.clear)
                 }
+                .searchable(text: $searchText, prompt: "Search countries")
                 .scrollContentBackground(.hidden)
                 .background(Color.clear)
-                .searchable(text: $searchText, prompt: "Search countries")
                 // .searchPresentationToolbarBehavior(.avoidHidingContent)
             }
             .navigationTitle("Countries")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbarVisibility(.hidden, for: .navigationBar)
+//            .toolbarVisibility(.hidden, for: .navigationBar)
         }
     }
     
