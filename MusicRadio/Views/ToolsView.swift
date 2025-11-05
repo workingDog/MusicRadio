@@ -13,7 +13,7 @@ import AVKit
 enum ToolTypes: String, CaseIterable, Identifiable {
     case favorites = "Favorites"
     case countries = "Countries"
-    case stations = "Stations"
+    case stations = "Interesting"
     
     var id: String { rawValue }
     
@@ -38,8 +38,8 @@ enum ToolTypes: String, CaseIterable, Identifiable {
     var description: String {
         switch self {
             case .favorites: return "Enjoy your favorite songs."
-            case .stations: return "Listen to live stations."
-            case .countries: return "Check all countries' radio stations."
+            case .stations: return "Interesting stations."
+            case .countries: return "Check all countries radio stations."
         }
     }
 }
@@ -69,16 +69,15 @@ struct ToolsView: View {
                 } label: {
                     Image(systemName: "gear")
                 }
-                .font(.system(size: 30))
+                .font(.system(size: 26))
             }
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .shadow(radius: 2)
             .padding(.horizontal)
         }
-        .frame(height: 111)
         .sheet(isPresented: $showSettings) {
-            Text("settings")
+            SettingsView()
         }
     }
 }

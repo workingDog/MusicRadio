@@ -31,8 +31,9 @@ struct ContentView: View {
             
             VStack {
                 ToolsView(selectedTool: $selectedTool)
+                    .padding(.bottom, 15)
                 switch selectedTool {
-                    case .favorites: StationListView(stations: stations.filter({$0.isFavourite}), columns: 2)
+                case .favorites: StationListView(stations: stations.filter({$0.isFavourite}), columns: 2)
 
                     case .stations: StationListView(stations: stations, columns: 3)
                     

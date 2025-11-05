@@ -34,7 +34,7 @@ struct MiniPlayer: View {
                             .cornerRadius(6)
                             .shadow(radius: 3)
                     }
-                }
+                }.padding(4)
                 VStack {
                     Text(playerManager.station?.name ?? "no station")
                         .font(.headline)
@@ -68,16 +68,15 @@ struct MiniPlayer: View {
                     Image(systemName: playerManager.isPlaying ? "pause.fill" : "play.fill")
                         .font(.largeTitle)
                         .foregroundStyle(.primary)
-                        .padding(6)
                         .background(.thickMaterial, in: Circle())
+                        .padding(6)
                 }
-            }
+            }.padding(6)
             
         } // VStack
-        .padding(.horizontal)
-        .padding(.vertical, 4)
+
         .background(.regularMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
         .shadow(radius: 5)
         .onChange(of: playerManager.station?.id) {
             if playerManager.station != nil {

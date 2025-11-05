@@ -42,7 +42,7 @@ struct StationListView: View {
                                     RoundedRectangle(cornerRadius: 8)
                                         .stroke(playerManager.station == station ? Color.pink : .clear, lineWidth: 4)
                                 )
-                              //  .padding(.horizontal, 4)
+                            .padding(.horizontal, 4)
                         }
                     }
                     .contentShape(RoundedRectangle(cornerRadius: 8))
@@ -52,8 +52,22 @@ struct StationListView: View {
                 .scrollContentBackground(.hidden)
                 .searchable(text: $searchText, prompt: "Search station")
                 .padding(.horizontal, 8)
-   
+ 
+                MiniPlayer()
+                    .padding(.horizontal)
+                    .padding(.vertical, 4)
                 
+            }
+        }
+    }
+    
+}
+
+
+
+/*
+ 
+              
 //                List(filteredStations) { station in
 //                    StationView(station: station)
 //                        .overlay(
@@ -70,13 +84,5 @@ struct StationListView: View {
 //                .background(Color.clear)
 //                .listRowSpacing(10)
 //                .searchable(text: $searchText, prompt: "Search station")
-                
-                MiniPlayer().padding(10)
-                
-            }
-        }
-        
-    }
-    
-}
-
+              
+ */
