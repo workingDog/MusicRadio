@@ -52,7 +52,6 @@ struct StationListView: View {
                 }
                 .scrollContentBackground(.hidden)
                 .searchable(text: $searchText, prompt: "Search station")
-    //            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
                 .padding(.horizontal, 8)
  
                 MiniPlayer()

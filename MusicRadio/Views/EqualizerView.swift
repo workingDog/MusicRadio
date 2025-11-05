@@ -15,8 +15,9 @@ struct EqualizerView: View {
             ForEach(0..<barHeights.count, id: \.self) { index in
                 RoundedRectangle(cornerRadius: 2)
                     .fill(.tint)
-                    .frame(width: 6, height: 35 * barHeights[index])
+                    .frame(width: 5, height: 35 * barHeights[index])
                     .scaleEffect(y: barHeights[index], anchor: .bottom)
+                    .shadow(color: .orange.opacity(0.6), radius: 20, y: 10)
                     .animation(.easeInOut(duration: 0.3), value: barHeights[index])
             }
         }

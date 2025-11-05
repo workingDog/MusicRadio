@@ -61,7 +61,8 @@ struct ContentView: View {
         }
         .onAppear {
             let sysvol = AVAudioSession.sharedInstance().outputVolume
-            playerManager.volume = min(1.0, 0.5 / sysvol) / 2.0
+            let desired = 0.25 //min(1.0, 0.5 / sysvol) / 2.0
+            playerManager.volume = min(1.0 - Float(sqrt(desired)) / sysvol, 1.0)
           //  print("---> sysvol: \(sysvol)  app vol: \(playerManager.volume)")
         }
     }

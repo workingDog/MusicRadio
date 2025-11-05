@@ -32,24 +32,11 @@ struct StationView: View {
                 } label: {
                     Image(systemName: station.isFavourite ? "heart.fill" : "heart.slash")
                         .resizable()
-              //          .scaledToFit()
                         .foregroundStyle(.mint)
                         .frame(width: 30, height: 30)
-             //           .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(5)
                 }.buttonStyle(.borderless)
-                
-//                Spacer()
-//                Button {
-//                    station.isInteresting.toggle()
-//                } label: {
-//                    Image(systemName: station.isInteresting ? "hand.thumbsup.fill" : "hand.thumbsup.slash")
-//                        .resizable()
-//                        .foregroundStyle(.mint)
-//                        .frame(width: 30, height: 30)
-//                        .padding(5)
-//                }
-                
+
                 Spacer()
                 
                 if playerManager.station == station, playerManager.isPlaying {
@@ -63,8 +50,7 @@ struct StationView: View {
                 } label: {
                     Image(systemName: "network")
                         .resizable()
-                        .foregroundStyle(.black)
-                      //  .foregroundStyle(.primary)
+                        .foregroundStyle(.primary)
                         .frame(width: 30, height: 30)
                         .padding(5)
                 }.buttonStyle(.borderless)
