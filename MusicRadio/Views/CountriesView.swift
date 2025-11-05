@@ -51,7 +51,9 @@ struct CountriesView: View {
                 .searchable(text: $searchText, prompt: "Search countries")
                 // .searchPresentationToolbarBehavior(.avoidHidingContent)
             }
-            .navigationBarTitle("Countries")
+            .navigationTitle("Countries")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbarVisibility(.hidden, for: .navigationBar)
         }
     }
     

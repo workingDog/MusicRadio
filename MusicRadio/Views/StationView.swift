@@ -38,15 +38,13 @@ struct StationView: View {
              //           .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(5)
                 }.buttonStyle(.borderless)
+                
 //                Spacer()
-//
 //                Button {
-//
+//                    station.isInteresting.toggle()
 //                } label: {
-//                    Image(systemName: "hand.thumbsup.fill")
+//                    Image(systemName: station.isInteresting ? "hand.thumbsup.fill" : "hand.thumbsup.slash")
 //                        .resizable()
-//                        .scaledToFit()
-//                      //  .foregroundStyle(.primary)
 //                        .foregroundStyle(.mint)
 //                        .frame(width: 30, height: 30)
 //                        .padding(5)
