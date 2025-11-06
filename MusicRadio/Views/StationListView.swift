@@ -7,6 +7,15 @@
 import SwiftUI
 import SwiftData
 
+/*
+ 
+ I have an array "var stations: [RadioStation]" that has a votes property,
+ how do I find the max value of this array?
+ 
+ 
+ 
+ */
+
 
 struct StationListView: View {
     @Environment(Selector.self) var selector
@@ -17,10 +26,14 @@ struct StationListView: View {
     
     @State private var searchText = ""
     
+    var maxRating: Int {
+        stations.map(\.votes).max() ?? 0
+    }
+    
     private var filteredStations: [RadioStation] {
         let xstations = switch selector.filter {
             case .topRated: Array(stations.sorted{ $0.votes > $1.votes }.prefix(selector.topCount))
-            case .all: stations
+            case .all: stations.sorted{ $0.votes > $1.votes }
         }
         let trimmed = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return xstations }
@@ -43,7 +56,7 @@ struct StationListView: View {
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 6) {
                         ForEach(filteredStations) { station in
-                            StationView(station: station)
+                            StationView(station: station, maxRating: maxRating)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 8)
                                         .stroke(playerManager.station == station ? Color.pink : .clear, lineWidth: 4)

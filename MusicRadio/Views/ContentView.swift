@@ -21,6 +21,7 @@ struct ContentView: View {
     @Query private var stations: [RadioStation]
     @Query private var countries: [Country]
     
+
     var body: some View {
         ZStack(alignment: .top) {
             LinearGradient(
@@ -46,7 +47,8 @@ struct ContentView: View {
                 }
             }
             .onAppear {
-                print("-----> stations: \(stations.count)")
+                print("-----> stations: \(stations.count) \n")
+
             }
         }
         .environment(playerManager)

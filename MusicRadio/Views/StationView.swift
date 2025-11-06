@@ -14,7 +14,10 @@ struct StationView: View {
     @Environment(PlayerManager.self) var playerManager
 
     var station: RadioStation
+    let maxRating: Int
+    
     @State private var showWeb: Bool = false
+    @State private var stars = 0
     
     var body: some View {
         VStack {
@@ -56,7 +59,7 @@ struct StationView: View {
                 }.buttonStyle(.borderless)
             }
             
-            PopularView(station)
+            RatingLineView(station, maxRating)
             
             Image(uiImage: station.faviconImage())
                 .resizable()

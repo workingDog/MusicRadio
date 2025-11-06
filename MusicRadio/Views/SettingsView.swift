@@ -32,16 +32,16 @@ struct SettingsView: View {
                 Spacer()
                 
                 Form {
-                    Section("Top Ratings") {
+                    Section("Top Stations") {
                         HStack {
-                            Text("Top-rated stations to show:")
+                            Text("Top-rated stations to show ")
                             CompactStepper(value: $selector.topCount, range: 1...100, step: 10)
                         }
                     }
                     
-                    Section("Other Options") {
-                        Text("Choose Options here")
-                    }
+//                    Section("Other Options") {
+//                        Text("Choose Options here")
+//                    }
                 }
                 .formStyle(.grouped)
                 .scrollContentBackground(.hidden)
