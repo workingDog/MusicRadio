@@ -14,7 +14,7 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     
     @State private var playerManager = PlayerManager()
-    @State private var selectedTool: ToolTypes = .favorites
+    @State private var selector = Selector()
 
     let network = Networker()
 
@@ -24,16 +24,20 @@ struct ContentView: View {
     var body: some View {
         ZStack(alignment: .top) {
             LinearGradient(
-                colors: selectedTool.gradient,
+                colors: selector.view.gradient,
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             ).ignoresSafeArea()
-             .animation(.easeInOut(duration: 0.4), value: selectedTool)
+             .animation(.easeInOut(duration: 0.4), value: selector.view)
             
             VStack {
-                ToolsView(selectedTool: $selectedTool)
-                    .padding(.bottom, 15)
-                switch selectedTool {
+                ToolsView().padding(.bottom, 5)
+                
+                if selector.view != .countries {
+                    FilterTools().fixedSize()
+                }
+
+                switch selector.view {
                     case .favorites: StationListView(stations: stations.filter({$0.isFavourite}), columns: 2)
 
                     case .stations: StationListView(stations: stations, columns: 3)
@@ -46,6 +50,7 @@ struct ContentView: View {
             }
         }
         .environment(playerManager)
+        .environment(selector)
         .task {
             do {
                 // if first time, get all the countries

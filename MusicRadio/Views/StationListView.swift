@@ -9,6 +9,7 @@ import SwiftData
 
 
 struct StationListView: View {
+    @Environment(Selector.self) var selector
     @Environment(PlayerManager.self) var playerManager
     
     var stations: [RadioStation]
@@ -17,9 +18,13 @@ struct StationListView: View {
     @State private var searchText = ""
     
     private var filteredStations: [RadioStation] {
+        let xstations = switch selector.filter {
+            case .top20: Array(stations.sorted{ $0.votes > $1.votes }.prefix(20))
+            case .all: stations
+        }
         let trimmed = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return stations }
-        return stations.filter { station in
+        guard !trimmed.isEmpty else { return xstations }
+        return xstations.filter { station in
             let cleanName = station.name.trimmingCharacters(in: .whitespacesAndNewlines)
             return cleanName.lowercased().starts(with: searchText.lowercased())
         }
@@ -86,4 +91,18 @@ struct StationListView: View {
 //                .listRowSpacing(10)
 //                .searchable(text: $searchText, prompt: "Search station")
               
+ */
+
+
+
+
+/*
+ 
+ In SwiftUI I have this code:
+ 
+ "var stations: [RadioStation]" where RadioStation is a "@Model
+ final class RadioStation" that includes a "var votes: Int".
+ How can I extract/filter the top 20 votes stations from the array?
+ 
+ 
  */

@@ -27,7 +27,7 @@ struct CountriesView: View {
         NavigationStack {
             ZStack {
                 LinearGradient(
-                    gradient: Gradient(colors: ToolTypes.countries.gradient),
+                    gradient: Gradient(colors: ViewTypes.countries.gradient),
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )

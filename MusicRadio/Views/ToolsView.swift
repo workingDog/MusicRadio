@@ -10,53 +10,20 @@ import UIKit
 import AVKit
 
 
-enum ToolTypes: String, CaseIterable, Identifiable {
-    case favorites = "Favorites"
-    case countries = "Countries"
-    case stations = "Interesting"
-    
-    var id: String { rawValue }
-    
-    // Each type defines its own color scheme and emoji
-    var gradient: [Color] {
-        let opa = 0.5
-        switch self {
-        case .favorites: return [.pink.opacity(opa), .purple.opacity(opa)]
-        case .stations: return [.blue.opacity(opa), .cyan.opacity(opa)]
-        case .countries: return [.mint.opacity(opa), .mint.opacity(opa)]
-        }
-    }
-    
-    var icon: String {
-        switch self {
-            case .favorites: return "🎵"
-            case .stations: return "📻"
-            case .countries: return "🎙️"
-        }
-    }
-    
-    var description: String {
-        switch self {
-            case .favorites: return "Enjoy your favorite songs."
-            case .stations: return "Interesting stations."
-            case .countries: return "Check all countries radio stations."
-        }
-    }
-}
-
 struct ToolsView: View {
-    @Binding var selectedTool: ToolTypes
+    @Environment(Selector.self) var selector
     
     @State private var showSettings: Bool = false
     
     var body: some View {
+        @Bindable var selector = selector
         VStack {
             HStack {
                 AirPlayButton()
                     .frame(width: 50, height: 50)
                 Spacer()
-                Picker("", selection: $selectedTool) {
-                    ForEach(ToolTypes.allCases) { tool in
+                Picker("", selection: $selector.view) {
+                    ForEach(ViewTypes.allCases) { tool in
                         Text(tool.rawValue).tag(tool)
                     }
                 }

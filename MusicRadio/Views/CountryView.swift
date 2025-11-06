@@ -10,6 +10,7 @@ import SwiftData
 
 struct CountryView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(Selector.self) var selector
     
     let network = Networker()
     
@@ -20,7 +21,7 @@ struct CountryView: View {
     var body: some View {
         ZStack {
             LinearGradient(
-                gradient: Gradient(colors: ToolTypes.countries.gradient),
+                gradient: Gradient(colors: ViewTypes.countries.gradient),
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
@@ -29,6 +30,9 @@ struct CountryView: View {
                 if stations.isEmpty {
                     ProgressView()
                 } else {
+                    if selector.showFilters {
+                        FilterTools().fixedSize()
+                    }
                     StationListView(stations: stations, columns: 3)
                 }
             }
@@ -41,6 +45,12 @@ struct CountryView: View {
             }
         }
         .navigationBarTitle(country.name)
+        .onAppear {
+            selector.showFilters = true
+        }
+        .onDisappear {
+            selector.showFilters = false
+        }
     }
     
 }
