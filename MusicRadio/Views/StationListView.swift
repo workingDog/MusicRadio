@@ -7,15 +7,6 @@
 import SwiftUI
 import SwiftData
 
-/*
- 
- I have an array "var stations: [RadioStation]" that has a votes property,
- how do I find the max value of this array?
- 
- 
- 
- */
-
 
 struct StationListView: View {
     @Environment(Selector.self) var selector
@@ -26,6 +17,7 @@ struct StationListView: View {
     
     @State private var searchText = ""
     
+    // max value of votes in the current list of stations
     var maxRating: Int {
         stations.map(\.votes).max() ?? 0
     }

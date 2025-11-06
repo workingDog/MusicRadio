@@ -43,7 +43,7 @@ struct StationView: View {
                 Spacer()
                 
                 if playerManager.station == station, playerManager.isPlaying {
-                    EqualizerView().tint(.pink)
+                    EqualizerView().tint(.pink).offset(y: -5)
                 }
 
                 Spacer()
@@ -85,7 +85,33 @@ struct StationView: View {
         }
         .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 12))
         .fullScreenCover(isPresented: $showWeb) {
-            WebView(url: URL(string: station.homepage))
+            WebViewScreen(station: station)
+        }
+    }
+}
+
+struct WebViewScreen: View {
+    @Environment(\.dismiss) private var dismiss
+    let station: RadioStation
+
+    var body: some View {
+        VStack {
+            Button("Done") {
+                dismiss()
+            }
+            .buttonStyle(.bordered)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(6)
+
+            Divider()
+            
+            if let url = URL(string: station.homepage),
+                UIApplication.shared.canOpenURL(url) {
+                 WebView(url: url)
+             } else {
+                 Text("No homepage available").font(Font.largeTitle.bold())
+                 Spacer()
+             }
         }
     }
 }

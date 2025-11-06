@@ -23,7 +23,7 @@ struct SettingsView: View {
                 }
                 .buttonStyle(.bordered)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(8)
+                .padding(6)
                 
                 Spacer()
                 
