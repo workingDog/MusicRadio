@@ -15,11 +15,11 @@ class Selector {
     var view: ViewTypes = .favorites
     var filter: FilterTypes = .all
     var showFilters: Bool = false
-
+    var topCount: Int = 20
 }
 
 enum FilterTypes: String, CaseIterable, Identifiable {
-    case top20 = "Top 20"
+    case topRated = "Top rated"
     case all = "All"
     
     var id: String { rawValue }

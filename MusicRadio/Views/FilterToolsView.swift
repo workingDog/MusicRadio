@@ -1,5 +1,5 @@
 //
-//  FilterTools.swift
+//  FilterToolsView.swift
 //  MusicRadio
 //
 //  Created by Ringo Wathelet on 2025/11/06.
@@ -8,7 +8,7 @@ import SwiftUI
 import SwiftData
 
 
-struct FilterTools: View {
+struct FilterToolsView: View {
     @Environment(Selector.self) var selector
     
     

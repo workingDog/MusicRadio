@@ -37,6 +37,7 @@ struct ToolsView: View {
                     Image(systemName: "gear")
                 }
                 .font(.system(size: 26))
+                .padding(5)
             }
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 16))

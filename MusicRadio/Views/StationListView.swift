@@ -19,7 +19,7 @@ struct StationListView: View {
     
     private var filteredStations: [RadioStation] {
         let xstations = switch selector.filter {
-            case .top20: Array(stations.sorted{ $0.votes > $1.votes }.prefix(20))
+            case .topRated: Array(stations.sorted{ $0.votes > $1.votes }.prefix(selector.topCount))
             case .all: stations
         }
         let trimmed = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
