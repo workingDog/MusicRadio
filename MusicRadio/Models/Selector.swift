@@ -11,10 +11,8 @@ import SwiftUI
 @MainActor
 @Observable
 class Selector {
-    
     var view: ViewTypes = .favorites
     var filter: FilterTypes = .all
-    var showFilters: Bool = false
     var topCount: Int = 20
 }
 

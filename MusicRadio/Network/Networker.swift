@@ -6,7 +6,7 @@
 //
 import Foundation
 import SwiftUI
-
+import SwiftData
 
 
 /*
@@ -19,6 +19,23 @@ import SwiftUI
 class Networker {
     
     var defaultServer = "https://de1.api.radio-browser.info/json/"
+    
+    func getAllStations() async throws -> [RadioStation] {
+        if let theUrl = URL(string: "\(defaultServer)stations") {
+            print("---> getAllStations fetching theUrl: \(theUrl.absoluteString)")
+            do {
+                let (data, _) = try await URLSession.shared.data(from: theUrl)
+                print("---> data: \(data)") // 62 MB
+                let stations = try JSONDecoder().decode([RadioStation].self, from: data)
+                print("---> stations: \(stations.count)") // 51680
+                print("\n---> done fetching getAllStations \n")
+                return stations
+            } catch {
+                print(error)
+            }
+        }
+        return []
+    }
 
     func getStationsForCountry(_ country: String) async throws -> [RadioStation] {
         if let theUrl = URL(string: "\(defaultServer)stations/bycountryexact/\(country)") {
@@ -55,7 +72,7 @@ class Networker {
     }
 
     func getServers() async throws {
-        if let theUrl = URL(string: "https://all.api.radio-browser.info/json/servers") {
+        if let theUrl = URL(string: "\(defaultServer)servers") {
             print("---> getServers fetching theUrl: \(theUrl.absoluteString)")
             do {
                 let (data, _) = try await URLSession.shared.data(from: theUrl)
@@ -71,7 +88,7 @@ class Networker {
     }
 
     func getTopVotes( _ limit: Int = 10) async throws -> [RadioStation] {
-        if let theUrl = URL(string: "https://de1.api.radio-browser.info/json/stations/topvote/\(limit)") {
+        if let theUrl = URL(string: "\(defaultServer)stations/topvote/\(limit)") {
             print("---> getTopVotes fetching theUrl: \(theUrl.absoluteString)")
             do {
                 let (data, _) = try await URLSession.shared.data(from: theUrl)
@@ -89,8 +106,8 @@ class Networker {
     }
 
     func getTopVotesFor(_ country: String, limit: Int = 10) async throws -> [RadioStation] {
-        if let theUrl = URL(string: "https://de1.api.radio-browser.info/json/stations/search?country=\(country)&order=votes&reverse=true&limit=\(limit)") {
-            print("---> getTopVotes fetching theUrl: \(theUrl.absoluteString)")
+        if let theUrl = URL(string: "\(defaultServer)stations/search?country=\(country)&order=votes&reverse=true&limit=\(limit)") {
+            print("---> getTopVotesFor fetching theUrl: \(theUrl.absoluteString)")
             do {
                 let (data, _) = try await URLSession.shared.data(from: theUrl)
 // print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
@@ -106,4 +123,15 @@ class Networker {
         return []
     }
     
+    func saveAllStations(_ stations: [RadioStation], context: ModelContext) {
+        let batchSize = 500
+
+        for chunk in stride(from: 0, to: stations.count, by: batchSize) {
+            let batch = Array(stations[chunk..<min(chunk + batchSize, stations.count)])
+            for station in batch {
+                context.insert(station)
+            }
+            try? context.save()
+        }
+    }
 }

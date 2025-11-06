@@ -54,7 +54,6 @@ struct CountriesView: View {
             }
             .navigationTitle("Countries")
             .navigationBarTitleDisplayMode(.inline)
-//            .toolbarVisibility(.hidden, for: .navigationBar)
         }
     }
     

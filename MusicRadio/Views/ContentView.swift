@@ -78,32 +78,38 @@ struct ContentView: View {
             playerManager.volume = min(1.0 - Float(sqrt(desired)) / sysvol, 1.0)
             print("---> sysvol: \(sysvol)  app vol: \(playerManager.volume)")
         }
-        /*
-        .task {
-            do {
-               // try await network.getServers()
-                
-//                let topStations = try await network.getTopVotes()
-//                for station in topStations {
-//                    modelContext.insert(station)
-//                }
-                
-                let topStations = try await network.getTopVotesFor("Australia")
-                for station in topStations {
-                    print("----> topStation: \(station.name)  \(station.votes)")
-                   // modelContext.insert(station)
-                }
-
-            } catch {
-                print(error)
-            }
-        }
-         */
-        
+ 
     }
     
 }
 
+
+
+
+/*
+.task {
+    do {
+       // try await network.getServers()
+ 
+//         try await network.getAllStations()
+ 
+        
+//                let topStations = try await network.getTopVotes()
+//                for station in topStations {
+//                    modelContext.insert(station)
+//                }
+        
+        let topStations = try await network.getTopVotesFor("Australia")
+        for station in topStations {
+            print("----> topStation: \(station.name)  \(station.votes)")
+           // modelContext.insert(station)
+        }
+
+    } catch {
+        print(error)
+    }
+}
+ */
 
 
 /*

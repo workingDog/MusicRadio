@@ -30,9 +30,7 @@ struct CountryView: View {
                 if stations.isEmpty {
                     ProgressView()
                 } else {
-                    if selector.showFilters {
-                        FilterToolsView().fixedSize()
-                    }
+                    FilterToolsView().fixedSize()
                     StationListView(stations: stations, columns: 3)
                 }
             }
@@ -45,12 +43,6 @@ struct CountryView: View {
             }
         }
         .navigationBarTitle(country.name)
-        .onAppear {
-            selector.showFilters = true
-        }
-        .onDisappear {
-            selector.showFilters = false
-        }
     }
     
 }

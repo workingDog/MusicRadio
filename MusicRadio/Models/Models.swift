@@ -43,7 +43,6 @@ final class RadioStation: Codable {
 
     // not decoded
     static var defaultImg = UIImage(named: "radio")!
-    //UIImage(systemName: "radio.fill")!
     var isFavourite: Bool = false
     var isPlaying: Bool = false
     var faviconData: Data? = nil
@@ -63,51 +62,51 @@ final class RadioStation: Codable {
     var language: String
     var languagecodes: String
     var votes: Int
-    var lastchangetime: String
-    var lastchangetimeIso8601: Date?
-    var codec: String
-    var bitrate: Int
-    var hls: Int
-    var lastcheckok: Int
-    var lastchecktime: String
-    var lastchecktimeIso8601: Date?
-    var lastcheckoktime: String?
-    var lastcheckoktimeIso8601: Date?
-    var lastlocalchecktime: String?
-    var lastlocalchecktimeIso8601: Date?
-    
-    var clicktimestamp: String?
-    var clicktimestampIso8601: Date?
     var clickcount: Int?
     var clicktrend: Int?
-    
-    var sslError: Int?
     var geoLat: Double?
     var geoLong: Double?
     var geoDistance: Double?
-    var hasExtendedInfo: Bool?
+    
+//    var lastchangetime: String
+//    var lastchangetimeIso8601: Date?
+//    var codec: String
+//    var bitrate: Int
+//    var hls: Int
+//    var lastcheckok: Int
+//    var lastchecktime: String
+//    var lastchecktimeIso8601: Date?
+//    var lastcheckoktime: String?
+//    var lastcheckoktimeIso8601: Date?
+//    var lastlocalchecktime: String?
+//    var lastlocalchecktimeIso8601: Date?
+//    var clicktimestamp: String?
+//    var clicktimestampIso8601: Date?
+//    var sslError: Int?
+//    var hasExtendedInfo: Bool?
     
     enum CodingKeys: String, CodingKey {
         case changeuuid, stationuuid, name, url
         case urlResolved = "url_resolved"
         case homepage, favicon, tags, country, countrycode
         case iso3166_2 = "iso_3166_2"
-        case state, language, languagecodes, votes, lastchangetime
-        case lastchangetimeIso8601 = "lastchangetime_iso8601"
-        case codec, bitrate, hls, lastcheckok, lastchecktime
-        case lastchecktimeIso8601 = "lastchecktime_iso8601"
-        case lastcheckoktime
-        case lastcheckoktimeIso8601 = "lastcheckoktime_iso8601"
-        case lastlocalchecktime
-        case lastlocalchecktimeIso8601 = "lastlocalchecktime_iso8601"
-        case clicktimestamp
-        case clicktimestampIso8601 = "clicktimestamp_iso8601"
-        case clickcount, clicktrend
-        case sslError = "ssl_error"
         case geoLat = "geo_lat"
         case geoLong = "geo_long"
         case geoDistance = "geo_distance"
-        case hasExtendedInfo = "has_extended_info"
+        case state, language, languagecodes, votes, lastchangetime
+        case clickcount, clicktrend
+        
+//        case lastchangetimeIso8601 = "lastchangetime_iso8601"
+//        case codec, bitrate, hls, lastcheckok, lastchecktime
+//        case lastchecktimeIso8601 = "lastchecktime_iso8601"
+//        case lastcheckoktime
+//        case lastcheckoktimeIso8601 = "lastcheckoktime_iso8601"
+//        case lastlocalchecktime
+//        case lastlocalchecktimeIso8601 = "lastlocalchecktime_iso8601"
+//        case clicktimestamp
+//        case clicktimestampIso8601 = "clicktimestamp_iso8601"
+//        case sslError = "ssl_error"
+//        case hasExtendedInfo = "has_extended_info"
     }
     
     init(from decoder: Decoder) throws {
@@ -128,27 +127,28 @@ final class RadioStation: Codable {
         language = try container.decode(String.self, forKey: .language)
         languagecodes = try container.decode(String.self, forKey: .languagecodes)
         votes = try container.decode(Int.self, forKey: .votes)
-        lastchangetime = try container.decode(String.self, forKey: .lastchangetime)
-        lastchangetimeIso8601 = try container.decode(Date.self, forKey: .lastchangetimeIso8601)
-        codec = try container.decode(String.self, forKey: .codec)
-        bitrate = try container.decode(Int.self, forKey: .bitrate)
-        hls = try container.decode(Int.self, forKey: .hls)
-        lastcheckok = try container.decode(Int.self, forKey: .lastcheckok)
-        lastchecktime = try container.decode(String.self, forKey: .lastchecktime)
-        lastchecktimeIso8601 = try container.decodeIfPresent(Date.self, forKey: .lastchecktimeIso8601)
-        lastcheckoktime = try container.decodeIfPresent(String.self, forKey: .lastcheckoktime)
-        lastcheckoktimeIso8601 = try container.decodeIfPresent(Date.self, forKey: .lastcheckoktimeIso8601)
-        lastlocalchecktime = try container.decodeIfPresent(String.self, forKey: .lastlocalchecktime)
-        lastlocalchecktimeIso8601 = try container.decodeIfPresent(Date.self, forKey: .lastlocalchecktimeIso8601)
-        clicktimestamp = try container.decodeIfPresent(String.self, forKey: .clicktimestamp)
-        clicktimestampIso8601 = try container.decodeIfPresent(Date.self, forKey: .clicktimestampIso8601)
         clickcount = try container.decodeIfPresent(Int.self, forKey: .clickcount)
         clicktrend = try container.decodeIfPresent(Int.self, forKey: .clicktrend)
-        sslError = try container.decodeIfPresent(Int.self, forKey: .sslError)
         geoLat = try container.decodeIfPresent(Double.self, forKey: .geoLat)
         geoLong = try container.decodeIfPresent(Double.self, forKey: .geoLong)
         geoDistance = try container.decodeIfPresent(Double.self, forKey: .geoDistance)
-        hasExtendedInfo = try container.decodeIfPresent(Bool.self, forKey: .hasExtendedInfo)
+        
+//        sslError = try container.decodeIfPresent(Int.self, forKey: .sslError)
+//        lastchangetime = try container.decode(String.self, forKey: .lastchangetime)
+//        lastchangetimeIso8601 = try container.decode(Date.self, forKey: .lastchangetimeIso8601)
+//        codec = try container.decode(String.self, forKey: .codec)
+//        bitrate = try container.decode(Int.self, forKey: .bitrate)
+//        hls = try container.decode(Int.self, forKey: .hls)
+//        lastcheckok = try container.decode(Int.self, forKey: .lastcheckok)
+//        lastchecktime = try container.decode(String.self, forKey: .lastchecktime)
+//        lastchecktimeIso8601 = try container.decodeIfPresent(Date.self, forKey: .lastchecktimeIso8601)
+//        lastcheckoktime = try container.decodeIfPresent(String.self, forKey: .lastcheckoktime)
+//        lastcheckoktimeIso8601 = try container.decodeIfPresent(Date.self, forKey: .lastcheckoktimeIso8601)
+//        lastlocalchecktime = try container.decodeIfPresent(String.self, forKey: .lastlocalchecktime)
+//        lastlocalchecktimeIso8601 = try container.decodeIfPresent(Date.self, forKey: .lastlocalchecktimeIso8601)
+//        clicktimestamp = try container.decodeIfPresent(String.self, forKey: .clicktimestamp)
+//        clicktimestampIso8601 = try container.decodeIfPresent(Date.self, forKey: .clicktimestampIso8601)
+//        hasExtendedInfo = try container.decodeIfPresent(Bool.self, forKey: .hasExtendedInfo)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -169,27 +169,28 @@ final class RadioStation: Codable {
         try container.encode(language, forKey: .language)
         try container.encode(languagecodes, forKey: .languagecodes)
         try container.encode(votes, forKey: .votes)
-        try container.encode(lastchangetime, forKey: .lastchangetime)
-        try container.encode(lastchangetimeIso8601, forKey: .lastchangetimeIso8601)
-        try container.encode(codec, forKey: .codec)
-        try container.encode(bitrate, forKey: .bitrate)
-        try container.encode(hls, forKey: .hls)
-        try container.encode(lastcheckok, forKey: .lastcheckok)
-        try container.encode(lastchecktime, forKey: .lastchecktime)
-        try container.encode(lastchecktimeIso8601, forKey: .lastchecktimeIso8601)
-        try container.encode(lastcheckoktime, forKey: .lastcheckoktime)
-        try container.encode(lastcheckoktimeIso8601, forKey: .lastcheckoktimeIso8601)
-        try container.encode(lastlocalchecktime, forKey: .lastlocalchecktime)
-        try container.encode(lastlocalchecktimeIso8601, forKey: .lastlocalchecktimeIso8601)
-        try container.encodeIfPresent(clicktimestamp, forKey: .clicktimestamp)
-        try container.encodeIfPresent(clicktimestampIso8601, forKey: .clicktimestampIso8601)
         try container.encodeIfPresent(clickcount, forKey: .clickcount)
         try container.encodeIfPresent(clicktrend, forKey: .clicktrend)
-        try container.encodeIfPresent(sslError, forKey: .sslError)
         try container.encodeIfPresent(geoLat, forKey: .geoLat)
         try container.encodeIfPresent(geoLong, forKey: .geoLong)
         try container.encodeIfPresent(geoDistance, forKey: .geoDistance)
-        try container.encodeIfPresent(hasExtendedInfo, forKey: .hasExtendedInfo)
+        
+//        try container.encodeIfPresent(sslError, forKey: .sslError))
+//        try container.encode(lastchangetime, forKey: .lastchangetime)
+//        try container.encode(lastchangetimeIso8601, forKey: .lastchangetimeIso8601)
+//        try container.encode(codec, forKey: .codec)
+//        try container.encode(bitrate, forKey: .bitrate)
+//        try container.encode(hls, forKey: .hls)
+//        try container.encode(lastcheckok, forKey: .lastcheckok)
+//        try container.encode(lastchecktime, forKey: .lastchecktime)
+//        try container.encode(lastchecktimeIso8601, forKey: .lastchecktimeIso8601)
+//        try container.encode(lastcheckoktime, forKey: .lastcheckoktime)
+//        try container.encode(lastcheckoktimeIso8601, forKey: .lastcheckoktimeIso8601)
+//        try container.encode(lastlocalchecktime, forKey: .lastlocalchecktime)
+//        try container.encode(lastlocalchecktimeIso8601, forKey: .lastlocalchecktimeIso8601)
+//        try container.encodeIfPresent(clicktimestamp, forKey: .clicktimestamp)
+//        try container.encodeIfPresent(clicktimestampIso8601, forKey: .clicktimestampIso8601)
+//        try container.encodeIfPresent(hasExtendedInfo, forKey: .hasExtendedInfo)
     }
     
     func faviconImage() -> UIImage {
