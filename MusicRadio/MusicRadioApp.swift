@@ -12,6 +12,9 @@ import SwiftData
 // https://de1.api.radio-browser.info/#General
 // https://de1.api.radio-browser.info/json/
 
+// for API see
+// https://docs.radio-browser.info/?utm_source=chatgpt.com#introduction
+
 @main
 struct MusicRadioApp: App {
 

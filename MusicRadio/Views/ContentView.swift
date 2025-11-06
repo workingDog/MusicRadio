@@ -48,11 +48,18 @@ struct ContentView: View {
         .environment(playerManager)
         .task {
             do {
+                // if first time, get all the countries
                 if countries.count == 0 {
                     let allCountries = try await network.getAllCountries()
                     print("---> allCountries: \(allCountries.count)")
                     for country in allCountries {
                         modelContext.insert(country)
+                    }
+                    // also add the top voted stations to "Interesting"
+                    let topStations = try await network.getTopVotes()
+                    print("---> topStations: \(topStations.count)")
+                    for station in topStations {
+                        modelContext.insert(station)
                     }
                 }
             } catch {
@@ -61,10 +68,32 @@ struct ContentView: View {
         }
         .onAppear {
             let sysvol = AVAudioSession.sharedInstance().outputVolume
-            let desired = 0.25 //min(1.0, 0.5 / sysvol) / 2.0
+            let desired = 0.25 //min(1.0, sysvol) / 2.0
             playerManager.volume = min(1.0 - Float(sqrt(desired)) / sysvol, 1.0)
-          //  print("---> sysvol: \(sysvol)  app vol: \(playerManager.volume)")
+            print("---> sysvol: \(sysvol)  app vol: \(playerManager.volume)")
         }
+        /*
+        .task {
+            do {
+               // try await network.getServers()
+                
+//                let topStations = try await network.getTopVotes()
+//                for station in topStations {
+//                    modelContext.insert(station)
+//                }
+                
+                let topStations = try await network.getTopVotesFor("Australia")
+                for station in topStations {
+                    print("----> topStation: \(station.name)  \(station.votes)")
+                   // modelContext.insert(station)
+                }
+
+            } catch {
+                print(error)
+            }
+        }
+         */
+        
     }
     
 }

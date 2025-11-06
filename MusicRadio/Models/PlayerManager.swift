@@ -89,6 +89,7 @@ class RadioPlayer: NSObject, AVPlayerItemMetadataOutputPushDelegate, @unchecked 
         metadataOutput = nil
     }
     
+    // get the title of the song
     func metadataOutput(_ output: AVPlayerItemMetadataOutput,
                         didOutputTimedMetadataGroups groups: [AVTimedMetadataGroup],
                         from track: AVPlayerItemTrack?) {
