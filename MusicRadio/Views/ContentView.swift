@@ -76,10 +76,12 @@ struct ContentView: View {
         }
         .onAppear {
             // try to adjust the initial volume
-            let sysvol = AVAudioSession.sharedInstance().outputVolume
-            let desired = 0.25 //min(1.0, sysvol) / 2.0
-            playerManager.volume = min(1.0 - Float(sqrt(desired)) / sysvol, 1.0)
-            print("---> sysvol: \(sysvol)  app vol: \(playerManager.volume)")
+//            let sysvol = AVAudioSession.sharedInstance().outputVolume
+//            let desired = 0.25 //min(1.0, sysvol) / 2.0
+//            playerManager.volume = min(1.0 - Float(sqrt(desired)) / sysvol, 1.0)
+//            print("---> sysvol: \(sysvol)  app vol: \(playerManager.volume)")
+            
+            playerManager.volume = 0.3
         }
  
     }

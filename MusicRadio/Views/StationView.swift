@@ -83,12 +83,30 @@ struct StationView: View {
                 playerManager.station = station
             }
         }
+ //       .background(.white.opacity(0.4))
         .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 12))
+//        .ifAvailable_iOS26 { view in
+//            if #available(iOS 26.0, *) {
+//                view.glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 12))
+//            }
+//        }
+        .clipShape(RoundedRectangle(cornerRadius: 12))
         .fullScreenCover(isPresented: $showWeb) {
             WebViewScreen(station: station)
         }
     }
 }
+
+//extension View {
+//    @ViewBuilder
+//    func ifAvailable_iOS26(@ViewBuilder transform: (Self) -> some View) -> some View {
+//        if #available(iOS 26.0, *) {
+//            transform(self)
+//        } else {
+//            self
+//        }
+//    }
+//}
 
 struct WebViewScreen: View {
     @Environment(\.dismiss) private var dismiss
@@ -107,7 +125,11 @@ struct WebViewScreen: View {
 
             if let url = URL(string: station.homepage),
                 UIApplication.shared.canOpenURL(url) {
-                 WebView(url: url)
+                if #available(iOS 26.0, *) {
+                    WebView(url: url)
+                } else {
+                    OldWebView(urlString: station.homepage)
+                }
              } else {
                  Text("No homepage available").font(Font.largeTitle.bold())
                  Spacer()
@@ -116,16 +138,28 @@ struct WebViewScreen: View {
     }
 }
 
+private struct OldWebView: UIViewRepresentable {
+    let urlString: String
 
-/*
- if #available(iOS 26.0, *) {
-     WebView(url: URL(string: station.homepage))
- } else {
-     VStack {
-         Text(station.name).font(.largeTitle)
-         Button("Done") {
-             showWeb = false
-         }.buttonStyle(.borderedProminent)
-     }
- }
- */
+    func makeUIView(context: Context) -> WKWebView {
+        let config = WKWebViewConfiguration()
+        let webView = WKWebView(frame: .zero, configuration: config)
+        webView.navigationDelegate = context.coordinator
+        webView.allowsBackForwardNavigationGestures = true
+        if let url = URL(string: urlString) {
+            webView.load(URLRequest(url: url))
+        }
+        return webView
+    }
+
+    func updateUIView(_ uiView: WKWebView, context: Context) {
+        // Only reload if URL changed
+        if let newURL = URL(string: urlString), uiView.url != newURL {
+            uiView.load(URLRequest(url: newURL))
+        }
+    }
+
+    func makeCoordinator() -> Coordinator { Coordinator() }
+
+    final class Coordinator: NSObject, WKNavigationDelegate { }
+}
