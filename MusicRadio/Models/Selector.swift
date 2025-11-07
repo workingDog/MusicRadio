@@ -94,14 +94,14 @@ enum StationTag: String, CaseIterable, Codable, Identifiable {
     /// User-friendly name for UI display
     var displayName: String {
         switch self {
-        case .all: return "All types"
-        case .hipHop: return "Hip-Hop"
-        case .worldMusic: return "World Music"
-        case .tag00s: return "2000s"
-        case .tag10s: return "2010s"
-        case .tag80s: return "1980s"
-        case .tag90s: return "1990s"
-        default: return rawValue.capitalized
+            case .all: return "All types"
+            case .hipHop: return "Hip-Hop"
+            case .worldMusic: return "World Music"
+            case .tag00s: return "2000s"
+            case .tag10s: return "2010s"
+            case .tag80s: return "1980s"
+            case .tag90s: return "1990s"
+            default: return rawValue.capitalized
         }
     }
 }

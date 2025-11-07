@@ -55,7 +55,6 @@ struct StationTagMenu: View {
             }
         } label: {
             Label(selector.tag.displayName, systemImage: "music.note.list")
-                .frame(maxWidth: .infinity, alignment: .leading)
         }
         .menuStyle(.button)
     }
