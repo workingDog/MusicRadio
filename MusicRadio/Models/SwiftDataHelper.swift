@@ -1,5 +1,5 @@
 //
-//  Utils.swift
+//  SwiftDataHelper.swift
 //  MusicRadio
 //
 //  Created by Ringo Wathelet on 2025/11/03.
@@ -9,7 +9,7 @@ import SwiftData
 import SwiftUI
 
 
-class Utils {
+class SwiftDataHelper {
     
     static func findOrInsert(station: RadioStation, in context: ModelContext) {
         var descriptor = FetchDescriptor<RadioStation>(

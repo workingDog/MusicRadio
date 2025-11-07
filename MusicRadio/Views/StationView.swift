@@ -33,10 +33,10 @@ struct StationView: View {
                         print("\n---> station.isFavourite: \(station.isFavourite)\n")
                         if !station.isFavourite {
                             print("---> findAndRemove")
-                            Utils.findAndRemove(station: station, in: modelContext)
+                            SwiftDataHelper.findAndRemove(station: station, in: modelContext)
                         } else {
                             print("---> findOrInsert")
-                            Utils.findOrInsert(station: station, in: modelContext)
+                            SwiftDataHelper.findOrInsert(station: station, in: modelContext)
                         }
                     } label: {
                         Image(systemName: station.isFavourite ? "heart.fill" : "heart.slash")
@@ -65,7 +65,7 @@ struct StationView: View {
                     }.buttonStyle(.borderless)
                 }
                 
-                RatingLineView(station, maxRating)
+                RatingStarsView(station, maxRating)
                 
                 Image(uiImage: station.faviconImage())
                     .resizable()

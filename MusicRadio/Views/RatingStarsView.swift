@@ -1,5 +1,5 @@
 //
-//  RatingLineView.swift
+//  RatingStarsView.swift
 //  MusicRadio
 //
 //  Created by Ringo Wathelet on 2025/11/05.
@@ -7,7 +7,7 @@
 import SwiftUI
 
 
-struct RatingLineView: View {
+struct RatingStarsView: View {
     let station: RadioStation
     let maxRating: Int
     @State private var stars: Int = 0
