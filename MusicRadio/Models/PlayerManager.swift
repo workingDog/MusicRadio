@@ -26,7 +26,7 @@ class PlayerManager {
     
     init() {
         Task {
-            await keepPlayInbackground()
+            await keepPlayInBackground()
         }
     }
 
@@ -64,7 +64,7 @@ class PlayerManager {
         radio?.player?.volume = volume
     }
 
-    func keepPlayInbackground() async {
+    func keepPlayInBackground() async {
         let session = AVAudioSession.sharedInstance()
         do {
             try await session.setCategory(.playback, mode: .default, options: [.mixWithOthers])
