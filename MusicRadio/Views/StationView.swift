@@ -12,7 +12,7 @@ import WebKit
 struct StationView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(PlayerManager.self) var playerManager
-
+    
     var station: RadioStation
     let maxRating: Int
     
@@ -39,13 +39,13 @@ struct StationView: View {
                         .frame(width: 30, height: 30)
                         .padding(5)
                 }.buttonStyle(.borderless)
-
+                
                 Spacer()
                 
                 if playerManager.station == station, playerManager.isPlaying {
                     EqualizerView().tint(.pink).offset(y: -5)
                 }
-
+                
                 Spacer()
                 
                 Button {
@@ -69,7 +69,7 @@ struct StationView: View {
             Text(station.name)
                 .lineLimit(1)
                 .padding(5)
-
+            
         }
         .contentShape(RoundedRectangle(cornerRadius: 12))
         .onTapGesture {

@@ -48,7 +48,8 @@ struct ContentView: View {
             }
             .onAppear {
                 print("-----> stations: \(stations.count) \n")
-
+                let number = UserDefaults.standard.integer(forKey: Selector.keyTopCount)
+                selector.topCount = (number != 0) ? number : 10
             }
         }
         .environment(playerManager)

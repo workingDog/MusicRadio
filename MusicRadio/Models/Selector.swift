@@ -13,8 +13,10 @@ import SwiftUI
 class Selector {
     var view: ViewTypes = .favorites
     var filter: FilterTypes = .all
-    var topCount: Int = 20
     var tag: StationTag = .all
+    var topCount: Int = 10
+    
+    static let keyTopCount: String = "topCount"
 }
 
 enum FilterTypes: Identifiable, Hashable {
