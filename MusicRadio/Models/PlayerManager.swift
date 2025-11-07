@@ -24,6 +24,11 @@ class PlayerManager {
     private var metadataOutput: AVPlayerItemMetadataOutput?
     private var radio: RadioPlayer?
     
+    init() {
+        Task {
+            await keepPlayInbackground()
+        }
+    }
 
     func setStation(_ radioStation: RadioStation) {
         self.station = radioStation
@@ -58,6 +63,17 @@ class PlayerManager {
         volume = Float(newValue)
         radio?.player?.volume = volume
     }
+
+    func keepPlayInbackground() async {
+        let session = AVAudioSession.sharedInstance()
+        do {
+            try await session.setCategory(.playback, mode: .default, options: [.mixWithOthers])
+            try await session.setActive(true)
+            print("Audio session configured for background playback")
+        } catch {
+            print("Failed to configure audio session: \(error.localizedDescription)")
+        }
+    }
  
 }
 
@@ -73,16 +89,14 @@ class RadioPlayer: NSObject, AVPlayerItemMetadataOutputPushDelegate, @unchecked 
     
     func playStream(url: URL) {
         let item = AVPlayerItem(url: url)
-        
         let output = AVPlayerItemMetadataOutput()
         output.setDelegate(self, queue: .main) // main queue is safe
         item.add(output)
         metadataOutput = output
-        
         player = AVPlayer(playerItem: item)
  //       player?.allowsExternalPlayback = false
     }
-    
+
     func stop() {
         player?.pause()
         player = nil
