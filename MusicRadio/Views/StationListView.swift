@@ -65,7 +65,7 @@ struct StationListView: View {
                             StationView(station: station, maxRating: maxRating)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 8)
-                                        .stroke(playerManager.station == station ? Color.pink : .clear, lineWidth: 4)
+                                        .stroke(playerManager.station == station ? Color.blue : .clear, lineWidth: 4)
                                 )
                             .padding(.horizontal, 4)
                         }

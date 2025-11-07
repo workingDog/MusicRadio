@@ -25,9 +25,7 @@ class PlayerManager {
     private var radio: RadioPlayer?
     
     init() {
-        Task {
-            await keepPlayInBackground()
-        }
+        keepPlayInBackground()
     }
 
     func setStation(_ radioStation: RadioStation) {
@@ -64,14 +62,16 @@ class PlayerManager {
         radio?.player?.volume = volume
     }
 
-    func keepPlayInBackground() async {
-        let session = AVAudioSession.sharedInstance()
-        do {
-            try await session.setCategory(.playback, mode: .default, options: [.mixWithOthers])
-            try await session.setActive(true)
-            print("Audio session configured for background playback")
-        } catch {
-            print("Failed to configure audio session: \(error.localizedDescription)")
+    func keepPlayInBackground() {
+        Task {
+            let session = AVAudioSession.sharedInstance()
+            do {
+                try await session.setCategory(.playback, mode: .default, options: [.mixWithOthers])
+                try await session.setActive(true)
+                print("Audio session configured for background playback")
+            } catch {
+                print("Failed to configure audio session: \(error)")
+            }
         }
     }
  

@@ -20,93 +20,90 @@ struct StationView: View {
     @State private var stars = 0
     
     var body: some View {
-        VStack {
-            HStack {
-                Button {
-                    station.isFavourite.toggle()
-                    print("\n---> station.isFavourite: \(station.isFavourite)\n")
-                    if !station.isFavourite {
-                        print("---> findAndRemove")
-                        Utils.findAndRemove(station: station, in: modelContext)
-                    } else {
-                        print("---> findOrInsert")
-                        Utils.findOrInsert(station: station, in: modelContext)
-                    }
-                } label: {
-                    Image(systemName: station.isFavourite ? "heart.fill" : "heart.slash")
-                        .resizable()
-                        .foregroundStyle(.mint)
-                        .frame(width: 30, height: 30)
-                        .padding(5)
-                }.buttonStyle(.borderless)
-                
-                Spacer()
-                
-                if playerManager.station == station, playerManager.isPlaying {
-                    EqualizerView().tint(.pink).offset(y: -5)
+        ZStack{
+            
+            if playerManager.station == station, playerManager.isPlaying {
+                EqualizerView()
+            }
+ 
+            VStack {
+                HStack {
+                    Button {
+                        station.isFavourite.toggle()
+                        print("\n---> station.isFavourite: \(station.isFavourite)\n")
+                        if !station.isFavourite {
+                            print("---> findAndRemove")
+                            Utils.findAndRemove(station: station, in: modelContext)
+                        } else {
+                            print("---> findOrInsert")
+                            Utils.findOrInsert(station: station, in: modelContext)
+                        }
+                    } label: {
+                        Image(systemName: station.isFavourite ? "heart.fill" : "heart.slash")
+                            .resizable()
+                            .foregroundStyle(.mint)
+                            .frame(width: 30, height: 30)
+                            .padding(5)
+                    }.buttonStyle(.borderless)
+                    
+                    Spacer()
+                    
+                    //                if playerManager.station == station, playerManager.isPlaying {
+                    //                    EqualizerView().tint(.pink).offset(y: -5)
+                    //                }
+                    
+                    Spacer()
+                    
+                    Button {
+                        showWeb = true
+                    } label: {
+                        Image(systemName: "network")
+                            .resizable()
+                            .foregroundStyle(.primary)
+                            .frame(width: 30, height: 30)
+                            .padding(5)
+                    }.buttonStyle(.borderless)
                 }
                 
-                Spacer()
+                RatingLineView(station, maxRating)
                 
-                Button {
-                    showWeb = true
-                } label: {
-                    Image(systemName: "network")
-                        .resizable()
-                        .foregroundStyle(.primary)
-                        .frame(width: 30, height: 30)
-                        .padding(5)
-                }.buttonStyle(.borderless)
-            }
-            
-            RatingLineView(station, maxRating)
-            
-            Image(uiImage: station.faviconImage())
-                .resizable()
-                .scaledToFit()
-                .frame(width: 44, height: 44)
-            
-            Text(station.name)
-                .lineLimit(1)
-                .padding(5)
-            
-        }
-        .contentShape(RoundedRectangle(cornerRadius: 12))
-        .onTapGesture {
-            if playerManager.station == station {
-                playerManager.pause()
-                playerManager.currentSong = ""
-                playerManager.station = nil
-            } else {
-                playerManager.pause()
-                playerManager.currentSong = ""
-                playerManager.station = station
+                Image(uiImage: station.faviconImage())
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 44, height: 44)
+                
+                Text(station.name)
+                    .lineLimit(1)
+                    .padding(5)
+                
             }
         }
- //       .background(.white.opacity(0.4))
-        .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 12))
-//        .ifAvailable_iOS26 { view in
-//            if #available(iOS 26.0, *) {
-//                view.glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 12))
-//            }
-//        }
-        .clipShape(RoundedRectangle(cornerRadius: 12))
-        .fullScreenCover(isPresented: $showWeb) {
-            WebViewScreen(station: station)
+            .contentShape(RoundedRectangle(cornerRadius: 12))
+            .onTapGesture {
+                if playerManager.station == station {
+                    playerManager.pause()
+                    playerManager.currentSong = ""
+                    playerManager.station = nil
+                } else {
+                    playerManager.pause()
+                    playerManager.currentSong = ""
+                    playerManager.station = station
+                }
+            }
+            //       .background(.white.opacity(0.4))
+            .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 12))
+            //        .ifAvailable_iOS26 { view in
+            //            if #available(iOS 26.0, *) {
+            //                view.glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 12))
+            //            }
+            //        }
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .fullScreenCover(isPresented: $showWeb) {
+                WebViewScreen(station: station)
+            }
         }
-    }
-}
 
-//extension View {
-//    @ViewBuilder
-//    func ifAvailable_iOS26(@ViewBuilder transform: (Self) -> some View) -> some View {
-//        if #available(iOS 26.0, *) {
-//            transform(self)
-//        } else {
-//            self
-//        }
-//    }
-//}
+}
 
 struct WebViewScreen: View {
     @Environment(\.dismiss) private var dismiss
@@ -163,3 +160,15 @@ private struct OldWebView: UIViewRepresentable {
 
     final class Coordinator: NSObject, WKNavigationDelegate { }
 }
+
+
+//extension View {
+//    @ViewBuilder
+//    func ifAvailable_iOS26(@ViewBuilder transform: (Self) -> some View) -> some View {
+//        if #available(iOS 26.0, *) {
+//            transform(self)
+//        } else {
+//            self
+//        }
+//    }
+//}

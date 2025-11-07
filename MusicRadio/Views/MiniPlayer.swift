@@ -48,7 +48,8 @@ struct MiniPlayer: View {
                 Spacer()
                 
                 if playerManager.isPlaying {
-                    EqualizerView().tint(.mint)
+                    EqualizerView()//.tint(.mint)
+                        .frame(width: 80, height: 40, alignment: .bottomLeading)
                 }
                 
                 Spacer()
