@@ -104,7 +104,7 @@ struct WebViewScreen: View {
             .padding(6)
 
             Divider()
-            
+
             if let url = URL(string: station.homepage),
                 UIApplication.shared.canOpenURL(url) {
                  WebView(url: url)
@@ -113,6 +113,9 @@ struct WebViewScreen: View {
                  Spacer()
              }
         }
+//        .onAppear{
+//            print("\n-----> station.homepage: \(station.homepage)")
+//        }
     }
 }
 

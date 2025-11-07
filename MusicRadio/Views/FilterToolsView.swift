@@ -24,8 +24,47 @@ struct FilterToolsView: View {
                 .pickerStyle(.segmented)
                 .padding(.horizontal)
                 Spacer()
+                StationTagMenu()
+                Spacer()
             }
-            
+            .padding(4)
+            .background(.ultraThinMaterial)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .shadow(radius: 2)
+        }
+    }
+}
+
+struct StationTagMenu: View {
+    @Environment(Selector.self) var selector
+    
+    var body: some View {
+        @Bindable var selector = selector
+        Menu {
+            ForEach(StationTag.allCases) { tag in
+                Button {
+                    selector.tag = tag
+                } label: {
+                    HStack {
+                        Text(tag.displayName)
+                        if tag == selector.tag {
+                            Image(systemName: "checkmark")
+                        }
+                    }
+                }
+            }
+        } label: {
+            Label(selector.tag.displayName, systemImage: "music.note.list")
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .menuStyle(.button)
+    }
+}
+
+
+
+// radiobuttons
+
 //            HStack {
 //                ForEach(FilterTypes.allCases) { selection in
 //                    HStack {
@@ -42,11 +81,4 @@ struct FilterToolsView: View {
 //                    }
 //                }
 //            }
-            
-            .padding(4)
-            .background(.ultraThinMaterial)
-            .clipShape(RoundedRectangle(cornerRadius: 16))
-            .shadow(radius: 2)
-        }
-    }
-}
+

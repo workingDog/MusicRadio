@@ -14,12 +14,13 @@ class Selector {
     var view: ViewTypes = .favorites
     var filter: FilterTypes = .all
     var topCount: Int = 20
+    var tag: StationTag = .all
 }
 
 enum FilterTypes: String, CaseIterable, Identifiable {
     case topRated = "Top rated"
     case all = "All"
-    
+
     var id: String { rawValue }
 }
 
@@ -57,5 +58,50 @@ enum ViewTypes: String, CaseIterable, Identifiable {
     }
 }
 
+enum StationTag: String, CaseIterable, Codable, Identifiable {
+    case all
+    case jazz
+    case pop
+    case rock
+    case indie
+    case electronic
+    case ambient
+    case classical
+    case metal
+    case news
+    case talk
+    case worldMusic = "world music"
+    case oldies
+    case country
+    case blues
+    case reggae
+    case latin
+    case hipHop = "hip-hop"
+    case dance
+    case chillout
+    case techno
+    case house
+    case tag00s = "00s"
+    case tag10s = "10s"
+    case tag80s = "80s"
+    case tag90s = "90s"
+    case christmas
+    case children
+    case sports
 
+    var id: String { rawValue }
 
+    /// User-friendly name for UI display
+    var displayName: String {
+        switch self {
+        case .all: return "All types"
+        case .hipHop: return "Hip-Hop"
+        case .worldMusic: return "World Music"
+        case .tag00s: return "2000s"
+        case .tag10s: return "2010s"
+        case .tag80s: return "1980s"
+        case .tag90s: return "1990s"
+        default: return rawValue.capitalized
+        }
+    }
+}
