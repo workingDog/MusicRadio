@@ -113,9 +113,6 @@ struct WebViewScreen: View {
                  Spacer()
              }
         }
-//        .onAppear{
-//            print("\n-----> station.homepage: \(station.homepage)")
-//        }
     }
 }
 

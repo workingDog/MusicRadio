@@ -17,11 +17,27 @@ class Selector {
     var tag: StationTag = .all
 }
 
-enum FilterTypes: String, CaseIterable, Identifiable {
-    case topRated = "Top rated"
-    case all = "All"
+enum FilterTypes: Identifiable, Hashable {
+    case topRated(Int)
+    case all
 
-    var id: String { rawValue }
+    var id: String {
+        switch self {
+            case .topRated(let value): return "Top \(value)"
+            case .all: return "all"
+        }
+    }
+
+    var displayName: String {
+        switch self {
+            case .topRated(let value): return "Top \(value)"
+            case .all: return "All"
+        }
+    }
+
+    static func allCases(topRatedValue: Int) -> [FilterTypes] {
+        return [.topRated(topRatedValue),.all]
+    }
 }
 
 enum ViewTypes: String, CaseIterable, Identifiable {

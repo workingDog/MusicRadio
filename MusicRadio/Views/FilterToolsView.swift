@@ -17,8 +17,8 @@ struct FilterToolsView: View {
         VStack {
             HStack {
                 Picker("", selection: $selector.filter) {
-                    ForEach(FilterTypes.allCases) { tool in
-                        Text(tool.rawValue).tag(tool)
+                    ForEach(FilterTypes.allCases(topRatedValue: selector.topCount)) { tool in
+                        Text(tool.displayName).tag(tool)
                     }
                 }
                 .pickerStyle(.segmented)

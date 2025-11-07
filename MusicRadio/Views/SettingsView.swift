@@ -35,7 +35,7 @@ struct SettingsView: View {
                     Section("Top Stations") {
                         HStack {
                             Text("Top-rated stations to show ")
-                            CompactStepper(value: $selector.topCount, range: 1...100, step: 10)
+                            CompactStepper(value: $selector.topCount, range: 10...100, step: 10)
                         }
                     }
                     

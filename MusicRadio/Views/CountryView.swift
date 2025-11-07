@@ -46,19 +46,3 @@ struct CountryView: View {
     }
     
 }
-
-
-/*
- 
- print("\n----> station: \(stations.count)")
- 
- let zstation = stations.map(\.tags).filter { $0 == "jazz" }.sorted()
- print("----> jazz: \(zstation.count)")
- 
- let zstation2 = stations.map(\.tags).filter { $0 == "news" }.sorted()
- print("----> news: \(zstation2.count)")
- 
- let zstation3 = stations.map(\.tags).filter { $0 == "rock" }.sorted()
- print("----> rock: \(zstation3.count)\n")
-
- */
