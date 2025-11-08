@@ -87,6 +87,8 @@ struct StationView: View {
                     playerManager.currentSong = ""
                     playerManager.station = station
                 }
+
+                print("----> station name: \(station.name)  url: \(station.url) tag: \(station.tags)\n")
             }
             //       .background(.white.opacity(0.4))
             .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 12))

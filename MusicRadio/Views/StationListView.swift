@@ -51,33 +51,29 @@ struct StationListView: View {
     
     var body: some View {
         VStack {
-            if stations.isEmpty {
-                Text("no stations 🎵")
-            } else {
-                ScrollView {
-                    LazyVGrid(columns: columns, spacing: 6) {
-                        ForEach(filteredStations) { station in
-                            StationView(station: station, maxRating: maxRating)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .stroke(playerManager.station == station ? Color.blue : .clear, lineWidth: 4)
-                                )
+            ScrollView {
+                LazyVGrid(columns: columns, spacing: 6) {
+                    ForEach(filteredStations) { station in
+                        StationView(station: station, maxRating: maxRating)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(playerManager.station == station ? Color.blue : .clear, lineWidth: 4)
+                            )
                             .padding(.horizontal, 4)
-                        }
                     }
-                    .contentShape(RoundedRectangle(cornerRadius: 8))
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                    .padding(.horizontal, 8)
                 }
-                .scrollContentBackground(.hidden)
-                .searchable(text: $searchText, prompt: "Search station")
+                .contentShape(RoundedRectangle(cornerRadius: 8))
+                .clipShape(RoundedRectangle(cornerRadius: 8))
                 .padding(.horizontal, 8)
- 
-                MiniPlayer()
-                    .padding(.horizontal)
-                    .padding(.vertical, 4)
-                
             }
+            .scrollContentBackground(.hidden)
+            .searchable(text: $searchText, prompt: "Search station")
+            .padding(.horizontal, 8)
+            
+            MiniPlayer()
+                .padding(.horizontal)
+                .padding(.vertical, 4)
+            
         }
     }
     
@@ -87,36 +83,22 @@ struct StationListView: View {
 
 /*
  
-              
-//                List(filteredStations) { station in
-//                    StationView(station: station)
-//                        .overlay(
-//                            RoundedRectangle(cornerRadius: 8)
-//                                .stroke(playerManager.station == station ? Color.white : .clear, lineWidth: 4)
-//                        )
-//                        .listRowSeparator(.hidden)
-//                        .listRowBackground(Color.gray.opacity(0.2))
-//                        .listRowInsets(EdgeInsets(top: 3, leading: 3, bottom: 3, trailing: 3))
-//                        .contentShape(Rectangle())
-//                        .clipShape(RoundedRectangle(cornerRadius: 8))
-//                }
-//                .scrollContentBackground(.hidden)
-//                .background(Color.clear)
-//                .listRowSpacing(10)
-//                .searchable(text: $searchText, prompt: "Search station")
-              
- */
-
-
-
-
-/*
  
- In SwiftUI I have this code:
- 
- "var stations: [RadioStation]" where RadioStation is a "@Model
- final class RadioStation" that includes a "var votes: Int".
- How can I extract/filter the top 20 votes stations from the array?
- 
+ //                List(filteredStations) { station in
+ //                    StationView(station: station)
+ //                        .overlay(
+ //                            RoundedRectangle(cornerRadius: 8)
+ //                                .stroke(playerManager.station == station ? Color.white : .clear, lineWidth: 4)
+ //                        )
+ //                        .listRowSeparator(.hidden)
+ //                        .listRowBackground(Color.gray.opacity(0.2))
+ //                        .listRowInsets(EdgeInsets(top: 3, leading: 3, bottom: 3, trailing: 3))
+ //                        .contentShape(Rectangle())
+ //                        .clipShape(RoundedRectangle(cornerRadius: 8))
+ //                }
+ //                .scrollContentBackground(.hidden)
+ //                .background(Color.clear)
+ //                .listRowSpacing(10)
+ //                .searchable(text: $searchText, prompt: "Search station")
  
  */

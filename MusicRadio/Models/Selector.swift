@@ -11,10 +11,11 @@ import SwiftUI
 @MainActor
 @Observable
 class Selector {
-    var view: ViewTypes = .favourites
+    var view: ViewTypes = .stations
     var filter: FilterTypes = .all
     var tag: StationTag = .all
     var topCount: Int = 10
+    var searchStation: String = ""
     
     static let keyTopCount: String = "topCount"
     static let keyFilter: String = "filter"
@@ -62,7 +63,7 @@ enum FilterTypes: Identifiable, Hashable {
 enum ViewTypes: String, CaseIterable, Identifiable {
     case favourites = "Favourites"
     case countries = "Countries"
-    case stations = "Interesting"
+    case stations = "Stations"
     
     var id: String { rawValue }
     
@@ -87,7 +88,7 @@ enum ViewTypes: String, CaseIterable, Identifiable {
     var description: String {
         switch self {
             case .favourites: return "Enjoy your favorite songs."
-            case .stations: return "Interesting stations."
+            case .stations: return "Search for radio stations."
             case .countries: return "Check all countries radio stations."
         }
     }

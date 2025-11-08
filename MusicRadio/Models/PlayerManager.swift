@@ -57,6 +57,11 @@ class PlayerManager {
         isPlaying = false
     }
     
+    func stop() {
+        pause()
+        station = nil
+    }
+    
     func updateVolume(_ newValue: Double) {
         volume = Float(newValue)
         radio?.player?.volume = volume

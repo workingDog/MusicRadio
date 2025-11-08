@@ -134,4 +134,25 @@ class Networker {
             try? context.save()
         }
     }
+    
+    func findStations(_ station: String) async throws -> [RadioStation] {
+        
+        if let theUrl = URL(string: "\(defaultServer)stations/byname/\(station)") {
+            print("---> findStations fetching theUrl: \(theUrl.absoluteString)")
+            do {
+                let (data, _) = try await URLSession.shared.data(from: theUrl)
+    //            print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
+                let decoder = JSONDecoder()
+                decoder.dateDecodingStrategy = .iso8601
+                let stations = try decoder.decode([RadioStation].self, from: data)
+                //         print("---> stations: \(stations)")
+                return stations
+            } catch {
+                print(error)
+            }
+        }
+        return []
+    }
+    
+    
 }
