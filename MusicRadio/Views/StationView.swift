@@ -48,10 +48,6 @@ struct StationView: View {
                     
                     Spacer()
                     
-                    // if playerManager.station == station, playerManager.isPlaying {
-                    //     EqualizerView().tint(.pink).offset(y: -5)
-                    // }
-
                     Text(StationTag.inferDominantGenre(from: station.tags).rawValue)
   
                     Spacer()
