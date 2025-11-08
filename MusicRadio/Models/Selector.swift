@@ -11,7 +11,7 @@ import SwiftUI
 @MainActor
 @Observable
 class Selector {
-    var view: ViewTypes = .stations
+    var view: ViewTypes = .favourites
     var filter: FilterTypes = .all
     var tag: StationTag = .all
     var topCount: Int = 10

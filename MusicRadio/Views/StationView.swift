@@ -90,8 +90,8 @@ struct StationView: View {
 
                 print("----> station name: \(station.name)  url: \(station.url) tag: \(station.tags)\n")
             }
-            //       .background(.white.opacity(0.4))
-            .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 12))
+            .background(.white.opacity(0.4))
+      //      .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 12))
             //        .ifAvailable_iOS26 { view in
             //            if #available(iOS 26.0, *) {
             //                view.glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 12))

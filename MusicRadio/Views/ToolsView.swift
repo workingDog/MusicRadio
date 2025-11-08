@@ -46,6 +46,7 @@ struct ToolsView: View {
         }
         .sheet(isPresented: $showSettings) {
             SettingsView()
+                .presentationDetents([.medium])
         }
     }
 }

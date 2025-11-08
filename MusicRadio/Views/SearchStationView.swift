@@ -18,6 +18,8 @@ struct SearchStationView: View {
     @State private var stations: [RadioStation] = []
     @State private var isSearching = false
     
+    @FocusState private var focused: Bool
+    
     var body: some View {
         @Bindable var selector = selector
         ZStack {
@@ -30,12 +32,15 @@ struct SearchStationView: View {
             
             VStack(alignment: .leading, spacing: 20) {
                 HStack {
-                    CapsuleSearchField(text: $selector.searchStation)
+                    CapsuleSearchField(text: $selector.searchStation, focused: $focused, onSubmit: handleSubmit)
                         .onSubmit {
                             Task {
-                                isSearching = true
-                                stations = try await fetchStations()
-                                isSearching = false
+                                await handleSubmit()
+                            }
+                        }
+                        .onChange(of: selector.searchStation) {
+                            if selector.searchStation.isEmpty {
+                                stations = []
                             }
                         }
                     Spacer()
@@ -51,11 +56,24 @@ struct SearchStationView: View {
                 }
 
                 StationListView(stations: stations, columns: 2)
+                    .onTapGesture {
+                        focused = false
+                    }
                 
                 Spacer()
             }
         }
     }
+    
+    func handleSubmit() async {
+        do {
+            isSearching = true
+            stations = try await fetchStations()
+            isSearching = false
+        } catch {
+            print(error)
+        }
+     }
     
     func fetchStations() async throws -> [RadioStation] {
         let trimmed = selector.searchStation.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -70,8 +88,9 @@ struct SearchStationView: View {
 
 struct CapsuleSearchField: View {
     @Binding var text: String
-    @FocusState private var focused: Bool
-
+    @FocusState.Binding var focused: Bool
+    var onSubmit: () async -> Void
+    
     var body: some View {
         HStack(spacing: 8) {
             Image(systemName: "magnifyingglass")
@@ -99,7 +118,7 @@ struct CapsuleSearchField: View {
         .padding(10)
         .background( Capsule().fill(.thinMaterial) )
         .task {
-            focused = true
+            await onSubmit()
         }
     }
 }
