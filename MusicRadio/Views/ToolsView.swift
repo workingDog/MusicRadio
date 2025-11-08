@@ -28,7 +28,7 @@ struct ToolsView: View {
                     }
                 }
                 .pickerStyle(.segmented)
-                .frame(width: 300)
+                .frame(width: 250)
                 .padding(.horizontal)
                 Spacer()
                 Button{

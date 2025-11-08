@@ -31,7 +31,7 @@ struct CountryView: View {
                     ProgressView()
                 } else {
                     FilterToolsView().fixedSize()
-                    StationListView(stations: stations, columns: 3)
+                    StationListView(stations: stations, columns: 2)
                 }
             }
         }

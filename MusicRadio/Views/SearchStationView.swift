@@ -50,7 +50,7 @@ struct SearchStationView: View {
                     }
                 }
 
-                StationListView(stations: stations, columns: 3)
+                StationListView(stations: stations, columns: 2)
                 
                 Spacer()
             }
@@ -70,15 +70,17 @@ struct SearchStationView: View {
 
 struct CapsuleSearchField: View {
     @Binding var text: String
+    @FocusState private var focused: Bool
 
     var body: some View {
         HStack(spacing: 8) {
             Image(systemName: "magnifyingglass")
-                .font(.system(size: 26))
+                .font(.system(size: 21))
                 .foregroundStyle(.secondary)
 
             TextField("Search stations", text: $text)
-                .font(.system(size: 30))
+                .focused($focused)
+                .font(.system(size: 22))
                 .textInputAutocapitalization(.never)
                 .disableAutocorrection(true)
                 .background(.clear)
@@ -88,7 +90,7 @@ struct CapsuleSearchField: View {
                     text = ""
                 } label: {
                     Image(systemName: "xmark.circle.fill")
-                        .font(.system(size: 30))
+                        .font(.system(size: 22))
                         .foregroundStyle(.secondary)
                 }
                 .buttonStyle(.plain)
@@ -96,5 +98,8 @@ struct CapsuleSearchField: View {
         }
         .padding(10)
         .background( Capsule().fill(.thinMaterial) )
+        .task {
+            focused = true
+        }
     }
 }
