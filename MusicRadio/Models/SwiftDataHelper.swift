@@ -40,5 +40,5 @@ class SwiftDataHelper {
             context.delete(station)
         }
     }
-    
+
 }

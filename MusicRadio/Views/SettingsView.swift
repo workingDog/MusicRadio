@@ -54,7 +54,7 @@ struct SettingsView: View {
             
         }
         .onDisappear {
-            UserDefaults.standard.set(selector.topCount, forKey: Selector.keyTopCount)
+            selector.storeDefaults()
         }
     }
 }

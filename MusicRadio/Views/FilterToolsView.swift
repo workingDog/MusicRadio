@@ -57,6 +57,9 @@ struct StationTagMenu: View {
             Label(selector.tag.displayName, systemImage: "music.note.list")
         }
         .menuStyle(.button)
+        .onChange(of: selector.tag) {
+            selector.storeDefaults()
+        }
     }
 }
 

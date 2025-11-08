@@ -11,12 +11,29 @@ import SwiftUI
 @MainActor
 @Observable
 class Selector {
-    var view: ViewTypes = .favorites
+    var view: ViewTypes = .favourites
     var filter: FilterTypes = .all
     var tag: StationTag = .all
     var topCount: Int = 10
     
     static let keyTopCount: String = "topCount"
+    static let keyFilter: String = "filter"
+    static let keyTag: String = "tag"
+    
+
+    func storeDefaults() {
+        UserDefaults.standard.set(self.topCount, forKey: Selector.keyTopCount)
+        UserDefaults.standard.set(self.tag.rawValue, forKey: Selector.keyTag)
+    }
+    
+    func retrieveDefaults() {
+        let xcount = UserDefaults.standard.integer(forKey: Selector.keyTopCount)
+        self.topCount = (xcount != 0) ? xcount : 10
+
+        let xtag = UserDefaults.standard.string(forKey: Selector.keyTag) ?? StationTag.all.rawValue
+        self.tag = StationTag(rawValue: xtag) ?? .all
+    }
+
 }
 
 enum FilterTypes: Identifiable, Hashable {
@@ -43,7 +60,7 @@ enum FilterTypes: Identifiable, Hashable {
 }
 
 enum ViewTypes: String, CaseIterable, Identifiable {
-    case favorites = "Favorites"
+    case favourites = "Favourites"
     case countries = "Countries"
     case stations = "Interesting"
     
@@ -53,7 +70,7 @@ enum ViewTypes: String, CaseIterable, Identifiable {
     var gradient: [Color] {
         let opa = 0.5
         switch self {
-        case .favorites: return [.pink.opacity(opa), .purple.opacity(opa)]
+        case .favourites: return [.pink.opacity(opa), .purple.opacity(opa)]
         case .stations: return [.blue.opacity(opa), .cyan.opacity(opa)]
         case .countries: return [.mint.opacity(opa), .mint.opacity(opa)]
         }
@@ -61,7 +78,7 @@ enum ViewTypes: String, CaseIterable, Identifiable {
     
     var icon: String {
         switch self {
-            case .favorites: return "🎵"
+            case .favourites: return "🎵"
             case .stations: return "📻"
             case .countries: return "🎙️"
         }
@@ -69,7 +86,7 @@ enum ViewTypes: String, CaseIterable, Identifiable {
     
     var description: String {
         switch self {
-            case .favorites: return "Enjoy your favorite songs."
+            case .favourites: return "Enjoy your favorite songs."
             case .stations: return "Interesting stations."
             case .countries: return "Check all countries radio stations."
         }

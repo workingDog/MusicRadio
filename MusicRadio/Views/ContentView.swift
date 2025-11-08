@@ -7,7 +7,6 @@
 
 import SwiftUI
 import SwiftData
-import AVFoundation
 
 
 struct ContentView: View {
@@ -39,7 +38,7 @@ struct ContentView: View {
                 }
 
                 switch selector.view {
-                    case .favorites: StationListView(stations: stations.filter({$0.isFavourite}), columns: 2)
+                    case .favourites: StationListView(stations: stations.filter({$0.isFavourite}), columns: 2)
 
                     case .stations: StationListView(stations: stations, columns: 3)
                     
@@ -48,8 +47,7 @@ struct ContentView: View {
             }
             .onAppear {
                 print("-----> stations: \(stations.count) \n")
-                let number = UserDefaults.standard.integer(forKey: Selector.keyTopCount)
-                selector.topCount = (number != 0) ? number : 10
+                selector.retrieveDefaults()
             }
         }
         .environment(playerManager)
@@ -63,10 +61,11 @@ struct ContentView: View {
                     for country in allCountries {
                         modelContext.insert(country)
                     }
-                    // also add the top voted stations to "Interesting"
+                    // also add the top voted stations to "Favourite"
                     let topStations = try await network.getTopVotes(selector.topCount)
                     print("---> topStations: \(topStations.count)")
                     for station in topStations {
+                        station.isFavourite = true
                         modelContext.insert(station)
                     }
                 }
