@@ -73,7 +73,7 @@ struct SearchStationView: View {
         } catch {
             print(error)
         }
-     }
+    }
     
     func fetchStations() async throws -> [RadioStation] {
         let trimmed = selector.searchStation.trimmingCharacters(in: .whitespacesAndNewlines)
