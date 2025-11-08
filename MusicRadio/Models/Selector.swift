@@ -95,6 +95,7 @@ enum ViewTypes: String, CaseIterable, Identifiable {
 
 enum StationTag: String, CaseIterable, Codable, Identifiable {
     case all
+    case mix
     case jazz
     case pop
     case rock
@@ -126,7 +127,6 @@ enum StationTag: String, CaseIterable, Codable, Identifiable {
 
     var id: String { rawValue }
 
-    /// User-friendly name for UI display
     var displayName: String {
         switch self {
             case .all: return "All types"
@@ -139,4 +139,63 @@ enum StationTag: String, CaseIterable, Codable, Identifiable {
             default: return rawValue.capitalized
         }
     }
+
+    private static var baseHints: [StationTag: [String]] = [
+        .jazz: ["jazz", "bop", "swing", "fusion", "bebop", "cool", "big band", "post-bop", "avant"],
+        .pop: ["pop", "chart", "idol", "top 40", "mainstream", "kpop", "jpop"],
+        .rock: ["rock", "punk", "grunge", "garage", "alt", "hardcore", "metalcore"],
+        .indie: ["indie", "alternative", "shoegaze", "lofi"],
+        .electronic: ["electronic", "edm", "electro", "synth", "dubstep", "drum and bass"],
+        .ambient: ["ambient", "atmospheric", "drone", "downtempo", "new age"],
+        .classical: ["classical", "symphony", "orchestra", "baroque", "opera", "concerto"],
+        .metal: ["metal", "heavy metal", "thrash", "black metal", "death metal", "doom"],
+        .news: ["news", "headline", "current affairs", "update"],
+        .talk: ["talk", "podcast", "interview", "discussion"],
+        .worldMusic: ["world", "global", "african", "asian", "celtic", "folk", "balkan"],
+        .oldies: ["oldies", "retro", "classic hits", "gold", "vintage", "50s", "60s", "70s"],
+        .country: ["country", "bluegrass", "americana", "honky tonk"],
+        .blues: ["blues", "rhythm and blues", "r&b"],
+        .reggae: ["reggae", "dub", "ska", "dancehall"],
+        .latin: ["latin", "salsa", "bossa", "tango", "bachata", "merengue"],
+        .hipHop: ["hip-hop", "rap", "trap", "rnb", "urban"],
+        .dance: ["dance", "club", "disco", "party"],
+        .chillout: ["chill", "lounge", "relax", "café", "smooth"],
+        .techno: ["techno", "trance", "hardstyle", "minimal"],
+        .house: ["house", "deep house", "progressive", "tech house"],
+        .tag80s: ["80s", "eighties"],
+        .tag90s: ["90s", "nineties"],
+        .tag00s: ["00s", "2000s", "millennium"],
+        .tag10s: ["10s", "2010s"],
+        .christmas: ["christmas", "holiday", "xmas"],
+        .children: ["kids", "children", "nursery", "disney"],
+        .sports: ["sports", "football", "soccer", "baseball", "basketball"]
+    ]
+    
+    static func inferDominantGenre(from tags: String) -> StationTag {
+        let normalized = tags
+            .lowercased()
+            .split(separator: ",")
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+        
+        if normalized.isEmpty { return .mix }
+        
+        var scores: [StationTag: Int] = [:]
+        
+        for tag in normalized {
+            for (genre, hints) in baseHints {
+                if hints.contains(where: { tag.contains($0) }) {
+                    scores[genre, default: 0] += 1
+                }
+            }
+        }
+        
+        // get highest score
+        guard let (bestGenre, bestScore) = scores.max(by: { $0.value < $1.value }),
+              bestScore > 0 else {
+            return .mix
+        }
+        
+        return bestGenre
+    }
+    
 }

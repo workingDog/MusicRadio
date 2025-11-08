@@ -28,17 +28,12 @@ struct StationListView: View {
             case .topRated: Array(stations.sorted{ $0.votes > $1.votes }.prefix(selector.topCount))
             case .all: stations.sorted{ $0.votes > $1.votes }
         }
-        
-        let tagStations = stations.filter { station in
-            // Split the tags string into individual lowercase words
-            let stationTags = station.tags
-                .lowercased()
-                .split(separator: ",")
-                .map { $0.trimmingCharacters(in: .whitespaces) }
 
-            return stationTags.contains(selector.tag.rawValue.lowercased())
+        let tagStations = stations.filter { station in
+            let dominantTag = StationTag.inferDominantGenre(from: station.tags)
+            return dominantTag == selector.tag
         }
-        
+
         let zstations = selector.tag == .all ? xstations : tagStations
 
         let trimmed = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
