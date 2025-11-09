@@ -31,7 +31,7 @@ struct ContentView: View {
              .animation(.easeInOut(duration: 0.4), value: selector.view)
             
             VStack {
-                ToolsView().padding(.bottom, 5)
+                ToolsView()
                 
                 if selector.view != .countries {
                     FilterToolsView().fixedSize()

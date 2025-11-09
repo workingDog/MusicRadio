@@ -9,7 +9,6 @@ import SwiftData
 
 
 struct CountryView: View {
-    @Environment(\.modelContext) private var modelContext
     @Environment(Selector.self) var selector
     
     let network = Networker()
@@ -24,8 +23,8 @@ struct CountryView: View {
                 gradient: Gradient(colors: ViewTypes.countries.gradient),
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
-            )
-            .ignoresSafeArea()
+            ).ignoresSafeArea()
+            
             VStack {
                 if stations.isEmpty {
                     ProgressView()

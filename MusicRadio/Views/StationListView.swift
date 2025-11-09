@@ -64,11 +64,11 @@ struct StationListView: View {
                 }
                 .contentShape(RoundedRectangle(cornerRadius: 8))
                 .clipShape(RoundedRectangle(cornerRadius: 8))
-                .padding(.horizontal, 8)
+                .padding(.horizontal, 6)
             }
             .scrollContentBackground(.hidden)
             .searchable(text: $searchText, prompt: "Search station")
-            .padding(.horizontal, 8)
+            .padding(.horizontal, 6)
             
             MiniPlayer()
                 .padding(.horizontal)

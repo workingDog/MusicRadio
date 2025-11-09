@@ -36,7 +36,7 @@ struct StationView: View {
                             SwiftDataHelper.findAndRemove(station: station, in: modelContext)
                         } else {
                             print("---> findOrInsert")
-                            SwiftDataHelper.findOrInsert(station: station, in: modelContext)
+                            SwiftDataHelper.updateOrInsert(station: station, in: modelContext)
                         }
                     } label: {
                         Image(systemName: station.isFavourite ? "heart.fill" : "heart.slash")

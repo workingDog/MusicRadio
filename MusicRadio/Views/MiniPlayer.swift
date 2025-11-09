@@ -43,6 +43,7 @@ struct MiniPlayer: View {
                         .lineLimit(1)
                 }
             }
+            
             HStack(spacing: 8) {
                 Spacer()
                 

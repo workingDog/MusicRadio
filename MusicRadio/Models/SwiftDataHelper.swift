@@ -6,12 +6,11 @@
 //
 import Foundation
 import SwiftData
-import SwiftUI
 
 
 class SwiftDataHelper {
     
-    static func findOrInsert(station: RadioStation, in context: ModelContext) {
+    static func updateOrInsert(station: RadioStation, in context: ModelContext) {
         var descriptor = FetchDescriptor<RadioStation>(
             predicate: #Predicate { $0.stationuuid == station.stationuuid }
         )

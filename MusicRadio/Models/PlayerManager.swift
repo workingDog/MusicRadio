@@ -73,7 +73,7 @@ class PlayerManager {
             do {
                 try await session.setCategory(.playback, mode: .default, options: [.mixWithOthers])
                 try await session.setActive(true)
-                print("--> Audio session configured for background playback")
+   //             print("--> Audio session configured for background playback")
             } catch {
                 print("Failed to configure audio session: \(error)")
             }

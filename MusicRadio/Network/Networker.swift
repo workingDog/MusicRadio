@@ -20,6 +20,8 @@ class Networker {
     
     var defaultServer = "https://de1.api.radio-browser.info/json/"
     
+    
+    // for testing
     func getAllStations() async throws -> [RadioStation] {
         if let theUrl = URL(string: "\(defaultServer)stations") {
             print("---> getAllStations fetching theUrl: \(theUrl.absoluteString)")
@@ -71,6 +73,7 @@ class Networker {
         return []
     }
 
+    // for testing
     func getServers() async throws {
         if let theUrl = URL(string: "\(defaultServer)servers") {
             print("---> getServers fetching theUrl: \(theUrl.absoluteString)")
