@@ -41,7 +41,7 @@ struct ContentView: View {
                     case .favourites: StationListView(stations: stations.filter({$0.isFavourite}), columns: 2)
 
                     case .countries: CountriesView()
-                    
+   
                     case .stations: SearchStationView()
                 }
             }

@@ -35,7 +35,7 @@ struct EqualizerView: View {
         .background {
             if #available(iOS 26.0, *) {
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(.ultraThinMaterial)
+                    .fill(.clear)
                     .overlay(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
                             .stroke(Color.white.opacity(0.12), lineWidth: 0.5)
@@ -54,7 +54,7 @@ struct EqualizerView: View {
             } else {
                 // fallback for older platforms
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(Color(.systemBackground).opacity(0.80))
+                    .fill(.clear)
                     .overlay(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
                             .stroke(Color.white.opacity(0.12), lineWidth: 0.5)

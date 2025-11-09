@@ -123,20 +123,19 @@ class Networker {
         return []
     }
     
-    func saveAllStations(_ stations: [RadioStation], context: ModelContext) {
-        let batchSize = 500
-
-        for chunk in stride(from: 0, to: stations.count, by: batchSize) {
-            let batch = Array(stations[chunk..<min(chunk + batchSize, stations.count)])
-            for station in batch {
-                context.insert(station)
-            }
-            try? context.save()
-        }
-    }
+//    func saveAllStations(_ stations: [RadioStation], context: ModelContext) {
+//        let batchSize = 500
+//
+//        for chunk in stride(from: 0, to: stations.count, by: batchSize) {
+//            let batch = Array(stations[chunk..<min(chunk + batchSize, stations.count)])
+//            for station in batch {
+//                context.insert(station)
+//            }
+//            try? context.save()
+//        }
+//    }
     
     func findStations(_ station: String) async throws -> [RadioStation] {
-        
         if let theUrl = URL(string: "\(defaultServer)stations/byname/\(station)") {
             print("---> findStations fetching theUrl: \(theUrl.absoluteString)")
             do {
@@ -153,6 +152,5 @@ class Networker {
         }
         return []
     }
-    
     
 }
