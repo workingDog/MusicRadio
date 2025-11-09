@@ -19,13 +19,12 @@ struct MiniPlayer: View {
                 Group {
                     if playerManager.station == nil {
                         Image(uiImage: RadioStation.defaultImg)
-                            .renderingMode(.template)
+                            .renderingMode(.original)
                             .resizable()
                             .scaledToFit()
                             .frame(width: 45, height: 45)
                             .cornerRadius(6)
                             .shadow(radius: 3)
-                            .foregroundStyle(.red.opacity(0.6))
                     } else {
                         Image(uiImage: playerManager.station!.faviconImage())
                             .resizable()

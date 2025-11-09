@@ -58,7 +58,7 @@ struct StationTagMenu: View {
         }
         .menuStyle(.button)
         .onChange(of: selector.tag) {
-            selector.storeDefaults()
+            selector.storeSettings()
         }
     }
 }

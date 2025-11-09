@@ -22,12 +22,12 @@ class Selector {
     static let keyTag: String = "tag"
     
 
-    func storeDefaults() {
+    func storeSettings() {
         UserDefaults.standard.set(self.topCount, forKey: Selector.keyTopCount)
         UserDefaults.standard.set(self.tag.rawValue, forKey: Selector.keyTag)
     }
     
-    func retrieveDefaults() {
+    func retrieveSettings() {
         let xcount = UserDefaults.standard.integer(forKey: Selector.keyTopCount)
         self.topCount = (xcount != 0) ? xcount : 10
 

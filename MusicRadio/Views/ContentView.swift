@@ -40,16 +40,14 @@ struct ContentView: View {
                 switch selector.view {
                     case .favourites: StationListView(stations: stations.filter({$0.isFavourite}), columns: 2)
 
-        //            case .stations: StationListView(stations: stations, columns: 2)
+                    case .countries: CountriesView()
                     
                     case .stations: SearchStationView()
-                    
-                    case .countries: CountriesView()
                 }
             }
             .onAppear {
                 print("-----> stations: \(stations.count) \n")
-                selector.retrieveDefaults()
+                selector.retrieveSettings()
             }
         }
         .environment(playerManager)
@@ -88,57 +86,3 @@ struct ContentView: View {
     }
     
 }
-
-
-
-
-/*
-.task {
-    do {
-       // try await network.getServers()
- 
-//         try await network.getAllStations()
- 
-        
-//                let topStations = try await network.getTopVotes()
-//                for station in topStations {
-//                    modelContext.insert(station)
-//                }
-        
-        let topStations = try await network.getTopVotesFor("Australia")
-        for station in topStations {
-            print("----> topStation: \(station.name)  \(station.votes)")
-           // modelContext.insert(station)
-        }
-
-    } catch {
-        print(error)
-    }
-}
- */
-
-
-/*
-.task {
-    do {
-//                let stacions = try await network.getStationsForCountry("Australia")
-//                for station in stacions.prefix(24) {
-//                    modelContext.insert(station)
-//                }
-        
-        let countries = try await network.getAllCountries()
-        print("\n---> countries.count: \(countries.count)" )
-        
-        let test1 = Set(countries.map(\.name))
-        print("---> test1.count: \(test1.count)" )
-        
-        
-        for country in countries {
-           // modelContext.insert(country)
-//            print("---> country: \(country.name)  \(country.iso_3166_1)")
-        }
-    } catch {
-        print(error)
-    }
-}
-*/

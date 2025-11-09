@@ -90,13 +90,8 @@ struct StationView: View {
 
                 print("----> station name: \(station.name)  url: \(station.url) tag: \(station.tags)\n")
             }
-            .background(.white.opacity(0.4))
-      //      .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 12))
-            //        .ifAvailable_iOS26 { view in
-            //            if #available(iOS 26.0, *) {
-            //                view.glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 12))
-            //            }
-            //        }
+       //     .background(.white.opacity(0.4))
+            .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 12))
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .fullScreenCover(isPresented: $showWeb) {
                 WebViewScreen(station: station)
@@ -160,15 +155,3 @@ private struct OldWebView: UIViewRepresentable {
 
     final class Coordinator: NSObject, WKNavigationDelegate { }
 }
-
-
-//extension View {
-//    @ViewBuilder
-//    func ifAvailable_iOS26(@ViewBuilder transform: (Self) -> some View) -> some View {
-//        if #available(iOS 26.0, *) {
-//            transform(self)
-//        } else {
-//            self
-//        }
-//    }
-//}

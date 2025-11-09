@@ -32,10 +32,10 @@ struct SearchStationView: View {
             
             VStack(alignment: .leading, spacing: 20) {
                 HStack {
-                    CapsuleSearchField(text: $selector.searchStation, focused: $focused, onSubmit: handleSubmit)
+                    CapsuleSearchField(text: $selector.searchStation, focused: $focused, onStartUp: doFetch)
                         .onSubmit {
                             Task {
-                                await handleSubmit()
+                                await doFetch()
                             }
                         }
                         .onChange(of: selector.searchStation) {
@@ -65,7 +65,7 @@ struct SearchStationView: View {
         }
     }
     
-    func handleSubmit() async {
+    func doFetch() async {
         do {
             isSearching = true
             stations = try await fetchStations()
@@ -89,7 +89,7 @@ struct SearchStationView: View {
 struct CapsuleSearchField: View {
     @Binding var text: String
     @FocusState.Binding var focused: Bool
-    var onSubmit: () async -> Void
+    var onStartUp: () async -> Void
     
     var body: some View {
         HStack(spacing: 8) {
@@ -118,7 +118,7 @@ struct CapsuleSearchField: View {
         .padding(10)
         .background( Capsule().fill(.thinMaterial) )
         .task {
-            await onSubmit()
+            await onStartUp()
         }
     }
 }

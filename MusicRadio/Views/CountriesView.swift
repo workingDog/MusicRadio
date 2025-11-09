@@ -9,8 +9,8 @@ import SwiftData
 
 
 struct CountriesView: View {
-    @Query(sort: [SortDescriptor(\Country.name, order: .forward)])
-    private var countries: [Country]
+
+    @Query(sort: \Country.name) private var countries: [Country]
     
     @State private var searchText = ""
     

@@ -54,7 +54,7 @@ struct SettingsView: View {
             
         }
         .onDisappear {
-            selector.storeDefaults()
+            selector.storeSettings()
         }
     }
 }
