@@ -8,7 +8,6 @@ import Foundation
 import SwiftUI
 import AVKit
 import AVFoundation
-import Combine
 
 
 @MainActor
@@ -73,7 +72,6 @@ class PlayerManager {
             do {
                 try await session.setCategory(.playback, mode: .default, options: [.mixWithOthers])
                 try await session.setActive(true)
-   //             print("--> Audio session configured for background playback")
             } catch {
                 print("Failed to configure audio session: \(error)")
             }
@@ -95,7 +93,7 @@ class RadioPlayer: NSObject, AVPlayerItemMetadataOutputPushDelegate, @unchecked 
     func playStream(url: URL) {
         let item = AVPlayerItem(url: url)
         let output = AVPlayerItemMetadataOutput()
-        output.setDelegate(self, queue: .main) // main queue is safe
+        output.setDelegate(self, queue: .main) 
         item.add(output)
         metadataOutput = output
         player = AVPlayer(playerItem: item)

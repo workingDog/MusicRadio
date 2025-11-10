@@ -41,7 +41,7 @@ final class Country: Codable {
 @Model
 final class RadioStation: Codable {
 
-    // not decoded
+    // not encoded or decoded
     static var defaultImg = UIImage(named: "radio")!
     var isFavourite: Bool = false
     var isPlaying: Bool = false
@@ -87,15 +87,15 @@ final class RadioStation: Codable {
     
     enum CodingKeys: String, CodingKey {
         case changeuuid, stationuuid, name, url
+        case state, language, languagecodes, votes, lastchangetime
+        case clickcount, clicktrend, countrycode
+        case homepage, favicon, tags, country
         case urlResolved = "url_resolved"
-        case homepage, favicon, tags, country, countrycode
         case iso3166_2 = "iso_3166_2"
         case geoLat = "geo_lat"
         case geoLong = "geo_long"
         case geoDistance = "geo_distance"
-        case state, language, languagecodes, votes, lastchangetime
-        case clickcount, clicktrend
-        
+
 //        case lastchangetimeIso8601 = "lastchangetime_iso8601"
 //        case codec, bitrate, hls, lastcheckok, lastchecktime
 //        case lastchecktimeIso8601 = "lastchecktime_iso8601"

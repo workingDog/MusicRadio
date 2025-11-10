@@ -7,6 +7,8 @@
 import Foundation
 import SwiftUI
 
+
+// todo
 @Observable
 class Looks {
     var backColor: Color = .blue

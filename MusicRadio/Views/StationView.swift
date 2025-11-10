@@ -30,12 +30,9 @@ struct StationView: View {
                 HStack {
                     Button {
                         station.isFavourite.toggle()
-                        print("\n---> station.isFavourite: \(station.isFavourite)\n")
                         if !station.isFavourite {
-                            print("---> findAndRemove")
                             SwiftDataHelper.findAndRemove(station: station, in: modelContext)
                         } else {
-                            print("---> findOrInsert")
                             SwiftDataHelper.updateOrInsert(station: station, in: modelContext)
                         }
                     } label: {
@@ -87,10 +84,8 @@ struct StationView: View {
                     playerManager.currentSong = ""
                     playerManager.station = station
                 }
-
-                print("----> station name: \(station.name)  url: \(station.url) tag: \(station.tags)\n")
             }
-       //     .background(.white.opacity(0.4))
+        //    .background(.white.opacity(0.4))  // use when iOS18
             .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 12))
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .fullScreenCover(isPresented: $showWeb) {

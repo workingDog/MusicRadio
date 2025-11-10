@@ -46,7 +46,7 @@ struct ContentView: View {
                 }
             }
             .onAppear {
-                print("-----> stations: \(stations.count) \n")
+                print("---> stations: \(stations.count) \n")
                 selector.retrieveSettings()
             }
         }
@@ -54,14 +54,14 @@ struct ContentView: View {
         .environment(selector)
         .task {
             do {
-                // if first time, get all the countries
+                // if first time, get all the countries and store them in SwiftData
                 if countries.count == 0 {
                     let allCountries = try await network.getAllCountries()
                     print("---> allCountries: \(allCountries.count)")
                     for country in allCountries {
                         modelContext.insert(country)
                     }
-                    // also add the top voted stations to "Favourite"
+                    // add the top voted stations to "Favourite", also stored in SwiftData
                     let topStations = try await network.getTopVotes(selector.topCount)
                     print("---> topStations: \(topStations.count)")
                     for station in topStations {
@@ -74,12 +74,6 @@ struct ContentView: View {
             }
         }
         .onAppear {
-            // try to adjust the initial volume
-//            let sysvol = AVAudioSession.sharedInstance().outputVolume
-//            let desired = 0.25 //min(1.0, sysvol) / 2.0
-//            playerManager.volume = min(1.0 - Float(sqrt(desired)) / sysvol, 1.0)
-//            print("---> sysvol: \(sysvol)  app vol: \(playerManager.volume)")
-            
             playerManager.volume = 0.3
         }
  

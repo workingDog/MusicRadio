@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 
 
+// info at:
 // https://de1.api.radio-browser.info/#General
 // https://de1.api.radio-browser.info/json/
 
@@ -21,7 +22,7 @@ struct MusicRadioApp: App {
     var sharedModelContainer: ModelContainer = {
         let appSupportDir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).last
         let storeURL: URL = appSupportDir?.appending(path: "database.sqlite") ?? URL.documentsDirectory.appending(path: "database.sqlite")
-        print("---> database: \(storeURL.absoluteString)\n")
+        print("---> database at: \(storeURL.absoluteString)\n")
         let schema = Schema([RadioStation.self, Country.self])
         let config = ModelConfiguration(schema: schema, url: storeURL)
         do {

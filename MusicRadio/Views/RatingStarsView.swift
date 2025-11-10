@@ -10,12 +10,14 @@ import SwiftUI
 struct RatingStarsView: View {
     let station: RadioStation
     let maxRating: Int
+    
     @State private var stars: Int = 0
     
     init(_ station: RadioStation, _ maxRating: Int) {
         self.station = station
         self.maxRating = maxRating
     }
+    
     var body: some View {
         HStack {
             ForEach(0..<stars, id: \.self) { _ in

@@ -7,6 +7,8 @@
 import SwiftUI
 
 
+
+// fancy version
 struct EqualizerView: View {
     @State private var barHeights: [CGFloat] = [0.2, 0.5, 0.3, 0.7, 0.4, 0.2]
     @State private var timer: Timer?
@@ -76,7 +78,7 @@ struct EqualizerView: View {
     }
 }
 
-
+// basic version
 struct EqualizerView2: View {
     @State private var barHeights: [Double] = [0.2, 0.5, 0.3, 0.7, 0.4, 0.2]
     

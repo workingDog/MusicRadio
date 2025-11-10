@@ -5,7 +5,6 @@
 //  Created by Ringo Wathelet on 2025/11/02.
 //
 import SwiftUI
-import SwiftUI
 import AVFoundation
 
 
@@ -48,7 +47,7 @@ struct MiniPlayer: View {
                 Spacer()
                 
                 if playerManager.isPlaying {
-                    EqualizerView()//.tint(.mint)
+                    EqualizerView()
                         .frame(width: 80, height: 40, alignment: .bottomLeading)
                 }
                 
@@ -62,7 +61,7 @@ struct MiniPlayer: View {
                 
                 Spacer()
                 
-                // Play / Pause button
+                // play / pause button
                 Button {
                     playerManager.togglePlayback()
                 } label: {

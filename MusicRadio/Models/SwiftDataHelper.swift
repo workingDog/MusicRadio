@@ -19,10 +19,8 @@ class SwiftDataHelper {
         // if already in SwiftData
         if let existing = try? context.fetch(descriptor).first {
             existing.isFavourite = station.isFavourite
-            print("------> existing: \(station.isFavourite)")
             return
         } else {
-            print("------> inserting")
             // else insert this station in SwiftData
             context.insert(station)
         }

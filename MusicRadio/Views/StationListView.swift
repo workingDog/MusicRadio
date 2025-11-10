@@ -78,27 +78,3 @@ struct StationListView: View {
     }
     
 }
-
-
-
-/*
- 
- 
- //                List(filteredStations) { station in
- //                    StationView(station: station)
- //                        .overlay(
- //                            RoundedRectangle(cornerRadius: 8)
- //                                .stroke(playerManager.station == station ? Color.white : .clear, lineWidth: 4)
- //                        )
- //                        .listRowSeparator(.hidden)
- //                        .listRowBackground(Color.gray.opacity(0.2))
- //                        .listRowInsets(EdgeInsets(top: 3, leading: 3, bottom: 3, trailing: 3))
- //                        .contentShape(Rectangle())
- //                        .clipShape(RoundedRectangle(cornerRadius: 8))
- //                }
- //                .scrollContentBackground(.hidden)
- //                .background(Color.clear)
- //                .listRowSpacing(10)
- //                .searchable(text: $searchText, prompt: "Search station")
- 
- */

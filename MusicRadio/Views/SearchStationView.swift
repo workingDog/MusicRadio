@@ -89,6 +89,7 @@ struct SearchStationView: View {
 struct CapsuleSearchField: View {
     @Binding var text: String
     @FocusState.Binding var focused: Bool
+    
     var onStartUp: () async -> Void
     
     var body: some View {

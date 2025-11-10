@@ -50,7 +50,6 @@ struct CountriesView: View {
                 .searchable(text: $searchText, placement: .navigationBarDrawer, prompt: "Search countries")
                 .scrollContentBackground(.hidden)
                 .background(Color.clear)
-                // .searchPresentationToolbarBehavior(.avoidHidingContent)
             }
             .navigationTitle("Countries")
             .navigationBarTitleDisplayMode(.inline)

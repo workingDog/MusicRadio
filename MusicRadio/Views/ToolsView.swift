@@ -6,7 +6,6 @@
 //
 import SwiftUI
 import SwiftData
-import UIKit
 import AVKit
 
 
@@ -61,13 +60,9 @@ struct AirPlayButton: UIViewRepresentable {
         return view
     }
     
-    func updateUIView(_ uiView: AVRoutePickerView, context: Context) {
-        // Nothing to update
-    }
+    func updateUIView(_ uiView: AVRoutePickerView, context: Context) { }
     
-    func makeCoordinator() -> Coordinator {
-        Coordinator()
-    }
+    func makeCoordinator() -> Coordinator { Coordinator() }
     
     class Coordinator {}
 }

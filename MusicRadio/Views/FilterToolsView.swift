@@ -62,25 +62,3 @@ struct StationTagMenu: View {
         }
     }
 }
-
-
-
-// radiobuttons
-
-//            HStack {
-//                ForEach(FilterTypes.allCases) { selection in
-//                    HStack {
-//                        Button {
-//                            selectedTool = selection
-//                        } label: {
-//                            HStack {
-//                                Image(systemName: selectedTool == selection ? "largecircle.fill.circle" : "circle")
-//                                    .foregroundColor(.accentColor)
-//                                Text(selection.rawValue)
-//                            }
-//                        }
-//                        .buttonStyle(.plain)
-//                    }
-//                }
-//            }
-
