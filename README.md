@@ -22,9 +22,9 @@ Tap/click on the station you want to listen to, and it will appear
 in the **Play** bar at the bottom of the screen.
 
 Search for the country you desire, then tap/click on the **heart** icon to 
-make the station **Favourite**. That radio station will appear in the **Favourite** list.
+make the station **Favourite**. That radio station will appear in the **Favourites** list.
 
-Similarly, when you search for particular stations.
+Similarly, when you search for particular **Stations##.
 
 Tap/click on the **globe** icon of a radio station to bring its internet home page, if it has one.
 
