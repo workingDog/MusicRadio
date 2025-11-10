@@ -26,6 +26,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		C76BD8BA2EC1A5360038BA45 /* ScreenShots */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ScreenShots;
+			sourceTree = "<group>";
+		};
 		C79B44CC2EB6EFAE00FCC9B9 /* MusicRadio */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -50,6 +55,7 @@
 		C79B44C12EB6EFAE00FCC9B9 = {
 			isa = PBXGroup;
 			children = (
+				C76BD8BA2EC1A5360038BA45 /* ScreenShots */,
 				C79B44DA2EB6F0B400FCC9B9 /* README.md */,
 				C79B44CC2EB6EFAE00FCC9B9 /* MusicRadio */,
 				C79B44CB2EB6EFAE00FCC9B9 /* Products */,
@@ -80,6 +86,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				C76BD8BA2EC1A5360038BA45 /* ScreenShots */,
 				C79B44CC2EB6EFAE00FCC9B9 /* MusicRadio */,
 			);
 			name = MusicRadio;
