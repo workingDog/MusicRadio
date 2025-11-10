@@ -23,7 +23,7 @@ struct RatingStarsView: View {
             ForEach(0..<stars, id: \.self) { _ in
                 Image(systemName: "star.fill")
                     .font(.system(size: 12))
-                    .foregroundColor(.yellow)
+                    .foregroundColor(.orange)
             }
         }
         .offset(y: -6)
