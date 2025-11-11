@@ -67,16 +67,6 @@ enum ViewTypes: String, CaseIterable, Identifiable {
     
     var id: String { rawValue }
     
-    // Each type defines its own color scheme and emoji
-    var gradient: [Color] {
-        let opa = 0.5
-        switch self {
-        case .favourites: return [.pink.opacity(opa), .purple.opacity(opa)]
-        case .stations: return [.blue.opacity(opa), .cyan.opacity(opa)]
-        case .countries: return [.mint.opacity(opa), .mint.opacity(opa)]
-        }
-    }
-    
     var icon: String {
         switch self {
             case .favourites: return "🎵"

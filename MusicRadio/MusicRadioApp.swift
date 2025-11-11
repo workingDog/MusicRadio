@@ -19,6 +19,8 @@ import SwiftData
 @main
 struct MusicRadioApp: App {
 
+    @State var looks = Looks()
+    
     var sharedModelContainer: ModelContainer = {
         let appSupportDir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).last
         let storeURL: URL = appSupportDir?.appending(path: "database.sqlite") ?? URL.documentsDirectory.appending(path: "database.sqlite")
@@ -35,6 +37,7 @@ struct MusicRadioApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(looks)
         }
         .modelContainer(sharedModelContainer)
     }

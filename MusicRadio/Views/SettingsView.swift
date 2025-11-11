@@ -10,12 +10,13 @@ import SwiftUI
 struct SettingsView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(Selector.self) var selector
-    
+    @Environment(Looks.self) var looks
     
     var body: some View {
         @Bindable var selector = selector
+        @Bindable var looks = looks
         ZStack {
-            Color.mint.opacity(0.2).ignoresSafeArea()
+            looks.gradient.ignoresSafeArea()
             
             VStack {
                 Button("Done") {
@@ -39,15 +40,16 @@ struct SettingsView: View {
                         }
                     }
                     
-//                    Section("Other Options") {
-//                        Text("Choose Options here")
-//                    }
+                    Section("Colors") {
+                        themePicker()
+                        Slider(value: $looks.opa, in: 0...1)
+                            .tint(looks.themeColor)
+                    }
                 }
                 .formStyle(.grouped)
                 .scrollContentBackground(.hidden)
-                .background(Color.clear)
                 .padding()
-
+                
                 Spacer()
                 
             }
@@ -55,11 +57,31 @@ struct SettingsView: View {
         }
         .onDisappear {
             selector.storeSettings()
+            looks.storeSettings()
         }
+    }
+    
+    @ViewBuilder
+    func themePicker() -> some View {
+        @Bindable var looks = looks
+        Picker("", selection: $looks.theme) {
+            ForEach(ThemeKeys.allCases) { theme in
+                Text(theme.rawValue)
+                    .tag(theme)
+            }
+        }
+        .pickerStyle(.segmented)
+        .padding(12)
+        .background(Capsule().fill(looks.gradient))
+        .labelsHidden()
+        .clipShape(Capsule())
+        .contentShape(Capsule())
     }
 }
 
 struct CompactStepper: View {
+    @Environment(Looks.self) var looks
+    
     @Binding var value: Int
     let range: ClosedRange<Int>
     let step: Int
@@ -85,6 +107,7 @@ struct CompactStepper: View {
             }.buttonStyle(BorderlessButtonStyle()) // <-- important
         }
         .padding(6)
+        .background(looks.gradient)
         .clipShape(Capsule())
         .contentShape(Rectangle())
     }

@@ -11,6 +11,7 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(Looks.self) var looks
     
     @State private var playerManager = PlayerManager()
     @State private var selector = Selector()
@@ -23,12 +24,8 @@ struct ContentView: View {
 
     var body: some View {
         ZStack(alignment: .top) {
-            LinearGradient(
-                colors: selector.view.gradient,
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            ).ignoresSafeArea()
-             .animation(.easeInOut(duration: 0.4), value: selector.view)
+             looks.gradient.ignoresSafeArea()
+                .animation(.easeInOut(duration: 0.4), value: selector.view)
             
             VStack {
                 ToolsView()
@@ -48,6 +45,7 @@ struct ContentView: View {
             .onAppear {
                 print("---> stations: \(stations.count) \n")
                 selector.retrieveSettings()
+                looks.retrieveSettings()
             }
         }
         .environment(playerManager)
@@ -61,7 +59,7 @@ struct ContentView: View {
                     for country in allCountries {
                         modelContext.insert(country)
                     }
-                    // add the top voted stations to "Favourite", also stored in SwiftData
+                    // add the top voted stations to "Favourites", also stored in SwiftData
                     let topStations = try await network.getTopVotes(selector.topCount)
                     print("---> topStations: \(topStations.count)")
                     for station in topStations {
