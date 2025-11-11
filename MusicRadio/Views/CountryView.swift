@@ -41,7 +41,22 @@ struct CountryView: View {
                 print(error)
             }
         }
-        .navigationBarTitle(country.name)
+    //    .navigationBarTitle(country.name)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                HStack(spacing: 8) {
+                    Image(country.iso_3166_1.lowercased())
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 28, height: 20)
+                        .clipShape(RoundedRectangle(cornerRadius: 4))
+                    Text(country.name)
+                        .font(.headline)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+        }
+
     }
     
 }

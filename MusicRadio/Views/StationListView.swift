@@ -68,6 +68,7 @@ struct StationListView: View {
             }
             .scrollContentBackground(.hidden)
             .searchable(text: $searchText, prompt: "Search station")
+            .textInputAutocapitalization(.never)
             .padding(.horizontal, 6)
             
             MiniPlayer()

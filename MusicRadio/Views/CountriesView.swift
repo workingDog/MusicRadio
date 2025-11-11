@@ -9,7 +9,7 @@ import SwiftData
 
 
 struct CountriesView: View {
-
+    
     @Query(sort: \Country.name) private var countries: [Country]
     
     @State private var searchText = ""
@@ -34,18 +34,10 @@ struct CountriesView: View {
                 .ignoresSafeArea()
                 List(filteredCountries) { country in
                     NavigationLink(destination: CountryView(country: country)) {
-                        HStack {
-                            Image(country.iso_3166_1.lowercased())
-                                .resizable()
-                                .renderingMode(.original)
-                                .frame(width: 40, height: 30)
-                            Text("\(country.stationcount ?? 0)")
-                            Spacer()
-                            Text(country.name).bold()
-                            Spacer()
-                        }
+                        CountryRow(country: country)
                     }
                     .listRowBackground(Color.clear)
+                    .listRowSeparator(.hidden)
                 }
                 .searchable(text: $searchText, placement: .navigationBarDrawer, prompt: "Search countries")
                 .scrollContentBackground(.hidden)
@@ -56,4 +48,32 @@ struct CountriesView: View {
         }
     }
     
+}
+
+struct CountryRow: View {
+    let country: Country
+    
+    var body: some View {
+        HStack(spacing: 16) {
+            Image(country.iso_3166_1.lowercased())
+                .resizable()
+                .scaledToFill()
+                .frame(width: 50, height: 35)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text(country.name)
+                    .font(.headline)
+                    .foregroundColor(.black)
+                Text("\(country.stationcount ?? 0) stations")
+                    .font(.subheadline)
+                    .foregroundColor(.black)
+            }
+            Spacer()
+        }
+        .padding()
+        .background(Color.mint)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .shadow(color: .black.opacity(0.6), radius: 4, x: 0, y: 3)
+    }
 }
