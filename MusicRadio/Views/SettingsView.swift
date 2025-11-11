@@ -10,14 +10,15 @@ import SwiftUI
 struct SettingsView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(Selector.self) var selector
-    @Environment(Looks.self) var looks
+    @Environment(ColorModel.self) var colorModel
+
     
     var body: some View {
         @Bindable var selector = selector
-        @Bindable var looks = looks
+        @Bindable var colorModel = colorModel
         ZStack {
-            looks.gradient.ignoresSafeArea()
-            
+            colorModel.gradient.ignoresSafeArea()
+
             VStack {
                 Button("Done") {
                     dismiss()
@@ -25,9 +26,9 @@ struct SettingsView: View {
                 .buttonStyle(.bordered)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(6)
-
+                
                 Text("Settings").font(.largeTitle)
-
+                
                 HStack {
                     Text("Top-rated stations to show ")
                     CompactStepper(value: $selector.topCount, range: 10...100, step: 10)
@@ -35,10 +36,26 @@ struct SettingsView: View {
                 .padding(.top, 30)
                 .padding(.horizontal)
                 
-                VStack {
-                    themePicker()
-                    Slider(value: $looks.opa, in: 0...1)
-                        .tint(looks.themeColor)
+                Divider()
+
+                VStack(spacing: 20) {
+                    Text("Background color").bold()
+                    HStack{
+                        Text("Palette ")
+                        Toggle("", isOn: $colorModel.grayScale).labelsHidden()
+                        Spacer()
+                    }
+                    ColorSlider()
+                        .accentColor(.clear)
+                        .frame(width: 333, height: 40)
+                        .background(colorModel.colorGradient)
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                        .overlay(RoundedRectangle(cornerRadius: 20)
+                        .stroke(lineWidth: 1).foregroundColor(.black))
+                    
+                    Slider(value: $colorModel.opacity, in: 0...1)
+                        .tint(colorModel.color)
+                        .frame(width: 333, height: 40)
                 }
                 .padding(.top, 30)
                 .padding(.horizontal)
@@ -47,32 +64,19 @@ struct SettingsView: View {
                 
             }
         }
+        .onChange(of: colorModel.grayScale) {
+            colorModel.updatePalette()
+        }
         .onDisappear {
             selector.storeSettings()
-            looks.storeSettings()
+            colorModel.storeSettings()
         }
     }
     
-    @ViewBuilder
-    func themePicker() -> some View {
-        @Bindable var looks = looks
-        Picker("", selection: $looks.theme) {
-            ForEach(ThemeKeys.allCases) { theme in
-                Text(theme.rawValue)
-                    .tag(theme)
-            }
-        }
-        .pickerStyle(.segmented)
-        .padding(12)
-        .background(Capsule().fill(looks.gradient))
-        .labelsHidden()
-        .clipShape(Capsule())
-        .contentShape(Capsule())
-    }
 }
 
 struct CompactStepper: View {
-    @Environment(Looks.self) var looks
+    @Environment(ColorModel.self) var colorModel
     
     @Binding var value: Int
     let range: ClosedRange<Int>
@@ -99,7 +103,7 @@ struct CompactStepper: View {
             }.buttonStyle(BorderlessButtonStyle()) // <-- important
         }
         .padding(6)
-        .background(looks.gradient)
+        .background(colorModel.gradient)
         .clipShape(Capsule())
         .contentShape(Rectangle())
     }

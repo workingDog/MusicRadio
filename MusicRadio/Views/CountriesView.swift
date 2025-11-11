@@ -9,7 +9,7 @@ import SwiftData
 
 
 struct CountriesView: View {
-    @Environment(Looks.self) var looks
+    @Environment(ColorModel.self) var colorModel
     
     @Query(sort: \Country.name) private var countries: [Country]
     
@@ -27,7 +27,7 @@ struct CountriesView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                looks.gradient.ignoresSafeArea()
+                colorModel.gradient.ignoresSafeArea()
                 List(filteredCountries) { country in
                     NavigationLink(destination: CountryView(country: country)) {
                         CountryRow(country: country)
@@ -48,7 +48,7 @@ struct CountriesView: View {
 }
 
 struct CountryRow: View {
-    @Environment(Looks.self) var looks
+    @Environment(ColorModel.self) var colorModel
     
     let country: Country
     
@@ -71,7 +71,7 @@ struct CountryRow: View {
             Spacer()
         }
         .padding()
-        .background(looks.themeColor)
+        .background(colorModel.color)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .shadow(color: .black.opacity(0.6), radius: 4, x: 0, y: 3)
     }

@@ -11,7 +11,7 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Environment(Looks.self) var looks
+    @Environment(ColorModel.self) var colorModel
     
     @State private var playerManager = PlayerManager()
     @State private var selector = Selector()
@@ -24,7 +24,7 @@ struct ContentView: View {
 
     var body: some View {
         ZStack(alignment: .top) {
-             looks.gradient.ignoresSafeArea()
+            colorModel.gradient.ignoresSafeArea()
                 .animation(.easeInOut(duration: 0.4), value: selector.view)
             
             VStack {
@@ -45,7 +45,8 @@ struct ContentView: View {
             .onAppear {
                 print("---> stations: \(stations.count) \n")
                 selector.retrieveSettings()
-                looks.retrieveSettings()
+                colorModel.retrieveSettings()
+                colorModel.updatePalette()
             }
         }
         .environment(playerManager)

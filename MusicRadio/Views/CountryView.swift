@@ -10,7 +10,7 @@ import SwiftData
 
 struct CountryView: View {
     @Environment(Selector.self) var selector
-    @Environment(Looks.self) var looks
+    @Environment(ColorModel.self) var colorModel
     
     let network = Networker()
     
@@ -20,7 +20,7 @@ struct CountryView: View {
     
     var body: some View {
         ZStack {
-            looks.gradient.ignoresSafeArea()
+            colorModel.gradient.ignoresSafeArea()
             
             VStack {
                 if stations.isEmpty {
