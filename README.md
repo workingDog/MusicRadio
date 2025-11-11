@@ -28,12 +28,7 @@ Similarly, when you search for particular **Stations**.
 
 Tap/click on the **globe** icon of a radio station to bring its internet home page, if it has one.
 
-## Note
-
-Some radio stations url are **http** not **https** as required my Apple.
-So currently the NSAppTransportSecurity permissions in Info.plist is set to 
-NSAllowsArbitraryLoads.
-        
-Note also, the type of station displayed between the **heart** and the **globe** icons, 
+## Note     
+The type of station displayed between the **heart** and the **globe** icons, 
 is inferred based on the various tags the station wants to be known for.    
         

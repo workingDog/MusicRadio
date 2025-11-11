@@ -31,6 +31,7 @@ class Networker {
                 let stations = try JSONDecoder().decode([RadioStation].self, from: data)
                 print("---> stations: \(stations.count)") // 51680
                 print("\n---> done fetching getAllStations \n")
+                convertAllToHttps(stations)
                 return stations
             } catch {
                 print(error)
@@ -49,6 +50,7 @@ class Networker {
                 // print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
                 let stations = try decoder.decode([RadioStation].self, from: data)
                 print("---> stations: \(stations.count)")
+                convertAllToHttps(stations)
                 return stations
             } catch {
                 print(error)
@@ -64,7 +66,7 @@ class Networker {
                 let (data, _) = try await URLSession.shared.data(from: theUrl)
                 // print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
                 let countries = try JSONDecoder().decode([Country].self, from: data)
-                print("---> countries: \(countries.count)")
+                // print("---> countries: \(countries.count)")
                 return countries
             } catch {
                 print(error)
@@ -100,6 +102,7 @@ class Networker {
                 decoder.dateDecodingStrategy = .iso8601
                 let stations = try decoder.decode([RadioStation].self, from: data)
        //         print("---> stations: \(stations)")
+                convertAllToHttps(stations)
                 return stations
             } catch {
                 print(error)
@@ -118,6 +121,7 @@ class Networker {
                 decoder.dateDecodingStrategy = .iso8601
                 let stations = try decoder.decode([RadioStation].self, from: data)
        //         print("---> stations: \(stations)")
+                convertAllToHttps(stations)
                 return stations
             } catch {
                 print(error)
@@ -148,6 +152,7 @@ class Networker {
                 decoder.dateDecodingStrategy = .iso8601
                 let stations = try decoder.decode([RadioStation].self, from: data)
                 //         print("---> stations: \(stations)")
+                convertAllToHttps(stations)
                 return stations
             } catch {
                 print(error)
@@ -156,4 +161,18 @@ class Networker {
         return []
     }
     
+    // some url are in http must make them all https
+    func convertAllToHttps(_ stations: [RadioStation]) {
+        for station in stations {
+            if station.url.starts(with: "http://") {
+                station.url = station.url.replacingOccurrences(of: "http://", with: "https://")
+            }
+            if station.homepage.starts(with: "http://") {
+                station.homepage = station.homepage.replacingOccurrences(of: "http://", with: "https://")
+            }
+            if station.favicon.starts(with: "http://") {
+                station.favicon = station.favicon.replacingOccurrences(of: "http://", with: "https://")
+            }
+        }
+    }
 }
