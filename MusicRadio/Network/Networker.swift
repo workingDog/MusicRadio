@@ -161,7 +161,7 @@ class Networker {
         return []
     }
     
-    // some url are in http must make them all https
+    // some url are http must make them all https
     func convertAllToHttps(_ stations: [RadioStation]) {
         for station in stations {
             if station.url.starts(with: "http://") {
@@ -172,6 +172,9 @@ class Networker {
             }
             if station.favicon.starts(with: "http://") {
                 station.favicon = station.favicon.replacingOccurrences(of: "http://", with: "https://")
+            }
+            if station.urlResolved.starts(with: "http://") {
+                station.urlResolved = station.urlResolved.replacingOccurrences(of: "http://", with: "https://")
             }
         }
     }
