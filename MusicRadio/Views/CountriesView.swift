@@ -38,6 +38,7 @@ struct CountriesView: View {
                     }
                     .listRowBackground(Color.clear)
                     .listRowSeparator(.hidden)
+                    .listRowInsets(EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
                 }
                 .searchable(text: $searchText, placement: .navigationBarDrawer, prompt: "Search countries")
                 .scrollContentBackground(.hidden)

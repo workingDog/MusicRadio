@@ -11,7 +11,7 @@ Was meant to be a weekend project but ended up taking a week to polish.
 
 <p float="left">
   <img src="ScreenShots/picture1.png"  width="200"  height="400" />
-  <img src="ScreenShots/picture2a.png"  width="200"  height="400" /> 
+  <img src="ScreenShots/picture2b.png"  width="200"  height="400" /> 
   <img src="ScreenShots/picture3.png"  width="200"  height="400" /> 
 </p>
 
