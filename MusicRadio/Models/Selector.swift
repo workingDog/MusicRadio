@@ -146,7 +146,7 @@ enum StationTag: String, CaseIterable, Codable, Identifiable {
         .pop: ["pop", "chart", "idol", "top 40", "mainstream", "kpop", "jpop"],
         .rock: ["rock", "punk", "grunge", "garage", "alt", "hardcore", "metalcore"],
         .indie: ["indie", "alternative", "shoegaze", "lofi"],
-        .electronic: ["electronic", "edm", "electro", "synth", "dubstep", "drum and bass"],
+        .electronic: ["edm", "electro", "electronic", "synth", "dubstep", "drum and bass"],
         .ambient: ["ambient", "atmospheric", "drone", "downtempo", "new age"],
         .classical: ["classical", "symphony", "orchestra", "baroque", "opera", "concerto"],
         .metal: ["metal", "heavy metal", "thrash", "black metal", "death metal", "doom"],
@@ -191,10 +191,14 @@ enum StationTag: String, CaseIterable, Codable, Identifiable {
         }
         
         // get highest score
-        guard let (bestGenre, bestScore) = scores.max(by: { $0.value < $1.value }),
-              bestScore > 0 else {
-            return .mix
-        }
+        let bestGenre = scores
+            .sorted {
+                if $0.value == $1.value {
+                    return $0.key.rawValue < $1.key.rawValue
+                }
+                return $0.value > $1.value
+            }
+            .first?.key ?? .mix
         
         return bestGenre
     }
