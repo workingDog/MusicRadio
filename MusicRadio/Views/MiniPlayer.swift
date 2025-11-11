@@ -10,7 +10,7 @@ import AVFoundation
 
 struct MiniPlayer: View {
     @Environment(PlayerManager.self) var playerManager
-    
+    @Environment(Looks.self) var looks
     
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
@@ -76,8 +76,8 @@ struct MiniPlayer: View {
             }.padding(6)
             
         } // VStack
-
-        .background(.regularMaterial)
+   //     .background(.ultraThinMaterial)
+        .background(looks.themeColor.opacity(looks.opa))
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .shadow(radius: 5)
         .onChange(of: playerManager.station?.id) {

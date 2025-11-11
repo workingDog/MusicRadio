@@ -10,7 +10,7 @@ import SwiftUI
 
 @Observable
 class Looks {
-    var theme: ThemeKeys = .Blueish
+    var theme: ThemeKeys = .Blue
     var themeColor: Color = .teal
     var opa = 0.3
     
@@ -19,14 +19,14 @@ class Looks {
     
     var gradient: LinearGradient {
         switch theme {
-            case .Blueish: themeColor = Color.teal
-            case .Greenish: themeColor = Color.mint
-            case .Pinkish: themeColor = Color.pink
-            case .Yellowish: themeColor = Color.yellow
-            case .Orangy: themeColor = Color.orange
-            case .Grayish: themeColor = Color(.systemGray)
+            case .Blue: themeColor = Color.teal
+            case .Green: themeColor = Color.mint
+            case .Pink: themeColor = Color.pink
+            case .Yellow: themeColor = Color.yellow
+            case .Orange: themeColor = Color.orange
+            case .Gray: themeColor = Color(.systemGray)
         }
-        return LinearGradient(gradient: Gradient(colors: [themeColor, themeColor.opacity(opa)]), startPoint: .topLeading, endPoint: .bottomTrailing)
+        return LinearGradient(gradient: Gradient(colors: [themeColor, themeColor.opacity(opa)]), startPoint: .top, endPoint: .bottom)
     }
     
     func storeSettings() {
@@ -36,14 +36,14 @@ class Looks {
     
     func retrieveSettings() {
         self.opa = UserDefaults.standard.double(forKey: Looks.keyOpa)
-        let xtheme = UserDefaults.standard.string(forKey: Looks.keyThemeColor) ?? ThemeKeys.Blueish.rawValue
-        self.theme = ThemeKeys(rawValue: xtheme) ?? .Blueish
+        let xtheme = UserDefaults.standard.string(forKey: Looks.keyThemeColor) ?? ThemeKeys.Blue.rawValue
+        self.theme = ThemeKeys(rawValue: xtheme) ?? .Blue
     }
 
 }
 
 enum ThemeKeys: String, CaseIterable, Identifiable {
-    case Blueish, Greenish, Pinkish, Yellowish, Orangy, Grayish
+    case Blue, Green, Pink, Yellow, Orange, Gray
     
     var id: String { rawValue }
 }

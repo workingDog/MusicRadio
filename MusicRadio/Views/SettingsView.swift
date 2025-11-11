@@ -25,35 +25,27 @@ struct SettingsView: View {
                 .buttonStyle(.bordered)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(6)
-                
-                Spacer()
-                
+
                 Text("Settings").font(.largeTitle)
-                
-                Spacer()
-                
-                Form {
-                    Section("Top Stations") {
-                        HStack {
-                            Text("Top-rated stations to show ")
-                            CompactStepper(value: $selector.topCount, range: 10...100, step: 10)
-                        }
-                    }
-                    
-                    Section("Colors") {
-                        themePicker()
-                        Slider(value: $looks.opa, in: 0...1)
-                            .tint(looks.themeColor)
-                    }
+
+                HStack {
+                    Text("Top-rated stations to show ")
+                    CompactStepper(value: $selector.topCount, range: 10...100, step: 10)
                 }
-                .formStyle(.grouped)
-                .scrollContentBackground(.hidden)
-                .padding()
+                .padding(.top, 30)
+                .padding(.horizontal)
+                
+                VStack {
+                    themePicker()
+                    Slider(value: $looks.opa, in: 0...1)
+                        .tint(looks.themeColor)
+                }
+                .padding(.top, 30)
+                .padding(.horizontal)
                 
                 Spacer()
                 
             }
-            
         }
         .onDisappear {
             selector.storeSettings()

@@ -11,6 +11,7 @@ import AVKit
 
 struct ToolsView: View {
     @Environment(Selector.self) var selector
+    @Environment(Looks.self) var looks
     
     @State private var showSettings: Bool = false
     
@@ -45,7 +46,9 @@ struct ToolsView: View {
         }
         .sheet(isPresented: $showSettings) {
             SettingsView()
-                .presentationDetents([.medium])
+                .environment(looks)
+                .environment(selector)
+                .presentationDetents([.large])
         }
     }
 }
