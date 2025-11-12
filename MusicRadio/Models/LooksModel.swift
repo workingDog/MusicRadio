@@ -1,0 +1,115 @@
+//
+//  LooksModel.swift
+//  MusicRadio
+//
+//  Created by Ringo Wathelet on 2025/11/12.
+//
+import Foundation
+import SwiftUI
+
+@MainActor
+@Observable
+class LooksModel {
+    
+    var favouriteColor: Color = Color.mint
+    var netColor: Color = Color.blue
+    var starColor: Color = Color.orange
+    var equaliserColor: Color = Color.blue
+    var backColor = Color.gray
+    
+    // keys for UserDefaults
+    static let keyFavouriteColor: String = "favouriteColor"
+    static let keyNetColor: String = "netColor"
+    static let keyStarColor: String = "starColor"
+    static let keyEqualiserColor: String = "equaliserColor"
+    static let keyBackColor: String = "backColor"
+    
+    // convenience color gradient that can be used in other Views
+    public var gradient: LinearGradient {
+        LinearGradient(gradient: Gradient(colors: [backColor.opacity(1), backColor.opacity(0.3)]), startPoint: .top, endPoint: .bottom)
+    }
+    
+    // store settings in UserDefaults
+    public func storeSettings() {
+        UserDefaults.standard.set(self.favouriteColor.toHex(), forKey: LooksModel.keyFavouriteColor)
+        UserDefaults.standard.set(self.netColor.toHex(), forKey: LooksModel.keyNetColor)
+        UserDefaults.standard.set(self.starColor.toHex(), forKey: LooksModel.keyStarColor)
+        UserDefaults.standard.set(self.equaliserColor.toHex(), forKey: LooksModel.keyEqualiserColor)
+        UserDefaults.standard.set(self.backColor.toHex(), forKey: LooksModel.keyBackColor)
+    }
+    
+    // retrieve settings from UserDefaults
+    public func retrieveSettings() {
+        let fav = UserDefaults.standard.string(forKey: LooksModel.keyFavouriteColor)
+        let net = UserDefaults.standard.string(forKey: LooksModel.keyNetColor)
+        let star = UserDefaults.standard.string(forKey: LooksModel.keyStarColor)
+        let equ = UserDefaults.standard.string(forKey: LooksModel.keyEqualiserColor)
+        let back = UserDefaults.standard.string(forKey: LooksModel.keyBackColor)
+
+        self.favouriteColor = (fav != nil) ? Color(hex: fav!) : Color.mint
+        self.netColor = (net != nil) ? Color(hex: net!) : Color.blue
+        self.starColor = (star != nil) ? Color(hex: star!) : Color.orange
+        self.equaliserColor = (equ != nil) ? Color(hex: equ!) : Color.blue
+        self.backColor = (back != nil) ? Color(hex: back!) : Color.gray
+    }
+    
+}
+
+extension Color {
+    public init(hex: String) {
+        self.init(UIColor(hex: hex))
+    }
+
+    public func toHex(alpha: Bool = false) -> String? {
+        UIColor(self).toHex(alpha: alpha)
+    }
+}
+
+extension UIColor {
+    
+    convenience init(hex: String) {
+        let trimHex = hex.trimmingCharacters(in: .whitespacesAndNewlines)
+        let dropHash = String(trimHex.dropFirst()).trimmingCharacters(in: .whitespacesAndNewlines)
+        let hexString = trimHex.starts(with: "#") ? dropHash : trimHex
+        let ui64 = UInt64(hexString, radix: 16)
+        let value = ui64 != nil ? Int(ui64!) : 0
+        // #RRGGBB
+        var components = (
+            R: CGFloat((value >> 16) & 0xff) / 255,
+            G: CGFloat((value >> 08) & 0xff) / 255,
+            B: CGFloat((value >> 00) & 0xff) / 255,
+            a: CGFloat(1)
+        )
+        if String(hexString).count == 8 {
+            // #RRGGBBAA
+            components = (
+                R: CGFloat((value >> 24) & 0xff) / 255,
+                G: CGFloat((value >> 16) & 0xff) / 255,
+                B: CGFloat((value >> 08) & 0xff) / 255,
+                a: CGFloat((value >> 00) & 0xff) / 255
+            )
+        }
+        self.init(red: components.R, green: components.G, blue: components.B, alpha: components.a)
+    }
+    
+    func toHex(alpha: Bool = false) -> String? {
+        guard let components = cgColor.components, components.count >= 3 else {
+            return nil
+        }
+        
+        let r = Float(components[0])
+        let g = Float(components[1])
+        let b = Float(components[2])
+        var a = Float(1.0)
+        
+        if components.count >= 4 {
+            a = Float(components[3])
+        }
+        
+        if alpha {
+            return String(format: "%02lX%02lX%02lX%02lX", lroundf(r * 255), lroundf(g * 255), lroundf(b * 255), lroundf(a * 255))
+        } else {
+            return String(format: "%02lX%02lX%02lX", lroundf(r * 255), lroundf(g * 255), lroundf(b * 255))
+        }
+    }
+}

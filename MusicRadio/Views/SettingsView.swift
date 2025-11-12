@@ -10,16 +10,16 @@ import SwiftUI
 struct SettingsView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(Selector.self) var selector
-    @Environment(ColorModel.self) var colorModel
-
+    @Environment(LooksModel.self) var looksModel
     
     var body: some View {
         @Bindable var selector = selector
-        @Bindable var colorModel = colorModel
+        @Bindable var looksModel = looksModel
+        
         ZStack {
-            colorModel.gradient.ignoresSafeArea()
-
-            VStack {
+            looksModel.gradient.ignoresSafeArea()
+            
+            VStack(spacing: 20) {
                 Button("Done") {
                     dismiss()
                 }
@@ -36,47 +36,61 @@ struct SettingsView: View {
                 .padding(.top, 30)
                 .padding(.horizontal)
                 
-                Divider()
-
-                VStack(spacing: 20) {
-                    Text("Background color").bold()
-                    HStack{
-                        Text("Palette ")
-                        Toggle("", isOn: $colorModel.grayScale).labelsHidden()
-                        Spacer()
-                    }
-                    ColorSlider()
-                        .accentColor(.clear)
-                        .frame(width: 333, height: 40)
-                        .background(colorModel.colorGradient)
-                        .clipShape(RoundedRectangle(cornerRadius: 20))
-                        .overlay(RoundedRectangle(cornerRadius: 20)
-                        .stroke(lineWidth: 1).foregroundColor(.black))
-                    
-                    Slider(value: $colorModel.opacity, in: 0...1)
-                        .tint(colorModel.color)
-                        .frame(width: 333, height: 40)
+                HStack {
+                    Text("Background color ")
+                    Image(systemName: "app.background.dotted")
+                        .foregroundStyle(looksModel.backColor)
+                    ColorPicker("", selection: $looksModel.backColor, supportsOpacity: true)
+                        .labelsHidden()
+                        .fixedSize()
+                        .frame(width: 66, height: 30)
+                    Spacer()
                 }
-                .padding(.top, 30)
-                .padding(.horizontal)
+                HStack {
+                    Text("Favourite Color ")
+                    Image(systemName: "heart.fill")
+                        .foregroundStyle(looksModel.favouriteColor)
+                    ColorPicker("", selection: $looksModel.favouriteColor, supportsOpacity: false)
+                        .labelsHidden()
+                        .fixedSize()
+                        .frame(width: 66, height: 30)
+                    Spacer()
+                }
+                HStack {
+                    Text("Globe Color   ")
+                    Image(systemName: "network")
+                        .foregroundStyle(looksModel.netColor)
+                    ColorPicker("", selection: $looksModel.netColor, supportsOpacity: false)
+                        .labelsHidden()
+                        .fixedSize()
+                        .frame(width: 66, height: 30)
+                    Spacer()
+                }
+                HStack {
+                    Text("Star Color    ")
+                    Image(systemName: "star.fill")
+                        .foregroundStyle(looksModel.starColor)
+                    ColorPicker("", selection: $looksModel.starColor, supportsOpacity: false)
+                        .labelsHidden()
+                        .fixedSize()
+                        .frame(width: 66, height: 30)
+                    Spacer()
+                }
                 
                 Spacer()
-                
             }
-        }
-        .onChange(of: colorModel.grayScale) {
-            colorModel.updatePalette()
+            .padding(12)
         }
         .onDisappear {
             selector.storeSettings()
-            colorModel.storeSettings()
+            looksModel.storeSettings()
         }
     }
     
 }
 
 struct CompactStepper: View {
-    @Environment(ColorModel.self) var colorModel
+    @Environment(LooksModel.self) var looksModel
     
     @Binding var value: Int
     let range: ClosedRange<Int>
@@ -103,7 +117,7 @@ struct CompactStepper: View {
             }.buttonStyle(BorderlessButtonStyle()) // <-- important
         }
         .padding(6)
-        .background(colorModel.gradient)
+        .background(looksModel.gradient)
         .clipShape(Capsule())
         .contentShape(Rectangle())
     }

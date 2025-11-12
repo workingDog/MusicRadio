@@ -70,7 +70,7 @@ class PlayerManager {
         Task {
             let session = AVAudioSession.sharedInstance()
             do {
-                try await session.setCategory(.playback, mode: .default, options: [.mixWithOthers])
+                try await session.setCategory(.playback, mode: .default, options: [.allowAirPlay, .mixWithOthers])
                 try await session.setActive(true)
             } catch {
                 print("Failed to configure audio session: \(error)")

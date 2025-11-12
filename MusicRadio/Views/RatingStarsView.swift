@@ -8,6 +8,8 @@ import SwiftUI
 
 
 struct RatingStarsView: View {
+    @Environment(LooksModel.self) var looksModel
+    
     let station: RadioStation
     let maxRating: Int
     
@@ -23,7 +25,7 @@ struct RatingStarsView: View {
             ForEach(0..<stars, id: \.self) { _ in
                 Image(systemName: "star.fill")
                     .font(.system(size: 12))
-                    .foregroundColor(.orange)
+                    .foregroundColor(looksModel.starColor)
             }
         }
         .offset(y: -6)

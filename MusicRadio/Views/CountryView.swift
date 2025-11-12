@@ -10,7 +10,7 @@ import SwiftData
 
 struct CountryView: View {
     @Environment(Selector.self) var selector
-    @Environment(ColorModel.self) var colorModel
+    @Environment(LooksModel.self) var looksModel
     
     let network = Networker()
     
@@ -20,7 +20,7 @@ struct CountryView: View {
     
     var body: some View {
         ZStack {
-            colorModel.gradient.ignoresSafeArea()
+            looksModel.gradient.ignoresSafeArea()
             
             VStack {
                 if stations.isEmpty {
@@ -38,7 +38,6 @@ struct CountryView: View {
                 print(error)
             }
         }
-    //    .navigationBarTitle(country.name)
         .toolbar {
             ToolbarItem(placement: .principal) {
                 HStack(spacing: 8) {
@@ -53,7 +52,6 @@ struct CountryView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
-
     }
     
 }

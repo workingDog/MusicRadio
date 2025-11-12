@@ -12,7 +12,7 @@ import SwiftData
 struct SearchStationView: View {
     @Environment(PlayerManager.self) var playerManager
     @Environment(Selector.self) var selector
-    @Environment(ColorModel.self) var colorModel
+    @Environment(LooksModel.self) var looksModel
     
     let network = Networker()
     
@@ -24,7 +24,7 @@ struct SearchStationView: View {
     var body: some View {
         @Bindable var selector = selector
         ZStack {
-            colorModel.gradient.ignoresSafeArea()
+            looksModel.gradient.ignoresSafeArea()
             
             VStack(alignment: .leading, spacing: 20) {
                 HStack {
