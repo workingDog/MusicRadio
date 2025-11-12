@@ -18,7 +18,6 @@ class Selector {
     var searchStation: String = ""
     
     static let keyTopCount: String = "topCount"
-    static let keyFilter: String = "filter"
     static let keyTag: String = "tag"
     
 

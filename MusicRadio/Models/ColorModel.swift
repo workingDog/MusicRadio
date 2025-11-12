@@ -100,7 +100,7 @@ public class ColorModel {
         self.grayScale = UserDefaults.standard.bool(forKey: ColorModel.keyGrayScale)
     }
     
-    // update the model palette to grayScale or color
+    // update the model palette to grayscale or color
     public func updatePalette() {
         self.saturation = grayScale ? 0.0 : 1.0
         self.color = self.colors.isEmpty ? Color.clear : self.colors[Int(self.value)]
