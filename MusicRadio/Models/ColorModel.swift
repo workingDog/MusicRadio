@@ -10,6 +10,7 @@ import SwiftUI
 /**
  * the ColorSlider data model
  */
+@MainActor
 @Observable
 public class ColorModel {
     

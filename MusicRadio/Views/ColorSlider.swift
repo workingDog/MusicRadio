@@ -10,10 +10,10 @@ import SwiftUI
 /**
  * The color slider view
  */
-public struct ColorSlider: View {
+struct ColorSlider: View {
     @Environment(ColorModel.self) var colorModel
 
-    public var body: some View {
+    var body: some View {
         Slider(value: Binding<Double>(
             get: { colorModel.value },
             set: { updateModel($0) }),
@@ -23,7 +23,7 @@ public struct ColorSlider: View {
         }
     }
     
-    public func updateModel(_ value: Double) {
+    func updateModel(_ value: Double) {
         colorModel.value = value
         colorModel.updatePalette()
     }

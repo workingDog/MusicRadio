@@ -1,5 +1,5 @@
 //
-//  Models.swift
+//  DataModels.swift
 //  MusicRadio
 //
 //  Created by Ringo Wathelet on 2025/11/02.

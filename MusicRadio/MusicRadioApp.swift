@@ -19,7 +19,7 @@ import SwiftData
 @main
 struct MusicRadioApp: App {
 
-    @State private var colorModel = ColorModel()
+    @State var colorModel = ColorModel()
     
     var sharedModelContainer: ModelContainer = {
         let appSupportDir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).last
