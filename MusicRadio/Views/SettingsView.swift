@@ -10,14 +10,14 @@ import SwiftUI
 struct SettingsView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(Selector.self) var selector
-    @Environment(LooksModel.self) var looksModel
+    @Environment(ColorsModel.self) var colorsModel
     
     var body: some View {
         @Bindable var selector = selector
-        @Bindable var looksModel = looksModel
+        @Bindable var colorsModel = colorsModel
         
         ZStack {
-            looksModel.gradient.ignoresSafeArea()
+            colorsModel.gradient.ignoresSafeArea()
             
             VStack(spacing: 20) {
                 Button("Done") {
@@ -39,8 +39,8 @@ struct SettingsView: View {
                 HStack {
                     Text("Background color ")
                     Image(systemName: "app.background.dotted")
-                        .foregroundStyle(looksModel.backColor)
-                    ColorPicker("", selection: $looksModel.backColor, supportsOpacity: true)
+                        .foregroundStyle(colorsModel.backColor)
+                    ColorPicker("", selection: $colorsModel.backColor, supportsOpacity: true)
                         .labelsHidden()
                         .fixedSize()
                         .frame(width: 66, height: 30)
@@ -49,8 +49,8 @@ struct SettingsView: View {
                 HStack {
                     Text("Favourite Color ")
                     Image(systemName: "heart.fill")
-                        .foregroundStyle(looksModel.favouriteColor)
-                    ColorPicker("", selection: $looksModel.favouriteColor, supportsOpacity: false)
+                        .foregroundStyle(colorsModel.favouriteColor)
+                    ColorPicker("", selection: $colorsModel.favouriteColor, supportsOpacity: false)
                         .labelsHidden()
                         .fixedSize()
                         .frame(width: 66, height: 30)
@@ -59,8 +59,8 @@ struct SettingsView: View {
                 HStack {
                     Text("Globe Color   ")
                     Image(systemName: "network")
-                        .foregroundStyle(looksModel.netColor)
-                    ColorPicker("", selection: $looksModel.netColor, supportsOpacity: false)
+                        .foregroundStyle(colorsModel.netColor)
+                    ColorPicker("", selection: $colorsModel.netColor, supportsOpacity: false)
                         .labelsHidden()
                         .fixedSize()
                         .frame(width: 66, height: 30)
@@ -69,8 +69,8 @@ struct SettingsView: View {
                 HStack {
                     Text("Star Color    ")
                     Image(systemName: "star.fill")
-                        .foregroundStyle(looksModel.starColor)
-                    ColorPicker("", selection: $looksModel.starColor, supportsOpacity: false)
+                        .foregroundStyle(colorsModel.starColor)
+                    ColorPicker("", selection: $colorsModel.starColor, supportsOpacity: false)
                         .labelsHidden()
                         .fixedSize()
                         .frame(width: 66, height: 30)
@@ -83,14 +83,14 @@ struct SettingsView: View {
         }
         .onDisappear {
             selector.storeSettings()
-            looksModel.storeSettings()
+            colorsModel.storeSettings()
         }
     }
     
 }
 
 struct CompactStepper: View {
-    @Environment(LooksModel.self) var looksModel
+    @Environment(ColorsModel.self) var colorsModel
     
     @Binding var value: Int
     let range: ClosedRange<Int>
@@ -117,7 +117,7 @@ struct CompactStepper: View {
             }.buttonStyle(BorderlessButtonStyle()) // <-- important
         }
         .padding(6)
-        .background(looksModel.gradient)
+        .background(colorsModel.gradient)
         .clipShape(Capsule())
         .contentShape(Rectangle())
     }

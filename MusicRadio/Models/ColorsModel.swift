@@ -9,7 +9,7 @@ import SwiftUI
 
 @MainActor
 @Observable
-class LooksModel {
+class ColorsModel {
     
     var favouriteColor: Color = Color.mint
     var netColor: Color = Color.blue
@@ -31,20 +31,20 @@ class LooksModel {
     
     // store settings in UserDefaults
     public func storeSettings() {
-        UserDefaults.standard.set(self.favouriteColor.toHex(), forKey: LooksModel.keyFavouriteColor)
-        UserDefaults.standard.set(self.netColor.toHex(), forKey: LooksModel.keyNetColor)
-        UserDefaults.standard.set(self.starColor.toHex(), forKey: LooksModel.keyStarColor)
-        UserDefaults.standard.set(self.equaliserColor.toHex(), forKey: LooksModel.keyEqualiserColor)
-        UserDefaults.standard.set(self.backColor.toHex(), forKey: LooksModel.keyBackColor)
+        UserDefaults.standard.set(self.favouriteColor.toHex(), forKey: ColorsModel.keyFavouriteColor)
+        UserDefaults.standard.set(self.netColor.toHex(), forKey: ColorsModel.keyNetColor)
+        UserDefaults.standard.set(self.starColor.toHex(), forKey: ColorsModel.keyStarColor)
+        UserDefaults.standard.set(self.equaliserColor.toHex(), forKey: ColorsModel.keyEqualiserColor)
+        UserDefaults.standard.set(self.backColor.toHex(), forKey: ColorsModel.keyBackColor)
     }
     
     // retrieve settings from UserDefaults
     public func retrieveSettings() {
-        let fav = UserDefaults.standard.string(forKey: LooksModel.keyFavouriteColor)
-        let net = UserDefaults.standard.string(forKey: LooksModel.keyNetColor)
-        let star = UserDefaults.standard.string(forKey: LooksModel.keyStarColor)
-        let equ = UserDefaults.standard.string(forKey: LooksModel.keyEqualiserColor)
-        let back = UserDefaults.standard.string(forKey: LooksModel.keyBackColor)
+        let fav = UserDefaults.standard.string(forKey: ColorsModel.keyFavouriteColor)
+        let net = UserDefaults.standard.string(forKey: ColorsModel.keyNetColor)
+        let star = UserDefaults.standard.string(forKey: ColorsModel.keyStarColor)
+        let equ = UserDefaults.standard.string(forKey: ColorsModel.keyEqualiserColor)
+        let back = UserDefaults.standard.string(forKey: ColorsModel.keyBackColor)
 
         self.favouriteColor = (fav != nil) ? Color(hex: fav!) : Color.mint
         self.netColor = (net != nil) ? Color(hex: net!) : Color.blue

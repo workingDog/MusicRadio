@@ -12,7 +12,7 @@ import WebKit
 struct StationView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(PlayerManager.self) var playerManager
-    @Environment(LooksModel.self) var looksModel
+    @Environment(ColorsModel.self) var colorsModel
     
     var station: RadioStation
     let maxRating: Int
@@ -39,7 +39,7 @@ struct StationView: View {
                     } label: {
                         Image(systemName: station.isFavourite ? "heart.fill" : "heart.slash")
                             .resizable()
-                            .foregroundStyle(looksModel.favouriteColor)
+                            .foregroundStyle(colorsModel.favouriteColor)
                             .frame(width: 30, height: 30)
                             .padding(5)
                     }.buttonStyle(.borderless)
@@ -55,7 +55,7 @@ struct StationView: View {
                     } label: {
                         Image(systemName: "network")
                             .resizable()
-                            .foregroundColor(looksModel.netColor)
+                            .foregroundColor(colorsModel.netColor)
                             .frame(width: 30, height: 30)
                             .padding(5)
                     }.buttonStyle(.borderless)

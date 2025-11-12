@@ -18,7 +18,7 @@ import SwiftData
 
 @main
 struct MusicRadioApp: App {
-    @State private var looksModel = LooksModel()
+    @State private var colorsModel = ColorsModel()
     
     var sharedModelContainer: ModelContainer = {
         let appSupportDir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).last
@@ -36,7 +36,7 @@ struct MusicRadioApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(looksModel)
+                .environment(colorsModel)
         }
         .modelContainer(sharedModelContainer)
     }
