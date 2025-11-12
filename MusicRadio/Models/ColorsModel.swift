@@ -1,11 +1,12 @@
 //
-//  LooksModel.swift
+//  ColorsModel.swift
 //  MusicRadio
 //
 //  Created by Ringo Wathelet on 2025/11/12.
 //
 import Foundation
 import SwiftUI
+
 
 @MainActor
 @Observable
@@ -14,7 +15,7 @@ class ColorsModel {
     var favouriteColor: Color = Color.mint
     var netColor: Color = Color.blue
     var starColor: Color = Color.orange
-    var equaliserColor: Color = Color.blue
+    var equaliserColor: Color = Color.accentColor
     var backColor = Color.gray
     
     // keys for UserDefaults
@@ -24,7 +25,7 @@ class ColorsModel {
     static let keyEqualiserColor: String = "equaliserColor"
     static let keyBackColor: String = "backColor"
     
-    // convenience color gradient that can be used in other Views
+    // convenience color gradient
     public var gradient: LinearGradient {
         LinearGradient(gradient: Gradient(colors: [backColor.opacity(1), backColor.opacity(0.3)]), startPoint: .top, endPoint: .bottom)
     }
@@ -60,7 +61,7 @@ extension Color {
         self.init(UIColor(hex: hex))
     }
 
-    public func toHex(alpha: Bool = false) -> String? {
+    public func toHex(alpha: Bool = true) -> String? {
         UIColor(self).toHex(alpha: alpha)
     }
 }
@@ -92,7 +93,7 @@ extension UIColor {
         self.init(red: components.R, green: components.G, blue: components.B, alpha: components.a)
     }
     
-    func toHex(alpha: Bool = false) -> String? {
+    func toHex(alpha: Bool = true) -> String? {
         guard let components = cgColor.components, components.count >= 3 else {
             return nil
         }

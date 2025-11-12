@@ -10,6 +10,8 @@ import SwiftUI
 
 // fancy version
 struct EqualizerView: View {
+    @Environment(ColorsModel.self) var colorsModel
+    
     @State private var barHeights: [CGFloat] = [0.2, 0.5, 0.3, 0.7, 0.4, 0.2]
     @State private var timer: Timer?
 
@@ -21,13 +23,13 @@ struct EqualizerView: View {
                     .frame(height: barHeights[i] * 34)
                     .overlay(
                         LinearGradient(
-                            gradient: Gradient(colors: [Color.accentColor.opacity(0.95), Color.accentColor.opacity(0.5)]),
+                            gradient: Gradient(colors: [colorsModel.equaliserColor.opacity(0.90), colorsModel.equaliserColor.opacity(0.5)]),
                             startPoint: .top,
                             endPoint: .bottom
                         )
                         .mask(RoundedRectangle(cornerRadius: 8, style: .continuous))
                     )
-                    .shadow(color: Color.accentColor.opacity(0.35), radius: 10, x: 0, y: 4)
+                    .shadow(color: colorsModel.equaliserColor.opacity(0.35), radius: 10, x: 0, y: 4)
                     .animation(.easeInOut(duration: 0.3), value: barHeights[i])
             }
         }
