@@ -15,13 +15,12 @@ struct ContentView: View {
     
     @State private var playerManager = PlayerManager()
     @State private var selector = Selector()
-
+    
     let network = Networker()
-
+    
     @Query private var stations: [RadioStation]
     @Query private var countries: [Country]
     
-
     var body: some View {
         ZStack(alignment: .top) {
             colorsModel.gradient.ignoresSafeArea()
@@ -33,12 +32,12 @@ struct ContentView: View {
                 if selector.view != .countries {
                     FilterToolsView().fixedSize()
                 }
-
+                
                 switch selector.view {
                     case .favourites: StationListView(stations: stations.filter({$0.isFavourite}), columns: 2)
-
+                        
                     case .countries: CountriesView()
-   
+                        
                     case .stations: SearchStationView()
                 }
             }

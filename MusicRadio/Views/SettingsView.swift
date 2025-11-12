@@ -39,52 +39,48 @@ struct SettingsView: View {
                 HStack {
                     Text("Equaliser Color    ")
                     Image(systemName: "chart.bar.fill")
+                        .font(.title)
                         .foregroundStyle(colorsModel.equaliserColor)
                     ColorPicker("", selection: $colorsModel.equaliserColor)
                         .labelsHidden()
-                        .fixedSize()
-                        .frame(width: 66, height: 30)
                     Spacer()
                 }
+                .padding(.top, 30)
                 
                 HStack {
                     Text("Background color ")
                     Image(systemName: "backpack.fill")
+                        .font(.title)
                         .foregroundStyle(colorsModel.backColor)
                     ColorPicker("", selection: $colorsModel.backColor)
                         .labelsHidden()
-                        .fixedSize()
-                        .frame(width: 66, height: 30)
                     Spacer()
                 }
                 HStack {
                     Text("Favourite Color ")
                     Image(systemName: "heart.fill")
+                        .font(.title)
                         .foregroundStyle(colorsModel.favouriteColor)
                     ColorPicker("", selection: $colorsModel.favouriteColor)
                         .labelsHidden()
-                        .fixedSize()
-                        .frame(width: 66, height: 30)
                     Spacer()
                 }
                 HStack {
                     Text("Network Color ")
                     Image(systemName: "network")
+                        .font(.title)
                         .foregroundStyle(colorsModel.netColor)
                     ColorPicker("", selection: $colorsModel.netColor)
                         .labelsHidden()
-                        .fixedSize()
-                        .frame(width: 66, height: 30)
                     Spacer()
                 }
                 HStack {
                     Text("Star Color    ")
                     Image(systemName: "star.fill")
+                        .font(.title)
                         .foregroundStyle(colorsModel.starColor)
                     ColorPicker("", selection: $colorsModel.starColor)
                         .labelsHidden()
-                        .fixedSize()
-                        .frame(width: 66, height: 30)
                     Spacer()
                 }
                 
