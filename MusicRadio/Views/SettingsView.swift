@@ -49,7 +49,7 @@ struct SettingsView: View {
                 
                 HStack {
                     Text("Background color ")
-                    Image(systemName: "app.background.dotted")
+                    Image(systemName: "backpack.fill")
                         .foregroundStyle(colorsModel.backColor)
                     ColorPicker("", selection: $colorsModel.backColor)
                         .labelsHidden()
@@ -68,7 +68,7 @@ struct SettingsView: View {
                     Spacer()
                 }
                 HStack {
-                    Text("Globe Color   ")
+                    Text("Network Color ")
                     Image(systemName: "network")
                         .foregroundStyle(colorsModel.netColor)
                     ColorPicker("", selection: $colorsModel.netColor)

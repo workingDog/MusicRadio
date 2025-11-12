@@ -11,6 +11,7 @@ import SwiftData
 struct StationListView: View {
     @Environment(Selector.self) var selector
     @Environment(PlayerManager.self) var playerManager
+    @Environment(ColorsModel.self) var colorsModel
     
     var stations: [RadioStation]
     let columns: [GridItem]
@@ -57,7 +58,7 @@ struct StationListView: View {
                         StationView(station: station, maxRating: maxRating)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8)
-                                    .stroke(playerManager.station == station ? Color.blue : .clear, lineWidth: 4)
+                                    .stroke(playerManager.station == station ? colorsModel.equaliserColor : .clear, lineWidth: 4)
                             )
                             .padding(.horizontal, 4)
                     }
