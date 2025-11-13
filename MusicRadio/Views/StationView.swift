@@ -84,8 +84,8 @@ struct StationView: View {
                     playerManager.station = station
                 }
             }
-            .background(.white.opacity(0.4))
-         //   .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 12)) // for iOS26+
+            .background(colorsModel.stationBackColor)
+       //     .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 12)) // for iOS26+
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .fullScreenCover(isPresented: $showWeb) {
                 WebViewScreen(station: station)

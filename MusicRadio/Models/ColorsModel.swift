@@ -17,6 +17,7 @@ class ColorsModel {
     var starColor: Color = Color.orange
     var equaliserColor: Color = Color.accentColor
     var backColor = Color.mint.opacity(0.5)
+    var stationBackColor = Color.white.opacity(0.4)
     
     // keys for UserDefaults
     static let keyFavouriteColor: String = "favouriteColor"
@@ -24,6 +25,7 @@ class ColorsModel {
     static let keyStarColor: String = "starColor"
     static let keyEqualiserColor: String = "equaliserColor"
     static let keyBackColor: String = "backColor"
+    static let keyStationBackColor: String = "stationBackColor"
     
     // convenience color gradient
     public var gradient: LinearGradient {
@@ -37,6 +39,7 @@ class ColorsModel {
         UserDefaults.standard.set(self.starColor.toHex(), forKey: ColorsModel.keyStarColor)
         UserDefaults.standard.set(self.equaliserColor.toHex(), forKey: ColorsModel.keyEqualiserColor)
         UserDefaults.standard.set(self.backColor.toHex(), forKey: ColorsModel.keyBackColor)
+        UserDefaults.standard.set(self.stationBackColor.toHex(), forKey: ColorsModel.keyStationBackColor)
     }
     
     // retrieve settings from UserDefaults
@@ -46,12 +49,14 @@ class ColorsModel {
         let star = UserDefaults.standard.string(forKey: ColorsModel.keyStarColor)
         let equ = UserDefaults.standard.string(forKey: ColorsModel.keyEqualiserColor)
         let back = UserDefaults.standard.string(forKey: ColorsModel.keyBackColor)
+        let sback = UserDefaults.standard.string(forKey: ColorsModel.keyStationBackColor)
 
         self.favouriteColor = (fav != nil) ? Color(hex: fav!) : Color.mint
         self.netColor = (net != nil) ? Color(hex: net!) : Color.blue
         self.starColor = (star != nil) ? Color(hex: star!) : Color.orange
         self.equaliserColor = (equ != nil) ? Color(hex: equ!) : Color.blue
         self.backColor = (back != nil) ? Color(hex: back!) : Color.mint.opacity(0.5)
+        self.stationBackColor = (sback != nil) ? Color(hex: sback!) : Color.white.opacity(0.4)
     }
     
 }

@@ -46,6 +46,16 @@ struct SettingsView: View {
                     Spacer()
                 }
                 .padding(.top, 30)
+
+                HStack {
+                    Text("Stations back color ")
+                    Image(systemName: "backpack.fill")
+                        .font(.title)
+                        .foregroundStyle(colorsModel.stationBackColor)
+                    ColorPicker("", selection: $colorsModel.stationBackColor)
+                        .labelsHidden()
+                    Spacer()
+                }
                 
                 HStack {
                     Text("Background color ")
