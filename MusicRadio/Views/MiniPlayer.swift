@@ -35,12 +35,10 @@ struct MiniPlayer: View {
                 }.padding(4)
                 VStack {
                     Text(playerManager.station?.name ?? "no station")
-                        .font(.headline)
-                        .lineLimit(1)
                     Text(playerManager.currentSong)
-                        .font(.headline)
-                        .lineLimit(1)
                 }
+                .font(.headline)
+                .lineLimit(1)
             }
             
             HStack(spacing: 8) {

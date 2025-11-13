@@ -27,6 +27,7 @@ class PlayerManager {
         keepPlayInBackground()
     }
 
+    // call this for every new station
     func setStation(_ radioStation: RadioStation) {
         self.station = radioStation
         if let station = station {
@@ -80,6 +81,7 @@ class PlayerManager {
  
 }
 
+// To get the song title
 class RadioPlayer: NSObject, AVPlayerItemMetadataOutputPushDelegate, @unchecked Sendable {
     var player: AVPlayer?
     var metadataOutput: AVPlayerItemMetadataOutput?

@@ -63,11 +63,9 @@ struct CountryRow: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(country.name)
                     .font(.headline)
-                    .foregroundColor(.black)
                 Text("\(country.stationcount ?? 0) stations")
                     .font(.subheadline)
-                    .foregroundColor(.black)
-            }
+            }.foregroundColor(.black)
             Spacer()
         }
         .padding()

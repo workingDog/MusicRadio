@@ -36,35 +36,6 @@ struct EqualizerView: View {
         .padding(5)
         .frame(maxWidth: .infinity)
         .frame(height: 64)
-        .background {
-            if #available(iOS 26.0, *) {
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(.clear)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .stroke(Color.white.opacity(0.12), lineWidth: 0.5)
-                    )
-                    .background(
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .fill(
-                                LinearGradient(
-                                    gradient: Gradient(colors: [Color.white.opacity(0.03), Color.clear]),
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                    )
-            } else {
-                // fallback for older platforms
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(.clear)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .stroke(Color.white.opacity(0.12), lineWidth: 0.5)
-                    )
-            }
-        }
         .onAppear {
             timer?.invalidate()
             timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { _ in

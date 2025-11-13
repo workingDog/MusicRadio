@@ -5,7 +5,6 @@
 //  Created by Ringo Wathelet on 2025/11/06.
 //
 import SwiftUI
-import SwiftData
 
 
 struct FilterToolsView: View {

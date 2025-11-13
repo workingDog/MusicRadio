@@ -12,7 +12,7 @@ import SwiftUI
 @Observable
 class ColorsModel {
     
-    var favouriteColor: Color = Color.green
+    var favouriteColor: Color = Color.teal
     var netColor: Color = Color.blue
     var starColor: Color = Color.orange
     var equaliserColor: Color = Color.accentColor

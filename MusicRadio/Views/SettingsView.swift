@@ -110,7 +110,7 @@ struct CompactStepper: View {
             }) {
                 Image(systemName: "minus.circle.fill")
                     .font(.title2)
-            }.buttonStyle(BorderlessButtonStyle()) // <-- important
+            }.buttonStyle(.borderless) // <-- important
             
             Text("Top \(value)")
                 .font(.headline)
@@ -121,7 +121,7 @@ struct CompactStepper: View {
             }) {
                 Image(systemName: "plus.circle.fill")
                     .font(.title2)
-            }.buttonStyle(BorderlessButtonStyle()) // <-- important
+            }.buttonStyle(.borderless) // <-- important
         }
         .padding(6)
         .background(colorsModel.gradient)

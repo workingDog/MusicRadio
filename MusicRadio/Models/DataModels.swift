@@ -4,7 +4,6 @@
 //
 //  Created by Ringo Wathelet on 2025/11/02.
 //
-
 import Foundation
 import SwiftData
 import SwiftUI
@@ -41,7 +40,7 @@ final class Country: Codable {
 @Model
 final class RadioStation: Codable {
 
-    // not encoded or decoded
+    // these are not encoded or decoded
     static var defaultImg = UIImage(named: "radio")!
     var isFavourite: Bool = false
     var isPlaying: Bool = false

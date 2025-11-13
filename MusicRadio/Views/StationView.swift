@@ -5,7 +5,6 @@
 //  Created by Ringo Wathelet on 2025/11/03.
 //
 import SwiftUI
-import SwiftData
 import WebKit
 
 
@@ -76,18 +75,17 @@ struct StationView: View {
         }
             .contentShape(RoundedRectangle(cornerRadius: 12))
             .onTapGesture {
+                playerManager.pause()
+                playerManager.currentSong = ""
+                // tap on same station to unselect it
                 if playerManager.station == station {
-                    playerManager.pause()
-                    playerManager.currentSong = ""
                     playerManager.station = nil
                 } else {
-                    playerManager.pause()
-                    playerManager.currentSong = ""
                     playerManager.station = station
                 }
             }
-            .background(.white.opacity(0.4))
-        //    .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 12)) // for iOS26+
+         //   .background(.white.opacity(0.4))
+            .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 12)) // for iOS26+
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .fullScreenCover(isPresented: $showWeb) {
                 WebViewScreen(station: station)

@@ -5,8 +5,6 @@
 //  Created by Ringo Wathelet on 2025/11/08.
 //
 import SwiftUI
-import SwiftData
-
 
 
 struct SearchStationView: View {
