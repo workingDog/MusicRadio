@@ -16,14 +16,47 @@ import SwiftData
  
  */
 
+// for testing 
+struct StationsTags: Codable {
+    var name: String?
+    var stationcount: Int?
+}
+
 class Networker {
     
-    var defaultServer = "https://de1.api.radio-browser.info/json/"
+    var defaultServer = "https://de1.api.radio-browser.info/json"
+    
+    // for testing
+    func getAllTags() async throws -> [StationsTags] {
+        if let theUrl = URL(string: "\(defaultServer)/tags") {
+            print("---> getAllTags fetching theUrl: \(theUrl.absoluteString)")
+            var request = URLRequest(url: theUrl)
+            request.httpMethod = "GET"
+            request.setValue("MusicRadio/1.0", forHTTPHeaderField: "User-Agent")
+            request.setValue("application/json", forHTTPHeaderField: "Accept")
+            do {
+                let (data, _) = try await URLSession.shared.data(for: request)
+                let tags = try JSONDecoder().decode([StationsTags].self, from: data)
+                print("---> tags: \(tags.count)\n")
+                
+                let sortedTags = tags.sorted(by: { ($0.stationcount ?? 0) > ($1.stationcount ?? 0) })
+                for tag in sortedTags.prefix(50) {
+                    print("---> tag: \(tag.name ?? "no name")  \(tag.stationcount ?? 0)")
+                }
+                
+                print("\n---> done fetching getAllTags \n")
+                return tags
+            } catch {
+                print(error)
+            }
+        }
+        return []
+    }
     
     
     // for testing
     func getAllStations() async throws -> [RadioStation] {
-        if let theUrl = URL(string: "\(defaultServer)stations") {
+        if let theUrl = URL(string: "\(defaultServer)/stations") {
             print("---> getAllStations fetching theUrl: \(theUrl.absoluteString)")
             do {
                 let (data, _) = try await URLSession.shared.data(from: theUrl)
@@ -41,7 +74,7 @@ class Networker {
     }
 
     func getStationsForCountry(_ country: String) async throws -> [RadioStation] {
-        if let theUrl = URL(string: "\(defaultServer)stations/bycountryexact/\(country)") {
+        if let theUrl = URL(string: "\(defaultServer)/stations/bycountryexact/\(country)") {
             print("---> getStationsForCountry fetching theUrl: \(theUrl.absoluteString)")
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .iso8601
@@ -60,7 +93,7 @@ class Networker {
     }
     
     func getAllCountries() async throws -> [Country] {
-        if let theUrl = URL(string: "\(defaultServer)countries") {
+        if let theUrl = URL(string: "\(defaultServer)/countries") {
             print("---> getAllCountries fetching theUrl: \(theUrl.absoluteString)")
             do {
                 let (data, _) = try await URLSession.shared.data(from: theUrl)
@@ -77,7 +110,7 @@ class Networker {
 
     // for testing
     func getServers() async throws {
-        if let theUrl = URL(string: "\(defaultServer)servers") {
+        if let theUrl = URL(string: "\(defaultServer)/servers") {
             print("---> getServers fetching theUrl: \(theUrl.absoluteString)")
             do {
                 let (data, _) = try await URLSession.shared.data(from: theUrl)
@@ -93,7 +126,7 @@ class Networker {
     }
 
     func getTopVotes( _ limit: Int = 10) async throws -> [RadioStation] {
-        if let theUrl = URL(string: "\(defaultServer)stations/topvote/\(limit)") {
+        if let theUrl = URL(string: "\(defaultServer)/stations/topvote/\(limit)") {
             print("---> getTopVotes fetching theUrl: \(theUrl.absoluteString)")
             do {
                 let (data, _) = try await URLSession.shared.data(from: theUrl)
@@ -112,7 +145,7 @@ class Networker {
     }
 
     func getTopVotesFor(_ country: String, limit: Int = 10) async throws -> [RadioStation] {
-        if let theUrl = URL(string: "\(defaultServer)stations/search?country=\(country)&order=votes&reverse=true&limit=\(limit)") {
+        if let theUrl = URL(string: "\(defaultServer)/stations/search?country=\(country)&order=votes&reverse=true&limit=\(limit)") {
             print("---> getTopVotesFor fetching theUrl: \(theUrl.absoluteString)")
             do {
                 let (data, _) = try await URLSession.shared.data(from: theUrl)
@@ -143,7 +176,7 @@ class Networker {
 //    }
     
     func findStations(_ station: String) async throws -> [RadioStation] {
-        if let theUrl = URL(string: "\(defaultServer)stations/byname/\(station)") {
+        if let theUrl = URL(string: "\(defaultServer)/stations/byname/\(station)") {
             print("---> findStations fetching theUrl: \(theUrl.absoluteString)")
             do {
                 let (data, _) = try await URLSession.shared.data(from: theUrl)
