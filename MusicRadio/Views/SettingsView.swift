@@ -35,18 +35,17 @@ struct SettingsView: View {
                 }
                 .padding(.top, 30)
                 .padding(.horizontal)
-                
+
                 HStack {
-                    Text("Equaliser Color    ")
-                    Image(systemName: "chart.bar.fill")
+                    Text("Countries back color ")
+                    Image(systemName: "backpack.fill")
                         .font(.title)
-                        .foregroundStyle(colorsModel.equaliserColor)
-                    ColorPicker("", selection: $colorsModel.equaliserColor)
+                        .foregroundStyle(colorsModel.countryBackColor)
+                    ColorPicker("", selection: $colorsModel.countryBackColor)
                         .labelsHidden()
                     Spacer()
-                }
-                .padding(.top, 30)
-
+                }.padding(.top, 30)
+                
                 HStack {
                     Text("Stations back color ")
                     Image(systemName: "backpack.fill")
@@ -66,6 +65,17 @@ struct SettingsView: View {
                         .labelsHidden()
                     Spacer()
                 }
+                
+                HStack {
+                    Text("Equaliser Color    ")
+                    Image(systemName: "chart.bar.fill")
+                        .font(.title)
+                        .foregroundStyle(colorsModel.equaliserColor)
+                    ColorPicker("", selection: $colorsModel.equaliserColor)
+                        .labelsHidden()
+                    Spacer()
+                }
+
                 HStack {
                     Text("Favourite Color ")
                     Image(systemName: "heart.fill")

@@ -18,6 +18,7 @@ class ColorsModel {
     var equaliserColor: Color = Color.accentColor
     var backColor = Color.mint.opacity(0.5)
     var stationBackColor = Color.white.opacity(0.4)
+    var countryBackColor = Color.mint.opacity(0.5)
     
     // keys for UserDefaults
     static let keyFavouriteColor: String = "favouriteColor"
@@ -26,6 +27,7 @@ class ColorsModel {
     static let keyEqualiserColor: String = "equaliserColor"
     static let keyBackColor: String = "backColor"
     static let keyStationBackColor: String = "stationBackColor"
+    static let keyCountryBackColor: String = "countryBackColor"
     
     // convenience color gradient
     public var gradient: LinearGradient {
@@ -40,6 +42,7 @@ class ColorsModel {
         UserDefaults.standard.set(self.equaliserColor.toHex(), forKey: ColorsModel.keyEqualiserColor)
         UserDefaults.standard.set(self.backColor.toHex(), forKey: ColorsModel.keyBackColor)
         UserDefaults.standard.set(self.stationBackColor.toHex(), forKey: ColorsModel.keyStationBackColor)
+        UserDefaults.standard.set(self.countryBackColor.toHex(), forKey: ColorsModel.keyCountryBackColor)
     }
     
     // retrieve settings from UserDefaults
@@ -50,13 +53,15 @@ class ColorsModel {
         let equ = UserDefaults.standard.string(forKey: ColorsModel.keyEqualiserColor)
         let back = UserDefaults.standard.string(forKey: ColorsModel.keyBackColor)
         let sback = UserDefaults.standard.string(forKey: ColorsModel.keyStationBackColor)
-
+        let cback = UserDefaults.standard.string(forKey: ColorsModel.keyCountryBackColor)
+        
         self.favouriteColor = (fav != nil) ? Color(hex: fav!) : Color.mint
         self.netColor = (net != nil) ? Color(hex: net!) : Color.blue
         self.starColor = (star != nil) ? Color(hex: star!) : Color.orange
         self.equaliserColor = (equ != nil) ? Color(hex: equ!) : Color.blue
         self.backColor = (back != nil) ? Color(hex: back!) : Color.mint.opacity(0.5)
         self.stationBackColor = (sback != nil) ? Color(hex: sback!) : Color.white.opacity(0.4)
+        self.countryBackColor = (cback != nil) ? Color(hex: cback!) : Color.mint.opacity(0.5)
     }
     
 }

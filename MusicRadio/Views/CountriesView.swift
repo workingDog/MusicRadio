@@ -20,7 +20,7 @@ struct CountriesView: View {
         guard !trimmed.isEmpty else { return countries }
         return countries.filter { country in
             let cleanName = country.name.trimmingCharacters(in: .whitespacesAndNewlines)
-            return cleanName.lowercased().starts(with: searchText.lowercased())
+            return cleanName.lowercased().starts(with: trimmed.lowercased())
         }
     }
     
@@ -69,7 +69,7 @@ struct CountryRow: View {
             Spacer()
         }
         .padding()
-        .background(colorsModel.backColor)
+        .background(colorsModel.countryBackColor)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .shadow(color: .black.opacity(0.6), radius: 4, x: 0, y: 3)
     }
