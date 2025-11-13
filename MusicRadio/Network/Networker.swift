@@ -9,13 +9,6 @@ import SwiftUI
 import SwiftData
 
 
-/*
- for API endpoints see:
- 
- https://docs.radio-browser.info/?utm_source=chatgpt.com#list-of-radio-stations
- 
- */
-
 // for testing 
 struct StationsTags: Codable {
     var name: String?
@@ -115,9 +108,6 @@ class Networker {
             do {
                 let (data, _) = try await URLSession.shared.data(from: theUrl)
                  print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
-       //         let countries = try JSONDecoder().decode([Country].self, from: data)
-      //          print("---> countries: \(countries.count)")
-      //          return countries
             } catch {
                 print(error)
             }
