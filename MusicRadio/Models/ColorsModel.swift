@@ -18,7 +18,7 @@ class ColorsModel {
     var equaliserColor = Color(red: 1, green: 0, blue: 1) // magenta
     var backColor = Color.mint.opacity(0.4)
     var stationBackColor = Color.white.opacity(0.2)
-    var countryBackColor = Color.yellow
+    var countryBackColor = Color.teal.opacity(0.4)
     
     // keys for UserDefaults
     static let keyFavouriteColor: String = "favouriteColor"

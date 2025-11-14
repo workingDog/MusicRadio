@@ -20,7 +20,9 @@ struct ToolsView: View {
             HStack {
                 AirPlayButton()
                     .frame(width: 50, height: 50)
+                    .padding(5)
                 Spacer()
+                
                 Picker("", selection: $selector.view) {
                     ForEach(ViewTypes.allCases) { tool in
                         Text(tool.rawValue).tag(tool)
@@ -29,16 +31,20 @@ struct ToolsView: View {
                 .pickerStyle(.segmented)
                 .frame(width: 250)
                 .padding(.horizontal)
+                
                 Spacer()
-                Button{
+                
+                Button {
                     showSettings = true
                 } label: {
                     Image(systemName: "gear")
                 }
                 .font(.system(size: 26))
                 .padding(5)
+                
             }
-            .background(.ultraThinMaterial)
+       //     .background(.ultraThinMaterial)
+            .glassEffect(.regular.tint(colorsModel.backColor).interactive(), in: RoundedRectangle(cornerRadius: 12))
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .shadow(radius: 2)
             .padding(.horizontal)

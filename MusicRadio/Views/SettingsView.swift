@@ -28,13 +28,13 @@ struct SettingsView: View {
                 .padding(6)
                 
                 Text("Settings").font(.largeTitle)
-                
+
                 HStack {
-                    Text("Top-rated stations to show ")
+                    Text("Top-rated stations to show   ")
                     CompactStepper(value: $selector.topCount, range: 10...100, step: 10)
+                    Spacer()
                 }
-                .padding(.top, 30)
-                .padding(.horizontal)
+                .padding(.top, 20)
 
                 HStack {
                     Text("Countries back color ")
@@ -44,7 +44,7 @@ struct SettingsView: View {
                     ColorPicker("", selection: $colorsModel.countryBackColor)
                         .labelsHidden()
                     Spacer()
-                }.padding(.top, 30)
+                }
                 
                 HStack {
                     Text("Stations back color ")
@@ -144,7 +144,7 @@ struct CompactStepper: View {
             }.buttonStyle(.borderless) // <-- important
         }
         .padding(6)
-        .background(colorsModel.gradient)
+        .background(colorsModel.backColor)
         .clipShape(Capsule())
         .contentShape(Rectangle())
     }
