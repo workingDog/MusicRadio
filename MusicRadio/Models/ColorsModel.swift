@@ -12,13 +12,13 @@ import SwiftUI
 @Observable
 class ColorsModel {
     
-    var favouriteColor: Color = Color.teal
-    var netColor: Color = Color.blue
-    var starColor: Color = Color.orange
-    var equaliserColor: Color = Color.accentColor
-    var backColor = Color.mint.opacity(0.5)
-    var stationBackColor = Color.white.opacity(0.4)
-    var countryBackColor = Color.mint.opacity(0.5)
+    var favouriteColor = Color.teal
+    var netColor = Color.blue
+    var starColor = Color.orange
+    var equaliserColor = Color.accentColor
+    var backColor = Color.mint.opacity(0.4)
+    var stationBackColor = Color.gray.opacity(0.2)
+    var countryBackColor = Color.blue.opacity(0.4)
     
     // keys for UserDefaults
     static let keyFavouriteColor: String = "favouriteColor"
