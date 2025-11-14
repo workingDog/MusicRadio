@@ -15,10 +15,10 @@ class ColorsModel {
     var favouriteColor = Color.teal
     var netColor = Color.blue
     var starColor = Color.orange
-    var equaliserColor = Color.accentColor
+    var equaliserColor = Color(red: 1, green: 0, blue: 1) // magenta
     var backColor = Color.mint.opacity(0.4)
-    var stationBackColor = Color.gray.opacity(0.2)
-    var countryBackColor = Color.blue.opacity(0.4)
+    var stationBackColor = Color.white.opacity(0.2)
+    var countryBackColor = Color.yellow
     
     // keys for UserDefaults
     static let keyFavouriteColor: String = "favouriteColor"
