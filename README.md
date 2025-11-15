@@ -28,6 +28,8 @@ Similarly, when you search for particular **Stations**.
 
 Tap/click on the **globe** icon of a radio station to bring its internet home page, if it has one.
 
+In the **Play** bar, while playing a song, or when a song title is shown, tap/click on the station radio icon to bring its iTunes artist page.
+
 ## Note     
 The type of station displayed between the **heart** and the **globe** icons, 
 is inferred based on the various tags the station wants to be known for.    

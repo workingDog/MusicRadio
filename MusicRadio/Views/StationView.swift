@@ -7,6 +7,7 @@
 import SwiftUI
 import WebKit
 import AVFoundation
+import Foundation
 
 
 struct StationView: View {
@@ -27,7 +28,7 @@ struct StationView: View {
             if playerManager.station == station, playerManager.isPlaying {
                 EqualizerView()
             }
- 
+            
             VStack {
                 HStack {
                     Button {
@@ -48,7 +49,7 @@ struct StationView: View {
                     Spacer()
                     
                     Text(StationTag.inferDominantGenre(from: station.tags).rawValue)
-  
+                    
                     Spacer()
                     
                     Button {
@@ -75,28 +76,28 @@ struct StationView: View {
                 
             }
         }
-            .contentShape(RoundedRectangle(cornerRadius: 12))
-            .onTapGesture {
-                if selector.pingSound {
-                    playClick()
-                }
-                
-                playerManager.pause()
-                playerManager.currentSong = ""
-                // tap on same station to unselect it
-                if playerManager.station == station {
-                    playerManager.station = nil
-                } else {
-                    playerManager.station = station
-                }
+        .contentShape(RoundedRectangle(cornerRadius: 12))
+        .onTapGesture {
+            if selector.pingSound {
+                playClick()
             }
-       //     .background(colorsModel.stationBackColor)
-            .glassEffect(.regular.tint(colorsModel.stationBackColor).interactive(), in: RoundedRectangle(cornerRadius: 12)) // for iOS26+
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            .fullScreenCover(isPresented: $showWeb) {
-                WebViewScreen(station: station)
+            
+            playerManager.pause()
+            playerManager.currentSong = ""
+            // tap on same station to unselect it
+            if playerManager.station == station {
+                playerManager.station = nil
+            } else {
+                playerManager.station = station
             }
         }
+        //     .background(colorsModel.stationBackColor)
+        .glassEffect(.regular.tint(colorsModel.stationBackColor).interactive(), in: RoundedRectangle(cornerRadius: 12)) // for iOS26+
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .fullScreenCover(isPresented: $showWeb) {
+            WebViewScreen(station: station)
+        }
+    }
     
     func playClick() {
         var id: SystemSoundID = 0
@@ -105,13 +106,13 @@ struct StationView: View {
             AudioServicesPlaySystemSound(id)
         }
     }
-
+    
 }
 
 struct WebViewScreen: View {
     @Environment(\.dismiss) private var dismiss
     let station: RadioStation
-
+    
     var body: some View {
         VStack {
             Button("Done") {
@@ -120,27 +121,27 @@ struct WebViewScreen: View {
             .buttonStyle(.bordered)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(6)
-
+            
             Divider()
-
+            
             if let url = URL(string: station.homepage),
-                UIApplication.shared.canOpenURL(url) {
+               UIApplication.shared.canOpenURL(url) {
                 if #available(iOS 26.0, *) {
                     WebView(url: url)
                 } else {
                     OldWebView(urlString: station.homepage)
                 }
-             } else {
-                 Text("No homepage available").font(Font.largeTitle.bold())
-                 Spacer()
-             }
+            } else {
+                Text("No homepage available").font(Font.largeTitle.bold())
+                Spacer()
+            }
         }
     }
 }
 
 private struct OldWebView: UIViewRepresentable {
     let urlString: String
-
+    
     func makeUIView(context: Context) -> WKWebView {
         let config = WKWebViewConfiguration()
         let webView = WKWebView(frame: .zero, configuration: config)
@@ -151,15 +152,15 @@ private struct OldWebView: UIViewRepresentable {
         }
         return webView
     }
-
+    
     func updateUIView(_ uiView: WKWebView, context: Context) {
         // Only reload if URL changed
         if let newURL = URL(string: urlString), uiView.url != newURL {
             uiView.load(URLRequest(url: newURL))
         }
     }
-
+    
     func makeCoordinator() -> Coordinator { Coordinator() }
-
+    
     final class Coordinator: NSObject, WKNavigationDelegate { }
 }

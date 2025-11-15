@@ -201,4 +201,41 @@ class Networker {
             }
         }
     }
+
+    // Fetch the artist with the high-resolution album artwork for a given song or artist from iTunes
+    func fetchArtist(for queryText: String) async throws -> Artist? {
+        // URL encode the search query
+        let query = queryText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        let urlString = "https://itunes.apple.com/search?term=\(query)&entity=song&limit=1"
+        guard let url = URL(string: urlString) else { return nil }
+        
+        do {
+            // Fetch data from iTunes
+            let (data, _) = try await URLSession.shared.data(from: url)
+    //        print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+            let arts = try decoder.decode(iTunesInfo.self, from: data)
+    //        print("---> arts: \(arts)\n")
+            
+            if var artist = arts.results?.first {
+                if let artwork = artist.artworkUrl100 {
+                    // Replace "100x100" with "600x600" for high-resolution image
+                    let artworkUrlString: String = artwork.replacingOccurrences(of: "100x100", with: "600x600") ?? ""
+                    
+                    guard let artworkUrl = URL(string: artworkUrlString) else { return nil }
+                    
+                    // Fetch the artwork image data
+                    let (imageData, _) = try await URLSession.shared.data(from: artworkUrl)
+                    // add the imageData to the artist
+                    artist.imageData = UIImage(data: imageData)
+                    return artist
+                }
+            }
+        } catch {
+            print(error)
+        }
+        return nil
+    }
+
 }

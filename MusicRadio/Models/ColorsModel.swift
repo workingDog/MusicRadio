@@ -15,7 +15,7 @@ class ColorsModel {
     var favouriteColor = Color.teal
     var netColor = Color.blue
     var starColor = Color.orange
-    var equaliserColor = Color(red: 1, green: 0, blue: 1) // magenta
+    var equaliserColor = Color.accentColor
     var backColor = Color.mint.opacity(0.4)
     var stationBackColor = Color.white.opacity(0.4)
     var countryBackColor = Color.teal.opacity(0.4)
@@ -55,13 +55,13 @@ class ColorsModel {
         let sback = UserDefaults.standard.string(forKey: ColorsModel.keyStationBackColor)
         let cback = UserDefaults.standard.string(forKey: ColorsModel.keyCountryBackColor)
         
-        self.favouriteColor = (fav != nil) ? Color(hex: fav!) : Color.mint
+        self.favouriteColor = (fav != nil) ? Color(hex: fav!) : Color.teal
         self.netColor = (net != nil) ? Color(hex: net!) : Color.blue
         self.starColor = (star != nil) ? Color(hex: star!) : Color.orange
-        self.equaliserColor = (equ != nil) ? Color(hex: equ!) : Color.blue
-        self.backColor = (back != nil) ? Color(hex: back!) : Color.mint.opacity(0.5)
+        self.equaliserColor = (equ != nil) ? Color(hex: equ!) : Color.accentColor
+        self.backColor = (back != nil) ? Color(hex: back!) : Color.mint.opacity(0.4)
         self.stationBackColor = (sback != nil) ? Color(hex: sback!) : Color.white.opacity(0.4)
-        self.countryBackColor = (cback != nil) ? Color(hex: cback!) : Color.mint.opacity(0.5)
+        self.countryBackColor = (cback != nil) ? Color(hex: cback!) : Color.teal.opacity(0.4)
     }
     
 }

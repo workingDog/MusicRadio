@@ -12,25 +12,34 @@ struct MiniPlayer: View {
     @Environment(PlayerManager.self) var playerManager
     @Environment(ColorsModel.self) var colorsModel
     
+    @State private var showArt: Bool = false
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             HStack(spacing: 12) {
                 Group {
-                    if playerManager.station == nil {
-                        Image(uiImage: RadioStation.defaultImg)
-                            .renderingMode(.original)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 45, height: 45)
-                            .cornerRadius(6)
-                            .shadow(radius: 3)
-                    } else {
-                        Image(uiImage: playerManager.station!.faviconImage())
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 45, height: 45)
-                            .cornerRadius(6)
-                            .shadow(radius: 3)
+                    HStack {
+                        if playerManager.station == nil {
+                            Image(uiImage: RadioStation.defaultImg)
+                                .renderingMode(.original)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 45, height: 45)
+                                .cornerRadius(6)
+                                .shadow(radius: 3)
+                        } else {
+                            Image(uiImage: playerManager.station!.faviconImage())
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 45, height: 45)
+                                .cornerRadius(6)
+                                .shadow(radius: 3)
+                        }
+                    }
+                    .onTapGesture {
+                        if !playerManager.currentSong.isEmpty {
+                            showArt = true
+                        }
                     }
                 }.padding(4)
                 VStack {
@@ -88,6 +97,9 @@ struct MiniPlayer: View {
                 playerManager.pause()
             }
         }
-
+        .fullScreenCover(isPresented: $showArt) {
+            ArtistView(song: playerManager.currentSong)
+                .environment(colorsModel)
+        }
     }
 }
