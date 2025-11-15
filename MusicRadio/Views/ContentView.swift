@@ -42,10 +42,8 @@ struct ContentView: View {
                 }
             }
             .onAppear {
-                print("---> stations: \(stations.count) \n")
                 selector.retrieveSettings()
                 colorsModel.retrieveSettings()
-                
                 playerManager.volume = 0.3
             }
         }
@@ -56,13 +54,27 @@ struct ContentView: View {
                 // if first time, get all the countries and store them in SwiftData
                 if countries.count == 0 {
                     let allCountries = try await network.getAllCountries()
-                    print("---> allCountries: \(allCountries.count)")
+                    print("---> allCountries.count: \(allCountries.count)")
                     for country in allCountries {
                         modelContext.insert(country)
                     }
-                    // add the top voted stations to "Favourites", also stored in SwiftData
-                    let topStations = try await network.getTopVotes(selector.topCount)
-                    print("---> topStations: \(topStations.count)")
+
+                    // add the top voted stations to "Favourites"
+                    var topStations: [RadioStation] = []
+                    
+                    let countryCode = Locale.current.region?.identifier ?? "?"
+                    let countryName = Locale.current.localizedString(forRegionCode: countryCode) ?? ""
+                    
+                    if countryName.isEmpty {
+                        // overall top stations
+                        topStations = try await network.getTopVotes(selector.topCount)
+                        print("---> top \(topStations.count) stations")
+                    } else {
+                        // only current country top stations
+                        topStations = try await network.getTopVotesFor(countryName, limit: selector.topCount)
+                        print("---> top \(topStations.count) stations for \(countryName)")
+                    }
+                    // store them in SwiftData
                     for station in topStations {
                         station.isFavourite = true
                         modelContext.insert(station)

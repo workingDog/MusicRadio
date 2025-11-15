@@ -17,14 +17,17 @@ class Selector {
     var tag: StationTag = .all
     var topCount: Int = 10
     var searchStation: String = ""
+    var pingSound: Bool = true
     
     static let keyTopCount: String = "topCount"
     static let keyTag: String = "tag"
+    static let keyPingSound: String = "pingSound"
     
 
     func storeSettings() {
         UserDefaults.standard.set(self.topCount, forKey: Selector.keyTopCount)
         UserDefaults.standard.set(self.tag.rawValue, forKey: Selector.keyTag)
+        UserDefaults.standard.set(self.pingSound, forKey: Selector.keyPingSound)
     }
     
     func retrieveSettings() {
@@ -33,6 +36,8 @@ class Selector {
 
         let xtag = UserDefaults.standard.string(forKey: Selector.keyTag) ?? StationTag.all.rawValue
         self.tag = StationTag(rawValue: xtag) ?? .all
+        
+        self.pingSound = UserDefaults.standard.bool(forKey: Selector.keyPingSound)
     }
 
 }

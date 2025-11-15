@@ -104,6 +104,15 @@ struct SettingsView: View {
                     Spacer()
                 }
                 
+                HStack {
+                    Text("Station select sound  ")
+                    Image(systemName: "hand.tap.fill")
+                        .font(.title)
+                        .foregroundStyle(selector.pingSound ? Color.accentColor : .black)
+                    Toggle("", isOn: $selector.pingSound)
+                    Spacer()
+                }.fixedSize()
+                
                 Spacer()
             }
             .padding(12)

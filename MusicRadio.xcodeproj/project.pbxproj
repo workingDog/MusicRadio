@@ -7,10 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C797BDEF2EC7FE6A007F738D /* click1.wav in Resources */ = {isa = PBXBuildFile; fileRef = C797BDEE2EC7FE6A007F738D /* click1.wav */; };
+		C797BDF12EC7FF23007F738D /* click2.wav in Resources */ = {isa = PBXBuildFile; fileRef = C797BDF02EC7FF23007F738D /* click2.wav */; };
+		C797BDF32EC7FFA2007F738D /* click3.wav in Resources */ = {isa = PBXBuildFile; fileRef = C797BDF22EC7FFA2007F738D /* click3.wav */; };
 		C79B44DC2EB6F0C100FCC9B9 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C79B44DA2EB6F0B400FCC9B9 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C797BDEE2EC7FE6A007F738D /* click1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = click1.wav; sourceTree = "<group>"; };
+		C797BDF02EC7FF23007F738D /* click2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = click2.wav; sourceTree = "<group>"; };
+		C797BDF22EC7FFA2007F738D /* click3.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = click3.wav; sourceTree = "<group>"; };
 		C79B44CA2EB6EFAE00FCC9B9 /* MusicRadio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MusicRadio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C79B44DA2EB6F0B400FCC9B9 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -55,6 +61,9 @@
 		C79B44C12EB6EFAE00FCC9B9 = {
 			isa = PBXGroup;
 			children = (
+				C797BDF02EC7FF23007F738D /* click2.wav */,
+				C797BDF22EC7FFA2007F738D /* click3.wav */,
+				C797BDEE2EC7FE6A007F738D /* click1.wav */,
 				C76BD8BA2EC1A5360038BA45 /* ScreenShots */,
 				C79B44DA2EB6F0B400FCC9B9 /* README.md */,
 				C79B44CC2EB6EFAE00FCC9B9 /* MusicRadio */,
@@ -135,6 +144,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C797BDF12EC7FF23007F738D /* click2.wav in Resources */,
+				C797BDF32EC7FFA2007F738D /* click3.wav in Resources */,
+				C797BDEF2EC7FE6A007F738D /* click1.wav in Resources */,
 				C79B44DC2EB6F0C100FCC9B9 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

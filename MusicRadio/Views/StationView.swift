@@ -6,12 +6,14 @@
 //
 import SwiftUI
 import WebKit
+import AVFoundation
 
 
 struct StationView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(PlayerManager.self) var playerManager
     @Environment(ColorsModel.self) var colorsModel
+    @Environment(Selector.self) var selector
     
     var station: RadioStation
     let maxRating: Int
@@ -75,6 +77,10 @@ struct StationView: View {
         }
             .contentShape(RoundedRectangle(cornerRadius: 12))
             .onTapGesture {
+                if selector.pingSound {
+                    playClick()
+                }
+                
                 playerManager.pause()
                 playerManager.currentSong = ""
                 // tap on same station to unselect it
@@ -91,6 +97,14 @@ struct StationView: View {
                 WebViewScreen(station: station)
             }
         }
+    
+    func playClick() {
+        var id: SystemSoundID = 0
+        if let url = Bundle.main.url(forResource: "click3", withExtension: "wav") {
+            AudioServicesCreateSystemSoundID(url as CFURL, &id)
+            AudioServicesPlaySystemSound(id)
+        }
+    }
 
 }
 

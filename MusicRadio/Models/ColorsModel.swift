@@ -17,7 +17,7 @@ class ColorsModel {
     var starColor = Color.orange
     var equaliserColor = Color(red: 1, green: 0, blue: 1) // magenta
     var backColor = Color.mint.opacity(0.4)
-    var stationBackColor = Color.white.opacity(0.2)
+    var stationBackColor = Color.white.opacity(0.4)
     var countryBackColor = Color.teal.opacity(0.4)
     
     // keys for UserDefaults
