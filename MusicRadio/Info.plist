@@ -8,5 +8,9 @@
 		<string>external-accessory</string>
 		<string>bluetooth-central</string>
 	</array>
+    
+    <key>NSAppleMusicUsageDescription</key>
+    <string>This app searches the Apple Music catalog to find songs.</string>
+    
 </dict>
 </plist>

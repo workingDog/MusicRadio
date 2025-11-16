@@ -44,7 +44,7 @@ struct ContentView: View {
             .onAppear {
                 selector.retrieveSettings()
                 colorsModel.retrieveSettings()
-                playerManager.volume = 0.3
+                playerManager.volume = 0.5
             }
         }
         .environment(playerManager)
@@ -85,5 +85,5 @@ struct ContentView: View {
             }
         }
     }
-    
+   
 }

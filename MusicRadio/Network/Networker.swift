@@ -65,6 +65,32 @@ class Networker {
         }
         return []
     }
+    
+    // for testing
+    func getServers() async throws {
+        if let theUrl = URL(string: "\(defaultServer)/servers") {
+            print("---> getServers fetching theUrl: \(theUrl.absoluteString)")
+            do {
+                let (data, _) = try await URLSession.shared.data(from: theUrl)
+                 print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
+            } catch {
+                print(error)
+            }
+        }
+        return
+    }
+    
+    //    func saveAllStations(_ stations: [RadioStation], context: ModelContext) {
+    //        let batchSize = 500
+    //
+    //        for chunk in stride(from: 0, to: stations.count, by: batchSize) {
+    //            let batch = Array(stations[chunk..<min(chunk + batchSize, stations.count)])
+    //            for station in batch {
+    //                context.insert(station)
+    //            }
+    //            try? context.save()
+    //        }
+    //    }
 
     func getStationsForCountry(_ country: String) async throws -> [RadioStation] {
         if let theUrl = URL(string: "\(defaultServer)/stations/bycountryexact/\(country)") {
@@ -99,20 +125,6 @@ class Networker {
             }
         }
         return []
-    }
-
-    // for testing
-    func getServers() async throws {
-        if let theUrl = URL(string: "\(defaultServer)/servers") {
-            print("---> getServers fetching theUrl: \(theUrl.absoluteString)")
-            do {
-                let (data, _) = try await URLSession.shared.data(from: theUrl)
-                 print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
-            } catch {
-                print(error)
-            }
-        }
-        return
     }
 
     func getTopVotes( _ limit: Int = 10) async throws -> [RadioStation] {
@@ -153,18 +165,6 @@ class Networker {
         return []
     }
     
-//    func saveAllStations(_ stations: [RadioStation], context: ModelContext) {
-//        let batchSize = 500
-//
-//        for chunk in stride(from: 0, to: stations.count, by: batchSize) {
-//            let batch = Array(stations[chunk..<min(chunk + batchSize, stations.count)])
-//            for station in batch {
-//                context.insert(station)
-//            }
-//            try? context.save()
-//        }
-//    }
-    
     func findStations(_ station: String) async throws -> [RadioStation] {
         if let theUrl = URL(string: "\(defaultServer)/stations/byname/\(station)") {
             print("---> findStations fetching theUrl: \(theUrl.absoluteString)")
@@ -202,7 +202,7 @@ class Networker {
         }
     }
 
-    // Fetch the artist with the high-resolution album artwork for a given song or artist from iTunes
+    // Fetch the artist artwork from iTunes
     func fetchArtist(for queryText: String) async throws -> Artist? {
         // URL encode the search query
         let query = queryText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
@@ -221,7 +221,7 @@ class Networker {
             if var artist = arts.results?.first {
                 if let artwork = artist.artworkUrl100 {
                     // Replace "100x100" with "600x600" for high-resolution image
-                    let artworkUrlString: String = artwork.replacingOccurrences(of: "100x100", with: "600x600") ?? ""
+                    let artworkUrlString: String = artwork.replacingOccurrences(of: "100x100", with: "600x600")
                     
                     guard let artworkUrl = URL(string: artworkUrlString) else { return nil }
                     

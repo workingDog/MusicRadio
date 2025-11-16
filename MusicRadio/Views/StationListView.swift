@@ -73,7 +73,7 @@ struct StationListView: View {
             
             MiniPlayer()
                 .padding(.horizontal)
-                .padding(.vertical, 4)
+                .padding(.vertical, 6)
             
         }
     }

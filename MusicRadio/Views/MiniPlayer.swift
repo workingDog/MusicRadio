@@ -83,8 +83,8 @@ struct MiniPlayer: View {
             }.padding(6)
             
         } // VStack
-   //     .background(.ultraThinMaterial)
-   //     .background(colorsModel.backColor.opacity(0.4))
+        //     .background(.ultraThinMaterial)
+        .background(colorsModel.backColor.opacity(0.4))
         .glassEffect(.regular.tint(colorsModel.backColor.opacity(0.4)).interactive(), in: RoundedRectangle(cornerRadius: 12)) // for iOS26+
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .shadow(radius: 5)
@@ -97,7 +97,7 @@ struct MiniPlayer: View {
                 playerManager.pause()
             }
         }
-        .fullScreenCover(isPresented: $showArt) {
+        .sheet(isPresented: $showArt) {
             ArtistView(song: playerManager.currentSong)
                 .environment(colorsModel)
         }

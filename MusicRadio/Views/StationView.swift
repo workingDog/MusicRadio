@@ -91,7 +91,7 @@ struct StationView: View {
                 playerManager.station = station
             }
         }
-        //     .background(colorsModel.stationBackColor)
+        .background(colorsModel.stationBackColor)
         .glassEffect(.regular.tint(colorsModel.stationBackColor).interactive(), in: RoundedRectangle(cornerRadius: 12)) // for iOS26+
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .fullScreenCover(isPresented: $showWeb) {
@@ -139,7 +139,7 @@ struct WebViewScreen: View {
     }
 }
 
-private struct OldWebView: UIViewRepresentable {
+struct OldWebView: UIViewRepresentable {
     let urlString: String
     
     func makeUIView(context: Context) -> WKWebView {

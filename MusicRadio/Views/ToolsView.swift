@@ -43,7 +43,7 @@ struct ToolsView: View {
                 .padding(5)
                 
             }
-       //     .background(.ultraThinMaterial)
+            .background(.ultraThinMaterial)
             .glassEffect(.regular.tint(colorsModel.backColor).interactive(), in: RoundedRectangle(cornerRadius: 12))
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .shadow(radius: 2)

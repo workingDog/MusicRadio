@@ -15,6 +15,7 @@ struct ArtistView: View {
     
     @State private var artist: Artist?
     @State private var infoView: InfoTypes = .overview
+    @State private var isBusy = true
     
     let song: String
     
@@ -31,7 +32,12 @@ struct ArtistView: View {
             
             Spacer()
             
-            overView()
+            if isBusy {
+                ProgressView()
+                Spacer()
+            } else {
+                overView()
+            }
             
             // does not seem to be useful
             
@@ -55,7 +61,13 @@ struct ArtistView: View {
         }
         .background(colorsModel.backColor)
         .task {
-            artist = try? await network.fetchArtist(for: song)
+            do {
+                isBusy = true
+                artist = try await network.fetchArtist(for: song)
+                isBusy = false
+            } catch {
+                print(error)
+            }
         }
     }
     
@@ -80,26 +92,26 @@ struct ArtistView: View {
         }
     }
     
-    @ViewBuilder
-    func artistView() -> some View {
-        if let artist, let url = URL(string: artist.artistViewURL) {
-            ArtistWebView(url: url)
-        }
-    }
-    
-    @ViewBuilder
-    func trackView() -> some View {
-        if let artist, let url = URL(string: artist.trackViewURL) {
-            ArtistWebView(url: url)
-        }
-    }
-    
-    @ViewBuilder
-    func collectionView() -> some View {
-        if let artist, let url = URL(string: artist.collectionViewURL) {
-            ArtistWebView(url: url)
-        }
-    }
+//    @ViewBuilder
+//    func artistView() -> some View {
+//        if let artist, let url = URL(string: artist.artistViewURL) {
+//            ArtistWebView(url: url)
+//        }
+//    }
+//    
+//    @ViewBuilder
+//    func trackView() -> some View {
+//        if let artist, let url = URL(string: artist.trackViewURL) {
+//            ArtistWebView(url: url)
+//        }
+//    }
+//    
+//    @ViewBuilder
+//    func collectionView() -> some View {
+//        if let artist, let url = URL(string: artist.collectionViewURL) {
+//            ArtistWebView(url: url)
+//        }
+//    }
 }
 
 enum InfoTypes: String, CaseIterable, Identifiable {
@@ -111,17 +123,17 @@ enum InfoTypes: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 }
 
-struct ArtistWebView: View {
-    let url: URL
-    @State private var page = WebPage()
-    
-    var body: some View {
-        if page.isLoading {
-            ProgressView()
-        }
-        WebView(page)
-            .onAppear {
-                page.load(url)
-            }
-    }
-}
+//struct ArtistWebView: View {
+//    let url: URL
+//    @State private var page = WebPage()
+//    
+//    var body: some View {
+//        if page.isLoading {
+//            ProgressView()
+//        }
+//        WebView(page)
+//            .onAppear {
+//                page.load(url)
+//            }
+//    }
+//}
