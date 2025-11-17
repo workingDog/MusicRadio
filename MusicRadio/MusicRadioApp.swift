@@ -41,29 +41,3 @@ struct MusicRadioApp: App {
         .modelContainer(sharedModelContainer)
     }
 }
-
-
-/*
- 
- I have this SwiftUI code:
- "Button {
-     station.isFavourite.toggle()
-     if !station.isFavourite {
-         showConfirm = true
-     } else {
-         //  do something
-     }
- } label: {
-     Image(systemName: station.isFavourite ? "heart.fill" : "heart.slash")
-         .resizable()
-         .foregroundStyle(colorsModel.favouriteColor)
-         .frame(width: 30, height: 30)
-         .padding(5)
- }.buttonStyle(.borderless)
-     .confirmationDialog("Remove from favourites", isPresented: $showConfirm) {
-         Button("Yes") { }
-         Button("Cancel", role: .cancel) { }
-     } message: { Text("Really remove this station from favourites?") }",
- however the confirmationDialog does not display, why and how to fix this?
- 
- */
