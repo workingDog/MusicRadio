@@ -19,7 +19,8 @@ struct StationView: View {
     var station: RadioStation
     let maxRating: Int
     
-    @State private var showWeb: Bool = false
+    @State private var showConfirm = false
+    @State private var showWeb = false
     @State private var stars = 0
     
     var body: some View {
@@ -32,10 +33,11 @@ struct StationView: View {
             VStack {
                 HStack {
                     Button {
-                        station.isFavourite.toggle()
-                        if !station.isFavourite {
-                            SwiftDataHelper.findAndRemove(station: station, in: modelContext)
+                        if station.isFavourite {
+                            // Ask for confirmation BEFORE modifying it
+                            showConfirm = true
                         } else {
+                            station.isFavourite = true
                             SwiftDataHelper.updateOrInsert(station: station, in: modelContext)
                         }
                     } label: {
@@ -45,6 +47,14 @@ struct StationView: View {
                             .frame(width: 30, height: 30)
                             .padding(5)
                     }.buttonStyle(.borderless)
+                    
+                    .confirmationDialog("Remove from favourites", isPresented: $showConfirm) {
+                        Button("Yes") {
+                                station.isFavourite = false
+                                SwiftDataHelper.findAndRemove(station: station, in: modelContext)
+                        }
+                        Button("No", role: .cancel) { }
+                    } message: { Text("Really remove this station from favourites?") }
                     
                     Spacer()
                     
