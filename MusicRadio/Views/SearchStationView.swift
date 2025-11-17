@@ -92,7 +92,7 @@ struct CapsuleSearchField: View {
                 .font(.system(size: 21))
                 .foregroundStyle(.secondary)
 
-            TextField("Search stations", text: $text)
+            TextField("Search for stations", text: $text)
                 .focused($focused)
                 .font(.system(size: 22))
                 .textInputAutocapitalization(.never)

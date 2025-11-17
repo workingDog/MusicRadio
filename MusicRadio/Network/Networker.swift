@@ -216,9 +216,18 @@ class Networker {
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .iso8601
             let arts = try decoder.decode(iTunesInfo.self, from: data)
-    //        print("---> arts: \(arts)\n")
             
             if var artist = arts.results?.first {
+                
+                // make sure all are https
+                artist.artistViewURL = artist.artistViewURL.replacingOccurrences(of: "http://", with: "https://")
+                artist.collectionViewURL = artist.collectionViewURL.replacingOccurrences(of: "http://", with: "https://")
+                artist.trackViewURL = artist.trackViewURL.replacingOccurrences(of: "http://", with: "https://")
+                artist.previewURL = artist.previewURL?.replacingOccurrences(of: "http://", with: "https://")
+                artist.artworkUrl100 = artist.artworkUrl100?.replacingOccurrences(of: "http://", with: "https://")
+                artist.artworkUrl30 = artist.artworkUrl30?.replacingOccurrences(of: "http://", with: "https://")
+                artist.artworkUrl60 = artist.artworkUrl60?.replacingOccurrences(of: "http://", with: "https://")
+                
                 if let artwork = artist.artworkUrl100 {
                     // Replace "100x100" with "600x600" for high-resolution image
                     let artworkUrlString: String = artwork.replacingOccurrences(of: "100x100", with: "600x600")

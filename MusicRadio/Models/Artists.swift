@@ -17,20 +17,20 @@ struct Artist: Identifiable, Codable {
     
     var imageData: UIImage?
     
-    let wrapperType, kind: String
-    let artistID, collectionID, trackID: Int
-    let artistName, collectionName, trackName, collectionCensoredName: String?
-    let trackCensoredName: String
-    let artistViewURL, collectionViewURL, trackViewURL: String
-    let previewURL: String?
-    let artworkUrl30, artworkUrl60, artworkUrl100: String?
-    let collectionPrice, trackPrice: Double?
-    let releaseDate: Date?
-    let collectionExplicitness, trackExplicitness: String
-    let discCount, discNumber, trackCount, trackNumber: Int?
-    let trackTimeMillis: Int?
-    let country, currency, primaryGenreName: String?
-    let isStreamable: Bool
+    var wrapperType, kind: String
+    var artistID, collectionID, trackID: Int
+    var artistName, collectionName, trackName, collectionCensoredName: String?
+    var trackCensoredName: String
+    var artistViewURL, collectionViewURL, trackViewURL: String
+    var previewURL: String?
+    var artworkUrl30, artworkUrl60, artworkUrl100: String?
+    var collectionPrice, trackPrice: Double?
+    var releaseDate: Date?
+    var collectionExplicitness, trackExplicitness: String
+    var discCount, discNumber, trackCount, trackNumber: Int?
+    var trackTimeMillis: Int?
+    var country, currency, primaryGenreName: String?
+    var isStreamable: Bool
 
     enum CodingKeys: String, CodingKey {
         case wrapperType, kind
