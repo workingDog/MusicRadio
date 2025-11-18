@@ -16,15 +16,15 @@ class PlayerManager {
     
     var station: RadioStation?
     var isPlaying = false
-    var progress: Double = 0
-    var volume: Float = 0.5
     var currentSong: String = ""
     
     private var metadataOutput: AVPlayerItemMetadataOutput?
     private var radio: RadioPlayer?
     
     init() {
-        keepPlayInBackground()
+        Task {
+            await keepPlayInBackground()
+        }
     }
 
     // call this for every new station
@@ -61,21 +61,14 @@ class PlayerManager {
         pause()
         station = nil
     }
-    
-    func updateVolume(_ newValue: Double) {
-        volume = Float(newValue)
-        radio?.player?.volume = volume
-    }
 
-    func keepPlayInBackground() {
-        Task {
-            let session = AVAudioSession.sharedInstance()
-            do {
-                try await session.setCategory(.playback, mode: .default, options: [.allowAirPlay, .mixWithOthers])
-                try await session.setActive(true)
-            } catch {
-                print("Failed to configure audio session: \(error)")
-            }
+    func keepPlayInBackground() async {
+        let session = AVAudioSession.sharedInstance()
+        do {
+            try session.setCategory(.playback, mode: .default, options: [.mixWithOthers])
+            try session.setActive(true)
+        } catch {
+            print("---> AudioSession error:", error)
         }
     }
  

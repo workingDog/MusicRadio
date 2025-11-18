@@ -6,6 +6,8 @@
 //
 import SwiftUI
 import AVFoundation
+import MediaPlayer
+
 
 
 struct MiniPlayer: View {
@@ -60,12 +62,12 @@ struct MiniPlayer: View {
                 
                 Spacer()
                 
-                // to update volume in real time
-                Slider(value: Binding(
-                    get: { Double(playerManager.volume) },
-                    set: { playerManager.updateVolume($0)}
-                ), in: 0...1)
-                
+                // system volume
+                SystemVolumeSlider()
+                    .frame(height: 40)
+                    .padding(.top, 5)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+
                 Spacer()
                 
                 // play / pause button
@@ -83,7 +85,6 @@ struct MiniPlayer: View {
             }.padding(6)
             
         } // VStack
-        //     .background(.ultraThinMaterial)
         .background(colorsModel.backColor.opacity(0.4))
         .glassEffect(.regular.tint(colorsModel.backColor.opacity(0.4)).interactive(), in: RoundedRectangle(cornerRadius: 12)) // for iOS26+
         .clipShape(RoundedRectangle(cornerRadius: 12))
@@ -102,4 +103,15 @@ struct MiniPlayer: View {
                 .environment(colorsModel)
         }
     }
+}
+
+// control the system volume
+struct SystemVolumeSlider: UIViewRepresentable {
+    
+    func makeUIView(context: Context) -> MPVolumeView {
+        let view = MPVolumeView()
+        return view
+    }
+
+    func updateUIView(_ uiView: MPVolumeView, context: Context) {}
 }

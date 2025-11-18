@@ -7,6 +7,9 @@
 import Foundation
 import UIKit
 
+// see https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/UnderstandingSearchResults.html#//apple_ref/doc/uid/TP40017632-CH8-SW1
+
+
 struct iTunesInfo: Codable {
     let resultCount: Int?
     let results: [Artist]?
@@ -37,12 +40,14 @@ struct Artist: Identifiable, Codable {
         case artistID = "artistId"
         case collectionID = "collectionId"
         case trackID = "trackId"
-        case artistName, collectionName, trackName, collectionCensoredName, trackCensoredName
         case artistViewURL = "artistViewUrl"
         case collectionViewURL = "collectionViewUrl"
         case trackViewURL = "trackViewUrl"
         case previewURL = "previewUrl"
-        case artworkUrl30, artworkUrl60, artworkUrl100, collectionPrice, trackPrice, releaseDate, collectionExplicitness, trackExplicitness, discCount, discNumber, trackCount, trackNumber, trackTimeMillis, country, currency, primaryGenreName, isStreamable
+        case artistName, collectionName, trackName, collectionCensoredName, trackCensoredName
+        case artworkUrl30, artworkUrl60, artworkUrl100, collectionPrice, trackPrice
+        case releaseDate, collectionExplicitness, trackExplicitness, discCount, discNumber
+        case trackCount, trackNumber, trackTimeMillis, country, currency, primaryGenreName, isStreamable
     }
 }
 
