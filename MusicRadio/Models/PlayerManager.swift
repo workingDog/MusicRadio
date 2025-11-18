@@ -65,7 +65,7 @@ class PlayerManager {
     func keepPlayInBackground() async {
         let session = AVAudioSession.sharedInstance()
         do {
-            try session.setCategory(.playback, mode: .default, options: [.mixWithOthers])
+            try session.setCategory(.playback, mode: .default)
             try session.setActive(true)
         } catch {
             print("---> AudioSession error:", error)
