@@ -40,7 +40,7 @@ is inferred based on the various tags the station wants to be known for.
 ### The radio stations
 
 -    [RadioBrowser](https://www.radio-browser.info/) 
--    [adioBrowser API](https://docs.radio-browser.info/#introduction)
+-    [RadioBrowser API](https://docs.radio-browser.info/#introduction)
 -    [Community Radio Station Index](https://de1.api.radio-browser.info/#General)
 
 ### The artists
