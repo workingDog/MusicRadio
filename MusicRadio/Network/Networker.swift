@@ -80,18 +80,6 @@ class Networker {
         return
     }
     
-    //    func saveAllStations(_ stations: [RadioStation], context: ModelContext) {
-    //        let batchSize = 500
-    //
-    //        for chunk in stride(from: 0, to: stations.count, by: batchSize) {
-    //            let batch = Array(stations[chunk..<min(chunk + batchSize, stations.count)])
-    //            for station in batch {
-    //                context.insert(station)
-    //            }
-    //            try? context.save()
-    //        }
-    //    }
-
     func getStationsForCountry(_ country: String) async throws -> [RadioStation] {
         if let theUrl = URL(string: "\(defaultServer)/stations/bycountryexact/\(country)") {
             print("---> getStationsForCountry fetching theUrl: \(theUrl.absoluteString)")
