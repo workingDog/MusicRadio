@@ -1,12 +1,10 @@
 # MusicRadio
 
+**MusicRadio** lets you play radio stations from the **RadioBrowser** community project (> 50000). It can also display the artist and they artwork from *iTunes search*. 
+In addition it can also display the **lyrics** from the community project *LRCLIB*, when available.
 
 
-This is yet another radio stations player based on the [RadioBrowser](https://www.radio-browser.info/) and its server at [Community Radio Station Index](https://de1.api.radio-browser.info/#General).
-
-This project uses SwiftUI and SwiftData to store only the list of countries and the *Favourites* stations. 
-
-Was meant to be a weekend project but ended up taking a week to polish.
+This is yet another radio stations player based on the [RadioBrowser](https://www.radio-browser.info/) and its server at [Community Radio Station Index](https://de1.api.radio-browser.info/#General). Was meant to be a weekend project but ended up taking a week to polish.
 
 
 <p float="left">
@@ -30,10 +28,13 @@ Tap/click on the **globe** icon of a radio station to bring its internet home pa
 
 In the **Play** bar, while playing a song, or when a song title is shown, tap/click on the station radio icon to bring its iTunes artist info and the **lyrics** if available.
 
-## Note     
+## Note
+
+This project uses SwiftUI and SwiftData to store only the list of countries and the *Favourites* stations. 
+     
 The type of station displayed between the **heart** and the **globe** icons, 
 is inferred based on the various tags the station wants to be known for.    
-        
+
 
 ## References
 
@@ -45,7 +46,7 @@ is inferred based on the various tags the station wants to be known for.
 
 ### The artists
 
--    [iTunes Search API](https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/UnderstandingSearchResults.html#//apple_ref/doc/uid/TP40017632-CH8-SW1)
+-    [iTunes Search API](https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/index.html#//apple_ref/doc/uid/TP40017632-CH3-SW1)
 
 ### The lyrics
 
