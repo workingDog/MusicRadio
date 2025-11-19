@@ -51,3 +51,13 @@ struct Artist: Identifiable, Codable {
     }
 }
 
+struct Lyrics: Identifiable, Codable {
+    let id: Int
+    var name, trackName: String?
+    var artistName: String?
+    var albumName: String?
+    var duration: Double?
+    var instrumental: Bool?
+    var plainLyrics: String?
+    var syncedLyrics: String?
+}

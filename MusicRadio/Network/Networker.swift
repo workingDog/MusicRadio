@@ -246,5 +246,40 @@ class Networker {
         }
         return nil
     }
+    
+    
+    // see: https://lrclib.net/
+    // https://openpublicapis.com/api/lrclib?utm_source=chatgpt.com
+    
+    func findLyrics(_ artist: Artist) async throws -> String {
+        let lrclib = "https://lrclib.net/api"
+        
+        if let name = artist.artistName, let track = artist.trackName {
+            let queryText = "\(lrclib)/get?artist_name=\(name)&track_name=\(track)"
+            let query = queryText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+            if let theUrl = URL(string: query) {
+      //          print("---> findLyrics fetching theUrl: \(theUrl.absoluteString)")
+                do {
+                    let (data, response) = try await URLSession.shared.data(from: theUrl)
+                    //     print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
+                    
+                    // Check HTTP status
+                    if let httpResponse = response as? HTTPURLResponse {
+                        if (400...599).contains(httpResponse.statusCode) {
+                            return "no lyrics"
+                        }
+                    }
+
+                    let lyrics = try JSONDecoder().decode(Lyrics.self, from: data)
+                    if let txt = lyrics.plainLyrics {
+                        return txt
+                    }
+                } catch {
+                    print(error)
+                }
+            }
+        }
+        return "no lyrics"
+    }
 
 }

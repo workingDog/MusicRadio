@@ -14,7 +14,6 @@ struct ArtistView: View {
     @Environment(ColorsModel.self) var colorsModel
     
     @State private var artist: Artist?
-    @State private var infoView: InfoTypes = .overview
     @State private var isBusy = true
     
     let song: String
@@ -23,40 +22,28 @@ struct ArtistView: View {
     
     var body: some View {
         VStack {
-            Button("Done") {
-                dismiss()
+            HStack {
+                Button("Done") {
+                    dismiss()
+                }
+                .buttonStyle(.bordered)
+                Spacer()
             }
-            .buttonStyle(.bordered)
-            .frame(maxWidth: .infinity, alignment: .leading)
             .padding(12)
             
             Spacer()
             
-            if isBusy {
-                ProgressView()
-                Spacer()
-            } else {
-                overView()
+            ScrollView {
+                if isBusy {
+                    ProgressView()
+                    Spacer()
+                } else {
+                    overView()
+                    LyricsView(artist: artist)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Spacer()
+                }
             }
-            
-            // does not seem to be useful
-            
-//            Picker("", selection: $infoView) {
-//                ForEach(InfoTypes.allCases) { info in
-//                    Text(info.rawValue).tag(info)
-//                }
-//            }
-//            .pickerStyle(.segmented)
-//            .fixedSize()
-//            .padding(.horizontal)
-//            .padding(.bottom, 20)
-
-//            switch infoView {
-//                case .overview: overView()
-//                case .track: trackView()
-//                case .artist: artistView()
-//                case .collection: collectionView()
-//            }
             
         }
         .background(colorsModel.backColor)
@@ -92,37 +79,99 @@ struct ArtistView: View {
         }
     }
     
-//    @ViewBuilder
-//    func artistView() -> some View {
-//        if let artist, let url = URL(string: artist.artistViewURL) {
-//            ArtistWebView(url: url)
-//        }
-//    }
-//    
-//    @ViewBuilder
-//    func trackView() -> some View {
-//        if let artist, let url = URL(string: artist.trackViewURL) {
-//            ArtistWebView(url: url)
-//        }
-//    }
-//    
-//    @ViewBuilder
-//    func collectionView() -> some View {
-//        if let artist, let url = URL(string: artist.collectionViewURL) {
-//            ArtistWebView(url: url)
-//        }
-//    }
 }
 
-enum InfoTypes: String, CaseIterable, Identifiable {
-    case overview = "Overview"
-    case artist = "Artist"
-    case track = "Track"
-    case collection = "Collection"
+struct LyricsView: View {
+    let network = Networker()
+    let artist: Artist?
     
-    var id: String { rawValue }
+    @State private var isBusy: Bool = false
+    @State private var lyrics: String = "no lyrics"
+    
+    var body: some View {
+        VStack {
+            if isBusy {
+                ProgressView()
+                Spacer()
+            } else {
+                Text(lyrics)
+                    .font(.title2)
+                    .padding(15)
+            }
+        }
+        .task {
+            if artist != nil {
+                do {
+                    isBusy = true
+                    lyrics = try await network.findLyrics(artist!)
+                    isBusy = false
+                } catch {
+                    print(error)
+                }
+            }
+        }
+    }
 }
 
+
+
+/*
+ @State private var infoView: InfoTypes = .overview
+ 
+ enum InfoTypes: String, CaseIterable, Identifiable {
+     case overview = "Overview"
+     case artist = "Artist"
+     case track = "Track"
+     case collection = "Collection"
+     
+     var id: String { rawValue }
+ }
+
+
+ 
+ 
+ // does not seem to be useful
+ 
+//            Picker("", selection: $infoView) {
+//                ForEach(InfoTypes.allCases) { info in
+//                    Text(info.rawValue).tag(info)
+//                }
+//            }
+//            .pickerStyle(.segmented)
+//            .fixedSize()
+//            .padding(.horizontal)
+//            .padding(.bottom, 20)
+
+//            switch infoView {
+//                case .overview: overView()
+//                case .track: trackView()
+//                case .artist: artistView()
+//                case .collection: collectionView()
+//            }
+ 
+ 
+ //    @ViewBuilder
+ //    func artistView() -> some View {
+ //        if let artist, let url = URL(string: artist.artistViewURL) {
+ //            ArtistWebView(url: url)
+ //        }
+ //    }
+ //
+ //    @ViewBuilder
+ //    func trackView() -> some View {
+ //        if let artist, let url = URL(string: artist.trackViewURL) {
+ //            ArtistWebView(url: url)
+ //        }
+ //    }
+ //
+ //    @ViewBuilder
+ //    func collectionView() -> some View {
+ //        if let artist, let url = URL(string: artist.collectionViewURL) {
+ //            ArtistWebView(url: url)
+ //        }
+ //    }
+ 
+ 
 //struct ArtistWebView: View {
 //    let url: URL
 //    @State private var page = WebPage()
@@ -137,3 +186,6 @@ enum InfoTypes: String, CaseIterable, Identifiable {
 //            }
 //    }
 //}
+
+
+*/

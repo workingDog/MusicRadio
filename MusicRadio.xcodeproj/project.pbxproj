@@ -14,6 +14,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C722116E2ECC370B00D073E4 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		C72211702ECC370B00D073E4 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		C797BDEE2EC7FE6A007F738D /* click1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = click1.wav; sourceTree = "<group>"; };
 		C797BDF02EC7FF23007F738D /* click2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = click2.wav; sourceTree = "<group>"; };
 		C797BDF22EC7FFA2007F738D /* click3.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = click3.wav; sourceTree = "<group>"; };
@@ -58,6 +60,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C722116D2ECC370B00D073E4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C722116E2ECC370B00D073E4 /* WidgetKit.framework */,
+				C72211702ECC370B00D073E4 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		C79B44C12EB6EFAE00FCC9B9 = {
 			isa = PBXGroup;
 			children = (
@@ -67,6 +78,7 @@
 				C76BD8BA2EC1A5360038BA45 /* ScreenShots */,
 				C79B44DA2EB6F0B400FCC9B9 /* README.md */,
 				C79B44CC2EB6EFAE00FCC9B9 /* MusicRadio */,
+				C722116D2ECC370B00D073E4 /* Frameworks */,
 				C79B44CB2EB6EFAE00FCC9B9 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -112,7 +124,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 2610;
+				LastSwiftUpdateCheck = 2620;
 				LastUpgradeCheck = 2610;
 				TargetAttributes = {
 					C79B44C92EB6EFAE00FCC9B9 = {
