@@ -16,17 +16,17 @@ This is yet another radio stations player based on the [RadioBrowser](https://ww
 
 ## Usage
 
-Tap/click on the station you want to listen to, and it will appear 
+Tap on the station you want to listen to, and it will appear 
 in the **Play** bar at the bottom of the screen.
 
-Search for the country you desire, then tap/click on the **heart** icon to 
+Search for the country you desire, then tap on the **heart** icon to 
 make the station **Favourite**. That radio station will appear in the **Favourites** list.
 
 Similarly, when you search for particular **Stations**.
 
-Tap/click on the **globe** icon of a radio station to bring its internet home page, if it has one.
+Tap on the **globe** icon of a radio station to bring its internet home page, if it has one.
 
-In the **Play** bar, while playing a song, or when a song title is shown, tap/click on the station radio icon to bring its iTunes artist info and the **lyrics** if available.
+In the **Play** bar, while playing a song, or when a song title is shown, tap on the station radio icon to bring its iTunes artist info and the **lyrics** if available.
 
 ## Note
 
