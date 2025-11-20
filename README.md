@@ -1,8 +1,8 @@
 # MusicRadio
 
-**MusicRadio** lets you play radio stations from the **RadioBrowser** community project (> 50000). When playing a song, it can also display the artist and they artwork from *iTunes*. 
-In addition it can also display the **lyrics** of the current song from the community project *LRCLIB*, when available. When the station is a **TV** station you can also view their broadcast.
 
+**MusicRadio** lets you play radio stations from the **RadioBrowser** community project (over 50,000 stations). When a song is playing, it can also display the artist name and artwork retrieved from *iTunes*.
+In addition it can also display the **lyrics** of the current song from the community project *LRCLIB*, when available. If the station is a **TV** station, you can also view its broadcast.
 
 This is yet another radio stations player based on the [RadioBrowser](https://www.radio-browser.info/) and its server at [Community Radio Station Index](https://de1.api.radio-browser.info/#General). Was meant to be a weekend project but ended up taking a week to polish.
 
