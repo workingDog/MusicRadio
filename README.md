@@ -28,9 +28,7 @@ Tap on the **globe** icon of a radio station to bring its internet home page, if
 
 In the **Play** bar, while playing a song, or when a song title is shown, tap on the station radio icon to popup its iTunes artist info and the **lyrics** if available.
 
-If the station is a **TV** station, a small tv icon will be displayed 
-near the *play* button. For example: *Bloomberg TV*, *Thai PBS TV*, *Channel News Asia TV*, or *Deutsche Welle TV*. However, many of these channels either do not broadcast or only stream intermittently.
-
+If the station is a **TV** station, a small TV icon will appear next to the *Play* button. Examples include *Bloomberg TV*, *Thai PBS TV*, *Channel News Asia TV*, *Deutsche Welle TV*. Note that many of these channels may not broadcast consistently or may only stream intermittently.
 Tap the **TV** station icon or the *Play* button to open the video, if it’s available.
 
 
