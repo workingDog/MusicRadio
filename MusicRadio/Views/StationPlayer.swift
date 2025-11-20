@@ -1,16 +1,15 @@
 //
-//  MiniPlayer.swift
+//  StationPlayer.swift
 //  MusicRadio
 //
-//  Created by Ringo Wathelet on 2025/11/02.
+//  Created by Ringo Wathelet on 2025/11/20.
 //
 import SwiftUI
 import AVFoundation
 import MediaPlayer
 
 
-
-struct MiniPlayer: View {
+struct StationPlayer: View {
     @Environment(PlayerManager.self) var playerManager
     @Environment(ColorsModel.self) var colorsModel
     
@@ -22,7 +21,7 @@ struct MiniPlayer: View {
                 Group {
                     HStack {
                         if playerManager.station == nil {
-                            Image(uiImage: RadioStation.defaultImg)
+                            Image(uiImage: playerManager.defaultImg)
                                 .renderingMode(.original)
                                 .resizable()
                                 .scaledToFit()
@@ -30,7 +29,7 @@ struct MiniPlayer: View {
                                 .cornerRadius(6)
                                 .shadow(radius: 3)
                         } else {
-                            Image(uiImage: playerManager.station!.faviconImage())
+                             Image(uiImage: playerManager.station!.faviconImage())
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 45, height: 45)
@@ -39,9 +38,7 @@ struct MiniPlayer: View {
                         }
                     }
                     .onTapGesture {
-                        if !playerManager.currentSong.isEmpty {
-                            showArt = true
-                        }
+                        showArt = true
                     }
                 }.padding(4)
                 VStack {
@@ -67,20 +64,28 @@ struct MiniPlayer: View {
                     .frame(height: 40)
                     .padding(.top, 5)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
-
+                
                 Spacer()
                 
-                // play / pause button
                 Button {
                     playerManager.togglePlayback()
+                    if let station = playerManager.station, station.isTV, playerManager.isPlaying {
+                        showArt = true
+                    }
                 } label: {
-                    Image(systemName: playerManager.isPlaying ? "pause.fill" : "play.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 40, height: 40)
-                        .padding(10)
-                        .foregroundStyle(.primary)
-                        .background(.thickMaterial, in: Circle())
+                    ZStack {
+                        if let station = playerManager.station, station.isTV {
+                            Image(systemName: "tv").offset(x: 0, y: -30)
+                        }
+                        Image(systemName: playerManager.isPlaying ? "pause.fill" : "play.fill")
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                    }
+                    .scaledToFit()
+                    .frame(width: 40, height: 40)
+                    .padding(10)
+                    .foregroundStyle(.primary)
+                    .background(.thickMaterial, in: Circle())
                 }
             }.padding(6)
             
@@ -99,8 +104,24 @@ struct MiniPlayer: View {
             }
         }
         .sheet(isPresented: $showArt) {
-            ArtistView(song: playerManager.currentSong)
+            Viewer()
                 .environment(colorsModel)
+                .environment(playerManager)
+        }
+    }
+}
+
+struct Viewer: View {
+    @Environment(PlayerManager.self) var playerManager
+    @Environment(ColorsModel.self) var colorsModel
+    
+    var body: some View {
+        VStack {
+            if let station = playerManager.station, station.isTV {
+                TvView()
+            } else {
+                ArtistView(song: playerManager.currentSong)
+            }
         }
     }
 }

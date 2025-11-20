@@ -14,12 +14,20 @@ import AVFoundation
 @Observable
 class PlayerManager {
     
+    var defaultImg: UIImage {
+        if let station = station, station.url.lowercased().hasSuffix(".m3u8") {
+            return UIImage(named: "teve")!
+        } else {
+            return UIImage(named: "radio")!
+        }
+    }
+    
     var station: RadioStation?
     var isPlaying = false
     var currentSong: String = ""
     
     private var metadataOutput: AVPlayerItemMetadataOutput?
-    private var radio: RadioPlayer?
+    var radio: RadioPlayer?
     
     init() {
         Task {

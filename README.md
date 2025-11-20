@@ -26,7 +26,12 @@ Similarly, when you search for particular **Stations**.
 
 Tap on the **globe** icon of a radio station to bring its internet home page, if it has one.
 
-In the **Play** bar, while playing a song, or when a song title is shown, tap on the station radio icon to bring its iTunes artist info and the **lyrics** if available.
+In the **Play** bar, while playing a song, or when a song title is shown, tap on the station radio icon to popup its iTunes artist info and the **lyrics** if available.
+
+If the station is a **TV** station, a small tv icon will be displayed 
+near the *play* button. For example "Bloomberg TV", "Thai PBS TV", "Channel News Asia TV" or "Deutsche Welle TV", however many do not broadcast or are intermittent.
+Tap on the **TV** station icon or the *play* button to popup its video, when the video is available.
+
 
 ## Note
 

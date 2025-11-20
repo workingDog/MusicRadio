@@ -71,10 +71,9 @@ struct StationListView: View {
             .textInputAutocapitalization(.never)
             .padding(.horizontal, 6)
             
-            MiniPlayer()
+            StationPlayer()
                 .padding(.horizontal)
                 .padding(.vertical, 6)
-            
         }
     }
     

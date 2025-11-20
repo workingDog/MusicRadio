@@ -41,10 +41,13 @@ final class Country: Codable {
 final class RadioStation: Codable {
 
     // these are not encoded or decoded
-    static var defaultImg = UIImage(named: "radio")!
     var isFavourite: Bool = false
     var isPlaying: Bool = false
     var faviconData: Data? = nil
+    // is a TV station
+    var isTV: Bool {
+        return url.lowercased().hasSuffix(".m3u8")
+    }
     
     var changeuuid: String
     var stationuuid: String
@@ -198,14 +201,22 @@ final class RadioStation: Codable {
             if faviconData != nil, let img = UIImage(data: faviconData!) {
                 return img
             } else {
-                return RadioStation.defaultImg
+                return defaultImg()
             }
         } else {
             if let img = UIImage(data: faviconData!) {
                 return img
             } else {
-                return RadioStation.defaultImg
+                return defaultImg()
             }
+        }
+    }
+    
+    func defaultImg() -> UIImage {
+        if url.lowercased().hasSuffix(".m3u8") {
+            return UIImage(named: "teve")!
+        } else {
+            return UIImage(named: "radio")!
         }
     }
     
