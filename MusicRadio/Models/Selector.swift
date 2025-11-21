@@ -23,7 +23,7 @@ class Selector {
     static let keyTag: String = "tag"
     static let keyPingSound: String = "pingSound"
     
-
+    
     func storeSettings() {
         UserDefaults.standard.set(self.topCount, forKey: Selector.keyTopCount)
         UserDefaults.standard.set(self.tag.rawValue, forKey: Selector.keyTag)
@@ -33,33 +33,33 @@ class Selector {
     func retrieveSettings() {
         let xcount = UserDefaults.standard.integer(forKey: Selector.keyTopCount)
         self.topCount = (xcount != 0) ? xcount : 10
-
+        
         let xtag = UserDefaults.standard.string(forKey: Selector.keyTag) ?? StationTag.all.rawValue
         self.tag = StationTag(rawValue: xtag) ?? .all
         
         self.pingSound = UserDefaults.standard.bool(forKey: Selector.keyPingSound)
     }
-
+    
 }
 
 enum FilterTypes: Identifiable, Hashable {
     case topRated(Int)
     case all
-
+    
     var id: String {
         switch self {
-            case .topRated(let value): return "Top \(value)"
-            case .all: return "all"
+        case .topRated(let value): return "Top \(value)"
+        case .all: return "all"
         }
     }
-
+    
     var displayName: String {
         switch self {
-            case .topRated(let value): return "Top \(value)"
-            case .all: return "All"
+        case .topRated(let value): return "Top \(value)"
+        case .all: return "All"
         }
     }
-
+    
     static func allCases(topRatedValue: Int) -> [FilterTypes] {
         return [.topRated(topRatedValue),.all]
     }
@@ -74,31 +74,31 @@ enum ViewTypes: String, CaseIterable, Identifiable {
     
     var icon: String {
         switch self {
-            case .favourites: return "🎵"
-            case .stations: return "📻"
-            case .countries: return "🎙️"
+        case .favourites: return "🎵"
+        case .stations: return "📻"
+        case .countries: return "🎙️"
         }
     }
     
     var description: String {
         switch self {
-            case .favourites: return "Enjoy your favorite songs."
-            case .stations: return "Search for radio stations."
-            case .countries: return "Check all countries radio stations."
+        case .favourites: return "Enjoy your favorite songs."
+        case .stations: return "Search for radio stations."
+        case .countries: return "Check all countries radio stations."
         }
     }
 }
 
 enum StationTag: String, CaseIterable, Codable, Identifiable {
-    case all
+    case all = "All types"
     case mix
     case jazz
     case pop
     case rock
     case indie
-    case electronic
-    case ambient
     case classical
+    case hits
+    case variety
     case metal
     case news
     case talk
@@ -106,65 +106,122 @@ enum StationTag: String, CaseIterable, Codable, Identifiable {
     case oldies
     case country
     case blues
+    case soul
+    case relax
     case reggae
     case latin
     case hipHop = "hip-hop"
     case dance
-    case chillout
     case techno
-    case house
-    case tag00s = "00s"
-    case tag10s = "10s"
-    case tag80s = "80s"
-    case tag90s = "90s"
-    case christmas
     case children
     case sports
-
+    case tv
+    case community
+    case adultHits = "Adult hits"
+    
     var id: String { rawValue }
-
+    
     var displayName: String {
-        switch self {
-            case .all: return "All types"
-            case .hipHop: return "Hip-Hop"
-            case .worldMusic: return "World Music"
-            case .tag00s: return "2000s"
-            case .tag10s: return "2010s"
-            case .tag80s: return "1980s"
-            case .tag90s: return "1990s"
-            default: return rawValue.capitalized
-        }
+        rawValue.capitalized
     }
-
+    
     private static var baseHints: [StationTag: [String]] = [
-        .jazz: ["jazz", "bop", "swing", "fusion", "bebop", "cool", "big band", "post-bop", "avant"],
-        .pop: ["pop", "chart", "idol", "top 40", "mainstream", "kpop", "jpop"],
-        .rock: ["rock", "punk", "grunge", "garage", "alt", "hardcore", "metalcore"],
-        .indie: ["indie", "alternative", "shoegaze", "lofi"],
-        .electronic: ["edm", "electro", "electronic", "synth", "dubstep", "drum and bass"],
-        .ambient: ["ambient", "atmospheric", "drone", "downtempo", "new age"],
-        .classical: ["classical", "symphony", "orchestra", "baroque", "opera", "concerto"],
-        .metal: ["metal", "heavy metal", "thrash", "black metal", "death metal", "doom"],
-        .news: ["news", "headline", "current affairs", "update"],
-        .talk: ["talk", "podcast", "interview", "discussion"],
-        .worldMusic: ["world", "global", "african", "asian", "celtic", "folk", "balkan"],
-        .oldies: ["oldies", "retro", "classic hits", "gold", "vintage", "50s", "60s", "70s"],
-        .country: ["country", "bluegrass", "americana", "honky tonk"],
-        .blues: ["blues", "rhythm and blues", "r&b"],
-        .reggae: ["reggae", "dub", "ska", "dancehall"],
-        .latin: ["latin", "salsa", "bossa", "tango", "bachata", "merengue"],
-        .hipHop: ["hip-hop", "rap", "trap", "rnb", "urban"],
-        .dance: ["dance", "club", "disco", "party"],
-        .chillout: ["chill", "lounge", "relax", "café", "smooth"],
-        .techno: ["techno", "trance", "hardstyle", "minimal"],
-        .house: ["house", "deep house", "progressive", "tech house"],
-        .tag80s: ["80s", "eighties"],
-        .tag90s: ["90s", "nineties"],
-        .tag00s: ["00s", "2000s", "millennium"],
-        .tag10s: ["10s", "2010s"],
-        .christmas: ["christmas", "holiday", "xmas"],
-        .children: ["kids", "children", "nursery", "disney"],
-        .sports: ["sports", "football", "soccer", "baseball", "basketball"]
+        
+            .pop: [
+                "pop", "pop music", "top 40", "top40", "top hits",
+                "pop en español", "pop en inglés", "latin pop",
+                "mainstream", "charts", "top charts", "chart", "idol", "top 40", "mainstream", "kpop", "jpop"
+            ],
+        
+            .news: [
+                "news", "local news", "news talk", "noticias",
+                "noticias locales", "noticias en español",
+                "information", "talk & speech", "headline", "current affairs", "update"
+            ],
+        
+            .rock: [
+                "rock", "classic rock", "hard rock",
+                "alternative rock", "rock clásico"
+            ],
+        
+            .classical: [
+                "classical", "classic", "instrumental"
+            ],
+        
+            .variety: [
+                "entretenimiento", "entertainment", "variety",
+                "diversión"
+            ],
+        
+            .hits: [
+                "hits", "classic hits", "top hits", "top 100",
+                "80s", "90s", "70s", "60s", "retro"
+            ],
+        
+            .dance: [
+                "dance", "club", "eurodance", "disco",
+                "edm", "house", "deep house", "party"
+            ],
+        
+            .latin: ["latin", "salsa", "bossa", "tango", "bachata", "merengue"],
+        
+            .hipHop: ["hip-hop", "rap", "trap", "rnb", "urban"],
+
+            .relax: [
+                "easy listening", "chill", "chillout", "lounge", "relax"
+            ],
+        
+            .talk: [
+                "talk", "talk radio",  "podcast", "interview", "discussion"
+            ],
+        
+            .worldMusic: ["world", "global", "african", "asian", "celtic", "folk", "balkan"],
+        
+            .oldies: ["oldies", "retro", "classic hits", "gold", "vintage", "50s", "60s", "70s"],
+        
+            .jazz: ["jazz", "bop", "swing", "fusion", "bebop", "cool", "big band", "post-bop", "avant"],
+        
+            .children: ["kids", "children", "nursery", "disney"],
+
+            .community: [
+                "public radio", "community radio", "college radio",
+                "university radio", "community"
+            ],
+        
+            .techno: ["electronic", "electronica", "electro", "techno", "trance", "hardstyle", "minimal"],
+        
+            .adultHits: [
+                "adult contemporary", "hot adult contemporary",
+                "adult hits", "easy listening"
+            ],
+        
+            .country: ["country", "bluegrass", "americana", "honky tonk"],
+        
+            .metal: [
+                "metal", "heavy metal"
+            ],
+        
+            .soul: [
+                "soul", "rnb", "r&b"
+            ],
+        
+            .indie: [
+                "indie", "alternative", "alternative rock"
+            ],
+        
+            .sports: [
+                "sports", "sport", "deportes"
+            ],
+        
+            .reggae: ["reggae", "dub", "ska", "dancehall"],
+        
+            .tv: [
+                "tv", "television", "video", "stream",
+                "broadcast", "live tv", "tv station",
+                "canal", "canal tv", "televisión",
+                "noticias tv", "news tv", "music tv",
+                "video stream", "m3u8"
+            ]
     ]
     
     static func inferDominantGenre(from tags: String) -> StationTag {

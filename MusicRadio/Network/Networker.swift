@@ -33,8 +33,8 @@ class Networker {
                 print("---> tags: \(tags.count)\n")
                 
                 let sortedTags = tags.sorted(by: { ($0.stationcount ?? 0) > ($1.stationcount ?? 0) })
-                for tag in sortedTags.prefix(50) {
-                    print("---> tag: \(tag.name ?? "no name")  \(tag.stationcount ?? 0)")
+                for tag in sortedTags.prefix(200) {
+                    print(" \(tag.name ?? "no name")  \(tag.stationcount ?? 0)")
                 }
                 
                 print("\n---> done fetching getAllTags \n")

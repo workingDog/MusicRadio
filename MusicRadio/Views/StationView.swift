@@ -58,7 +58,7 @@ struct StationView: View {
                     
                     Spacer()
                     
-                    Text(StationTag.inferDominantGenre(from: station.tags).rawValue)
+                    Text(StationTag.inferDominantGenre(from: station.tags).displayName)
                     
                     Spacer()
                     
@@ -100,6 +100,8 @@ struct StationView: View {
             } else {
                 playerManager.station = station
             }
+            
+   //         print("\n----> station.tags: \(station.tags)  \n")
         }
         .background(colorsModel.stationBackColor)
         .glassEffect(.regular.tint(colorsModel.stationBackColor).interactive(), in: RoundedRectangle(cornerRadius: 12)) // for iOS26+

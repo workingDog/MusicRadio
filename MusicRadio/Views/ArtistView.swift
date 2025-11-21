@@ -91,7 +91,11 @@ struct LyricsView: View {
     var body: some View {
         VStack {
             if isBusy {
-                ProgressView()
+                HStack {
+                    Spacer()
+                    ProgressView()
+                    Spacer()
+                }
                 Spacer()
             } else {
                 Text(lyrics)
