@@ -13,7 +13,7 @@ struct RatingStarsView: View {
     let station: RadioStation
     let maxRating: Int
     
-    @State private var stars: Int = 0
+    @State private var stars: Int = 1
     
     init(_ station: RadioStation, _ maxRating: Int) {
         self.station = station
