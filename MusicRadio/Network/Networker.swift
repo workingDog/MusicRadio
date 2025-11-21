@@ -190,12 +190,14 @@ class Networker {
         }
     }
 
-    // Fetch the artist artwork from iTunes
-    func fetchArtist(for queryText: String) async throws -> Artist? {
+    // Fetch the artist artwork from iTunes, default country=us
+    func fetchArtist(for queryText: String, countryCode: String, tries: Int = 0) async throws -> Artist? {
         // URL encode the search query
         let query = queryText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-        let urlString = "https://itunes.apple.com/search?term=\(query)&entity=song&limit=1"
+        let urlString = "https://itunes.apple.com/search?term=\(query)&entity=song&limit=1&country=\(countryCode.lowercased())"
         guard let url = URL(string: urlString) else { return nil }
+        
+        print("---> fetchArtist url: \(url.absoluteString)")
         
         do {
             // Fetch data from iTunes
@@ -204,7 +206,7 @@ class Networker {
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .iso8601
             let arts = try decoder.decode(iTunesInfo.self, from: data)
-            
+
             if var artist = arts.results?.first {
                 
                 // make sure all are https
@@ -228,13 +230,19 @@ class Networker {
                     artist.imageData = UIImage(data: imageData)
                     return artist
                 }
+            } else {
+                // try to fetch the info from the US, just once
+                if tries < 1 {
+                    Task {
+                        return try await fetchArtist(for: queryText, countryCode: "us", tries: tries + 1)
+                    }
+                }
             }
         } catch {
             print(error)
         }
         return nil
     }
-    
     
     // see: https://lrclib.net/
     // https://openpublicapis.com/api/lrclib?utm_source=chatgpt.com

@@ -120,7 +120,7 @@ struct Viewer: View {
             if let station = playerManager.station, station.isTV {
                 TvView()
             } else {
-                ArtistView(song: playerManager.currentSong)
+                ArtistView()
             }
         }
     }

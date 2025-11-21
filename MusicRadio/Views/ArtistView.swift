@@ -11,13 +11,12 @@ import WebKit
 
 struct ArtistView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(PlayerManager.self) var playerManager
     @Environment(ColorsModel.self) var colorsModel
     
     @State private var artist: Artist?
     @State private var isBusy = true
-    
-    let song: String
-    
+
     let network = Networker()
     
     var body: some View {
@@ -54,7 +53,9 @@ struct ArtistView: View {
         .task {
             do {
                 isBusy = true
-                artist = try await network.fetchArtist(for: song)
+                artist = try await network.fetchArtist(
+                    for: playerManager.currentSong,
+                    countryCode: playerManager.station?.countrycode ?? "us")
                 isBusy = false
             } catch {
                 print(error)
