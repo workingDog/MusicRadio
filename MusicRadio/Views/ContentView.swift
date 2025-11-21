@@ -34,11 +34,11 @@ struct ContentView: View {
                 }
                 
                 switch selector.view {
-                case .favourites: StationListView(stations: stations.filter({$0.isFavourite}), columns: 2)
-                    
-                case .countries: CountriesView()
-                    
-                case .stations: SearchStationView()
+                    case .favourites: StationListView(stations: stations.filter({$0.isFavourite}))
+                        
+                    case .countries: CountriesView()
+                        
+                    case .stations: SearchStationView()
                 }
             }
             .onAppear {

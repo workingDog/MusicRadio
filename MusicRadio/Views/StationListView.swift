@@ -13,7 +13,8 @@ struct StationListView: View {
     @Environment(ColorsModel.self) var colorsModel
     
     var stations: [RadioStation]
-    let columns: [GridItem]
+    
+    let columns: [GridItem] = Array(repeating: GridItem(.flexible(), spacing: 4), count: 2)
     
     @State private var searchText = ""
     
@@ -43,12 +44,7 @@ struct StationListView: View {
             return cleanName.lowercased().starts(with: trimmed.lowercased())
         }
     }
-    
-    init(stations: [RadioStation], columns: Int) {
-        self.stations = stations
-        self.columns = Array(repeating: GridItem(.flexible(), spacing: 4), count: columns)
-    }
-    
+
     var body: some View {
         VStack {
             ScrollView {

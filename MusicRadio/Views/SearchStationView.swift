@@ -49,7 +49,7 @@ struct SearchStationView: View {
                     }
                 }
 
-                StationListView(stations: stations, columns: 2)
+                StationListView(stations: stations)
                     .onTapGesture {
                         focused = false
                     }
