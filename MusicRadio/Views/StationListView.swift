@@ -40,7 +40,7 @@ struct StationListView: View {
         guard !trimmed.isEmpty else { return zstations }
         return zstations.filter { station in
             let cleanName = station.name.trimmingCharacters(in: .whitespacesAndNewlines)
-            return cleanName.lowercased().starts(with: searchText.lowercased())
+            return cleanName.lowercased().starts(with: trimmed.lowercased())
         }
     }
     
