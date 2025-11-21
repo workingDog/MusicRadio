@@ -35,7 +35,11 @@ struct ArtistView: View {
             
             ScrollView {
                 if isBusy {
-                    ProgressView()
+                    HStack {
+                        Spacer()
+                        ProgressView()
+                        Spacer()
+                    }
                     Spacer()
                 } else {
                     overView()
