@@ -190,17 +190,18 @@ class Networker {
         }
     }
 
-    // Fetch the artist artwork from iTunes, default country=us
+    // Fetch the artist artwork from iTunes from the local station country,
+    // will also try the US if need be
     func fetchArtist(for queryText: String, countryCode: String, tries: Int = 0) async throws -> Artist? {
         // URL encode the search query
         let query = queryText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         let urlString = "https://itunes.apple.com/search?term=\(query)&entity=song&limit=1&country=\(countryCode.lowercased())"
         guard let url = URL(string: urlString) else { return nil }
         
-        print("---> fetchArtist url: \(url.absoluteString)")
+   //     print("---> fetchArtist url: \(url.absoluteString)")
         
         do {
-            // Fetch data from iTunes
+            // Fetch data from the local iTunes
             let (data, _) = try await URLSession.shared.data(from: url)
     //        print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
             let decoder = JSONDecoder()
@@ -231,10 +232,13 @@ class Networker {
                     return artist
                 }
             } else {
-                // try to fetch the info from the US, just once
+                // try to fetch the info from the US, when no local results
                 if tries < 1 {
                     Task {
-                        return try await fetchArtist(for: queryText, countryCode: "us", tries: tries + 1)
+                        return try await fetchArtist(
+                            for: queryText,
+                            countryCode: "us",
+                            tries: tries + 1)
                     }
                 }
             }
