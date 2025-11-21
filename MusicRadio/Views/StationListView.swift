@@ -20,7 +20,7 @@ struct StationListView: View {
     
     // max value of votes in the current list of stations
     var maxRating: Int {
-        stations.map(\.votes).max() ?? 0
+        stations.map(\.votes).max() ?? 1
     }
     
     private var filteredStations: [RadioStation] {

@@ -32,7 +32,8 @@ struct RatingStarsView: View {
         .padding(.horizontal, 6)
         .onAppear {
             if station.votes <= 0 { station.votes = 1 }
-            let value = min(Double(station.votes) / Double(maxRating) * 5.0, 5.0)
+            let maxVal = maxRating <= 0 ? 1.0 : Double(maxRating)
+            let value = min(Double(station.votes) / maxVal * 5.0, 5.0)
             stars = Int(value.rounded(.up))
         }
     }
