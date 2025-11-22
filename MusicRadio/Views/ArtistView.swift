@@ -10,9 +10,10 @@ import WebKit
 
 
 struct ArtistView: View {
-    @Environment(\.dismiss) private var dismiss
     @Environment(PlayerManager.self) var playerManager
     @Environment(ColorsModel.self) var colorsModel
+    
+    @Binding var showArt: Bool
     
     @State private var artist: Artist?
     @State private var isBusy = true
@@ -23,7 +24,7 @@ struct ArtistView: View {
         VStack {
             HStack {
                 Button("Done") {
-                    dismiss()
+                    showArt = false
                 }
                 .buttonStyle(.bordered)
                 Spacer()

@@ -104,7 +104,7 @@ struct StationPlayer: View {
             }
         }
         .sheet(isPresented: $showArt) {
-            Viewer()
+            Viewer(showArt: $showArt)
                 .environment(colorsModel)
                 .environment(playerManager)
         }
@@ -115,12 +115,14 @@ struct Viewer: View {
     @Environment(PlayerManager.self) var playerManager
     @Environment(ColorsModel.self) var colorsModel
     
+    @Binding var showArt: Bool
+    
     var body: some View {
         VStack {
             if let station = playerManager.station, station.isTV {
-                TvView()
+                TvView(showArt: $showArt)
             } else {
-                ArtistView()
+                ArtistView(showArt: $showArt)
             }
         }
     }

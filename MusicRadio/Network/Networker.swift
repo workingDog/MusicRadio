@@ -5,8 +5,7 @@
 //  Created by Ringo Wathelet on 2025/11/02.
 //
 import Foundation
-import SwiftUI
-import SwiftData
+import UIKit
 
 
 // for testing 
@@ -18,6 +17,12 @@ struct StationsTags: Codable {
 class Networker {
     
     var defaultServer = "https://de1.api.radio-browser.info/json"
+    
+    let decoder = JSONDecoder()
+
+    init() {
+        decoder.dateDecodingStrategy = .iso8601
+    }
     
     // for testing
     func getAllTags() async throws -> [StationsTags] {
@@ -83,8 +88,6 @@ class Networker {
     func getStationsForCountry(_ country: String) async throws -> [RadioStation] {
         if let theUrl = URL(string: "\(defaultServer)/stations/bycountryexact/\(country)") {
             print("---> getStationsForCountry fetching theUrl: \(theUrl.absoluteString)")
-            let decoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .iso8601
             do {
                 let (data, response) = try await URLSession.shared.data(from: theUrl)
                 // print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
@@ -147,9 +150,7 @@ class Networker {
                         return []
                     }
                 }
-                
-                let decoder = JSONDecoder()
-                decoder.dateDecodingStrategy = .iso8601
+
                 let stations = try decoder.decode([RadioStation].self, from: data)
        //         print("---> stations: \(stations)")
                 convertAllToHttps(stations)
@@ -175,9 +176,7 @@ class Networker {
                         return []
                     }
                 }
-                
-                let decoder = JSONDecoder()
-                decoder.dateDecodingStrategy = .iso8601
+
                 let stations = try decoder.decode([RadioStation].self, from: data)
        //         print("---> stations: \(stations)")
                 convertAllToHttps(stations)
@@ -203,9 +202,7 @@ class Networker {
                         return []
                     }
                 }
-                
-                let decoder = JSONDecoder()
-                decoder.dateDecodingStrategy = .iso8601
+
                 let stations = try decoder.decode([RadioStation].self, from: data)
                 //         print("---> stations: \(stations)")
                 convertAllToHttps(stations)
@@ -243,7 +240,7 @@ class Networker {
         let urlString = "https://itunes.apple.com/search?term=\(query)&entity=song&limit=1&country=\(countryCode.lowercased())"
         guard let theUrl = URL(string: urlString) else { return nil }
         
-   //     print("---> fetchArtist url: \(url.absoluteString)")
+        print("---> fetchArtist url: \(theUrl.absoluteString)")
         
         do {
             // Fetch data from the local iTunes
@@ -257,9 +254,7 @@ class Networker {
                     return nil
                 }
             }
-            
-            let decoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .iso8601
+
             let arts = try decoder.decode(iTunesInfo.self, from: data)
 
             if var artist = arts.results?.first {
@@ -278,6 +273,8 @@ class Networker {
                     let artworkUrlString: String = artwork.replacingOccurrences(of: "100x100", with: "600x600")
                     
                     guard let artworkUrl = URL(string: artworkUrlString) else { return nil }
+                    
+                    print("---> fetchArtist artworkUrl: \(artworkUrl.absoluteString)")
                     
                     // Fetch the artwork image data
                     let (imageData, _) = try await URLSession.shared.data(from: artworkUrl)
@@ -321,7 +318,7 @@ class Networker {
             let queryText = "\(lrclib)/get?artist_name=\(name)&track_name=\(track)"
             let query = queryText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
             if let theUrl = URL(string: query) {
-      //          print("---> findLyrics fetching theUrl: \(theUrl.absoluteString)")
+                print("---> findLyrics fetching theUrl: \(theUrl.absoluteString)")
                 do {
                     let (data, response) = try await URLSession.shared.data(from: theUrl)
                     //     print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")

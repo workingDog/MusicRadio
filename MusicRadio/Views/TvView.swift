@@ -9,15 +9,16 @@ import AVKit
 
 
 struct TvView: View {
-    @Environment(\.dismiss) private var dismiss
     @Environment(ColorsModel.self) var colorsModel
     @Environment(PlayerManager.self) var playerManager
 
+    @Binding var showArt: Bool
+    
     var body: some View {
         VStack {
             HStack {
                 Button("Done") {
-                    dismiss()
+                    showArt = false
                 }
                 .buttonStyle(.bordered)
                 Spacer()
