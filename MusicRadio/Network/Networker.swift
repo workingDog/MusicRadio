@@ -86,8 +86,16 @@ class Networker {
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .iso8601
             do {
-                let (data, _) = try await URLSession.shared.data(from: theUrl)
+                let (data, response) = try await URLSession.shared.data(from: theUrl)
                 // print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
+                
+                // Check HTTP status
+                if let httpResponse = response as? HTTPURLResponse {
+                    if (400...599).contains(httpResponse.statusCode) {
+                        return []
+                    }
+                }
+                
                 let stations = try decoder.decode([RadioStation].self, from: data)
                 print("---> stations: \(stations.count)")
                 convertAllToHttps(stations)
@@ -103,8 +111,16 @@ class Networker {
         if let theUrl = URL(string: "\(defaultServer)/countries") {
             print("---> getAllCountries fetching theUrl: \(theUrl.absoluteString)")
             do {
-                let (data, _) = try await URLSession.shared.data(from: theUrl)
+                let (data, response) = try await URLSession.shared.data(from: theUrl)
                 // print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
+                
+                // Check HTTP status
+                if let httpResponse = response as? HTTPURLResponse {
+                    if (400...599).contains(httpResponse.statusCode) {
+                        return []
+                    }
+                }
+                
                 let countries = try JSONDecoder().decode([Country].self, from: data)
                 // print("---> countries: \(countries.count)")
                 return countries
@@ -119,8 +135,16 @@ class Networker {
         if let theUrl = URL(string: "\(defaultServer)/stations/topvote/\(limit)") {
             print("---> getTopVotes fetching theUrl: \(theUrl.absoluteString)")
             do {
-                let (data, _) = try await URLSession.shared.data(from: theUrl)
+                let (data, response) = try await URLSession.shared.data(from: theUrl)
 // print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
+                
+                // Check HTTP status
+                if let httpResponse = response as? HTTPURLResponse {
+                    if (400...599).contains(httpResponse.statusCode) {
+                        return []
+                    }
+                }
+                
                 let decoder = JSONDecoder()
                 decoder.dateDecodingStrategy = .iso8601
                 let stations = try decoder.decode([RadioStation].self, from: data)
@@ -138,8 +162,16 @@ class Networker {
         if let theUrl = URL(string: "\(defaultServer)/stations/search?country=\(country)&order=votes&reverse=true&limit=\(limit)") {
             print("---> getTopVotesFor fetching theUrl: \(theUrl.absoluteString)")
             do {
-                let (data, _) = try await URLSession.shared.data(from: theUrl)
+                let (data, response) = try await URLSession.shared.data(from: theUrl)
 // print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
+                
+                // Check HTTP status
+                if let httpResponse = response as? HTTPURLResponse {
+                    if (400...599).contains(httpResponse.statusCode) {
+                        return []
+                    }
+                }
+                
                 let decoder = JSONDecoder()
                 decoder.dateDecodingStrategy = .iso8601
                 let stations = try decoder.decode([RadioStation].self, from: data)
@@ -157,8 +189,16 @@ class Networker {
         if let theUrl = URL(string: "\(defaultServer)/stations/byname/\(station)") {
             print("---> findStations fetching theUrl: \(theUrl.absoluteString)")
             do {
-                let (data, _) = try await URLSession.shared.data(from: theUrl)
+                let (data, response) = try await URLSession.shared.data(from: theUrl)
     //            print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
+                
+                // Check HTTP status
+                if let httpResponse = response as? HTTPURLResponse {
+                    if (400...599).contains(httpResponse.statusCode) {
+                        return []
+                    }
+                }
+                
                 let decoder = JSONDecoder()
                 decoder.dateDecodingStrategy = .iso8601
                 let stations = try decoder.decode([RadioStation].self, from: data)
@@ -202,8 +242,16 @@ class Networker {
         
         do {
             // Fetch data from the local iTunes
-            let (data, _) = try await URLSession.shared.data(from: url)
+            let (data, response) = try await URLSession.shared.data(from: url)
     //        print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
+            
+            // Check HTTP status
+            if let httpResponse = response as? HTTPURLResponse {
+                if (400...599).contains(httpResponse.statusCode) {
+                    return nil
+                }
+            }
+            
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .iso8601
             let arts = try decoder.decode(iTunesInfo.self, from: data)
