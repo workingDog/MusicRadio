@@ -92,6 +92,7 @@ class Networker {
                 // Check HTTP status
                 if let httpResponse = response as? HTTPURLResponse {
                     if (400...599).contains(httpResponse.statusCode) {
+                        print("\n---> HTTP error: \(httpResponse.statusCode) theUrl: \(theUrl.absoluteString)")
                         return []
                     }
                 }
@@ -117,6 +118,7 @@ class Networker {
                 // Check HTTP status
                 if let httpResponse = response as? HTTPURLResponse {
                     if (400...599).contains(httpResponse.statusCode) {
+                        print("\n---> HTTP error: \(httpResponse.statusCode) theUrl: \(theUrl.absoluteString)")
                         return []
                     }
                 }
@@ -141,6 +143,7 @@ class Networker {
                 // Check HTTP status
                 if let httpResponse = response as? HTTPURLResponse {
                     if (400...599).contains(httpResponse.statusCode) {
+                        print("\n---> HTTP error: \(httpResponse.statusCode) theUrl: \(theUrl.absoluteString)")
                         return []
                     }
                 }
@@ -168,6 +171,7 @@ class Networker {
                 // Check HTTP status
                 if let httpResponse = response as? HTTPURLResponse {
                     if (400...599).contains(httpResponse.statusCode) {
+                        print("\n---> HTTP error: \(httpResponse.statusCode) theUrl: \(theUrl.absoluteString)")
                         return []
                     }
                 }
@@ -195,6 +199,7 @@ class Networker {
                 // Check HTTP status
                 if let httpResponse = response as? HTTPURLResponse {
                     if (400...599).contains(httpResponse.statusCode) {
+                        print("\n---> HTTP error: \(httpResponse.statusCode) theUrl: \(theUrl.absoluteString)")
                         return []
                     }
                 }
@@ -236,18 +241,19 @@ class Networker {
         // URL encode the search query
         let query = queryText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         let urlString = "https://itunes.apple.com/search?term=\(query)&entity=song&limit=1&country=\(countryCode.lowercased())"
-        guard let url = URL(string: urlString) else { return nil }
+        guard let theUrl = URL(string: urlString) else { return nil }
         
    //     print("---> fetchArtist url: \(url.absoluteString)")
         
         do {
             // Fetch data from the local iTunes
-            let (data, response) = try await URLSession.shared.data(from: url)
+            let (data, response) = try await URLSession.shared.data(from: theUrl)
     //        print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
             
             // Check HTTP status
             if let httpResponse = response as? HTTPURLResponse {
                 if (400...599).contains(httpResponse.statusCode) {
+                    print("\n---> HTTP error: \(httpResponse.statusCode) theUrl: \(theUrl.absoluteString)")
                     return nil
                 }
             }
@@ -275,6 +281,15 @@ class Networker {
                     
                     // Fetch the artwork image data
                     let (imageData, _) = try await URLSession.shared.data(from: artworkUrl)
+                    
+                    // Check HTTP status
+                    if let httpResponse = response as? HTTPURLResponse {
+                        if (400...599).contains(httpResponse.statusCode) {
+                            print("\n---> HTTP error: \(httpResponse.statusCode) artworkUrl: \(artworkUrl.absoluteString)")
+                            return nil
+                        }
+                    }
+                    
                     // add the imageData to the artist
                     artist.imageData = UIImage(data: imageData)
                     return artist
@@ -314,6 +329,7 @@ class Networker {
                     // Check HTTP status
                     if let httpResponse = response as? HTTPURLResponse {
                         if (400...599).contains(httpResponse.statusCode) {
+                            print("\n---> HTTP error: \(httpResponse.statusCode) theUrl: \(theUrl.absoluteString)")
                             return "no lyrics"
                         }
                     }
