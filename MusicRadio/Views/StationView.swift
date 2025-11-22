@@ -107,7 +107,7 @@ struct StationView: View {
         .glassEffect(.regular.tint(colorsModel.stationBackColor).interactive(), in: RoundedRectangle(cornerRadius: 12)) // for iOS26+
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .fullScreenCover(isPresented: $showWeb) {
-            WebViewScreen(station: station)
+            WebViewScreen(showWeb: $showWeb, station: station)
         }
     }
     
@@ -122,13 +122,13 @@ struct StationView: View {
 }
 
 struct WebViewScreen: View {
-    @Environment(\.dismiss) private var dismiss
+    @Binding var showWeb: Bool
     let station: RadioStation
     
     var body: some View {
         VStack {
             Button("Done") {
-                dismiss()
+                showWeb = false
             }
             .buttonStyle(.bordered)
             .frame(maxWidth: .infinity, alignment: .leading)

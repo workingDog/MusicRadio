@@ -50,7 +50,7 @@ struct ToolsView: View {
             .padding(.horizontal)
         }
         .sheet(isPresented: $showSettings) {
-            SettingsView()
+            SettingsView(showSettings: $showSettings)
                 .environment(selector)
                 .environment(colorsModel)
                 .presentationDetents([.large])

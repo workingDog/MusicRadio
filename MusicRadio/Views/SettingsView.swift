@@ -8,7 +8,7 @@ import SwiftUI
 
 
 struct SettingsView: View {
-    @Environment(\.dismiss) var dismiss
+    @Binding var showSettings: Bool
     @Environment(Selector.self) var selector
     @Environment(ColorsModel.self) var colorsModel
     
@@ -21,7 +21,7 @@ struct SettingsView: View {
             
             VStack(spacing: 20) {
                 Button("Done") {
-                    dismiss()
+                    showSettings = false
                 }
                 .buttonStyle(.bordered)
                 .frame(maxWidth: .infinity, alignment: .leading)

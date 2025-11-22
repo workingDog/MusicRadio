@@ -66,7 +66,7 @@ class Networker {
             do {
                 let (data, _) = try await URLSession.shared.data(from: theUrl)
                 print("---> data: \(data)") // 62 MB
-                let stations = try JSONDecoder().decode([RadioStation].self, from: data)
+                let stations = try decoder.decode([RadioStation].self, from: data)
                 print("---> stations: \(stations.count)") // 51680
                 print("\n---> done fetching getAllStations \n")
                 convertAllToHttps(stations)

@@ -15,7 +15,7 @@ import AVFoundation
 class PlayerManager {
     
     var defaultImg: UIImage {
-        if let station = station, station.url.lowercased().hasSuffix(".m3u8") {
+        if let station = station, station.isTV {
             return UIImage(named: "teve")!
         } else {
             return UIImage(named: "radio")!

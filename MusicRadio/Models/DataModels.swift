@@ -213,7 +213,7 @@ final class RadioStation: Codable {
     }
     
     func defaultImg() -> UIImage {
-        if url.lowercased().hasSuffix(".m3u8") {
+        if isTV {
             return UIImage(named: "teve")!
         } else {
             return UIImage(named: "radio")!
