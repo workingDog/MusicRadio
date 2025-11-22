@@ -16,8 +16,15 @@ struct StationsTags: Codable {
 
 class Networker {
     
-    var defaultServer = "https://de1.api.radio-browser.info/json"
+    // radio stations
+    var radioServer = "https://de1.api.radio-browser.info/json"
     
+    // lyrics
+    let lyricsServer = "https://lrclib.net/api"
+    
+    // artist
+    let itunesServer = "https://itunes.apple.com/search?entity=song&limit=1"
+
     let decoder = JSONDecoder()
 
     init() {
@@ -26,7 +33,7 @@ class Networker {
     
     // for testing
     func getAllTags() async throws -> [StationsTags] {
-        if let theUrl = URL(string: "\(defaultServer)/tags") {
+        if let theUrl = URL(string: "\(radioServer)/tags") {
             print("---> getAllTags fetching theUrl: \(theUrl.absoluteString)")
             var request = URLRequest(url: theUrl)
             request.httpMethod = "GET"
@@ -54,7 +61,7 @@ class Networker {
     
     // for testing
     func getAllStations() async throws -> [RadioStation] {
-        if let theUrl = URL(string: "\(defaultServer)/stations") {
+        if let theUrl = URL(string: "\(radioServer)/stations") {
             print("---> getAllStations fetching theUrl: \(theUrl.absoluteString)")
             do {
                 let (data, _) = try await URLSession.shared.data(from: theUrl)
@@ -73,7 +80,7 @@ class Networker {
     
     // for testing
     func getServers() async throws {
-        if let theUrl = URL(string: "\(defaultServer)/servers") {
+        if let theUrl = URL(string: "\(radioServer)/servers") {
             print("---> getServers fetching theUrl: \(theUrl.absoluteString)")
             do {
                 let (data, _) = try await URLSession.shared.data(from: theUrl)
@@ -86,7 +93,7 @@ class Networker {
     }
     
     func getStationsForCountry(_ country: String) async throws -> [RadioStation] {
-        if let theUrl = URL(string: "\(defaultServer)/stations/bycountryexact/\(country)") {
+        if let theUrl = URL(string: "\(radioServer)/stations/bycountryexact/\(country)") {
             print("---> getStationsForCountry fetching theUrl: \(theUrl.absoluteString)")
             do {
                 let (data, response) = try await URLSession.shared.data(from: theUrl)
@@ -112,7 +119,7 @@ class Networker {
     }
     
     func getAllCountries() async throws -> [Country] {
-        if let theUrl = URL(string: "\(defaultServer)/countries") {
+        if let theUrl = URL(string: "\(radioServer)/countries") {
             print("---> getAllCountries fetching theUrl: \(theUrl.absoluteString)")
             do {
                 let (data, response) = try await URLSession.shared.data(from: theUrl)
@@ -137,7 +144,7 @@ class Networker {
     }
 
     func getTopVotes( _ limit: Int = 10) async throws -> [RadioStation] {
-        if let theUrl = URL(string: "\(defaultServer)/stations/topvote/\(limit)") {
+        if let theUrl = URL(string: "\(radioServer)/stations/topvote/\(limit)") {
             print("---> getTopVotes fetching theUrl: \(theUrl.absoluteString)")
             do {
                 let (data, response) = try await URLSession.shared.data(from: theUrl)
@@ -163,7 +170,7 @@ class Networker {
     }
 
     func getTopVotesFor(_ country: String, limit: Int = 10) async throws -> [RadioStation] {
-        if let theUrl = URL(string: "\(defaultServer)/stations/search?country=\(country)&order=votes&reverse=true&limit=\(limit)") {
+        if let theUrl = URL(string: "\(radioServer)/stations/search?country=\(country)&order=votes&reverse=true&limit=\(limit)") {
             print("---> getTopVotesFor fetching theUrl: \(theUrl.absoluteString)")
             do {
                 let (data, response) = try await URLSession.shared.data(from: theUrl)
@@ -189,7 +196,7 @@ class Networker {
     }
     
     func findStations(_ station: String) async throws -> [RadioStation] {
-        if let theUrl = URL(string: "\(defaultServer)/stations/byname/\(station)") {
+        if let theUrl = URL(string: "\(radioServer)/stations/byname/\(station)") {
             print("---> findStations fetching theUrl: \(theUrl.absoluteString)")
             do {
                 let (data, response) = try await URLSession.shared.data(from: theUrl)
@@ -237,7 +244,8 @@ class Networker {
     func fetchArtist(for queryText: String, countryCode: String, tries: Int = 0) async throws -> Artist? {
         // URL encode the search query
         let query = queryText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-        let urlString = "https://itunes.apple.com/search?term=\(query)&entity=song&limit=1&country=\(countryCode.lowercased())"
+
+        let urlString = "\(itunesServer)&term=\(query)&country=\(countryCode.lowercased())"
         guard let theUrl = URL(string: urlString) else { return nil }
         
         print("---> fetchArtist url: \(theUrl.absoluteString)")
@@ -312,10 +320,8 @@ class Networker {
     // https://openpublicapis.com/api/lrclib?utm_source=chatgpt.com
     
     func findLyrics(_ artist: Artist) async throws -> String {
-        let lrclib = "https://lrclib.net/api"
-        
         if let name = artist.artistName, let track = artist.trackName {
-            let queryText = "\(lrclib)/get?artist_name=\(name)&track_name=\(track)"
+            let queryText = "\(lyricsServer)/get?artist_name=\(name)&track_name=\(track)"
             let query = queryText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
             if let theUrl = URL(string: query) {
                 print("---> findLyrics fetching theUrl: \(theUrl.absoluteString)")
