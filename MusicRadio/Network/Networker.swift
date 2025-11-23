@@ -317,7 +317,7 @@ struct Networker {
     }
     
     // see: https://lrclib.net/
-    // https://openpublicapis.com/api/lrclib?utm_source=chatgpt.com
+    // https://lrclib.net/docs
     
     func findLyrics(_ artist: Artist) async throws -> String {
         if let name = artist.artistName, let track = artist.trackName {
