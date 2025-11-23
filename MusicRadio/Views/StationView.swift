@@ -21,7 +21,7 @@ struct StationView: View {
     
     @State private var showConfirm = false
     @State private var showWeb = false
-    @State private var stars = 0
+    @State private var stars = 1
     
     var body: some View {
         ZStack{
@@ -34,7 +34,7 @@ struct StationView: View {
                 HStack {
                     Button {
                         if station.isFavourite {
-                            // Ask for confirmation BEFORE modifying it
+                            // Ask for confirmation before changing it
                             showConfirm = true
                         } else {
                             station.isFavourite = true
@@ -100,8 +100,6 @@ struct StationView: View {
             } else {
                 playerManager.station = station
             }
-            
-   //         print("\n----> station.tags: \(station.tags)  \n")
         }
         .background(colorsModel.stationBackColor)
         .glassEffect(.regular.tint(colorsModel.stationBackColor).interactive(), in: RoundedRectangle(cornerRadius: 12)) // for iOS26+

@@ -8,8 +8,10 @@ import Foundation
 import SwiftData
 
 
-class SwiftDataHelper {
+struct SwiftDataHelper {
     
+    // change or insert a new station into SwiftData
+    // when the station "isFavourite=true" is changed
     static func updateOrInsert(station: RadioStation, in context: ModelContext) {
         var descriptor = FetchDescriptor<RadioStation>(
             predicate: #Predicate { $0.stationuuid == station.stationuuid }
@@ -26,6 +28,7 @@ class SwiftDataHelper {
         }
     }
     
+    // remove the given station from SwiftData (used when "isFavourite=false")
     static func findAndRemove(station: RadioStation, in context: ModelContext) {
         var descriptor = FetchDescriptor<RadioStation>(
             predicate: #Predicate { $0.stationuuid == station.stationuuid }
@@ -33,7 +36,7 @@ class SwiftDataHelper {
         descriptor.fetchLimit = 1
         
         // if already in SwiftData
-        if let existing = try? context.fetch(descriptor).first {
+        if let _ = try? context.fetch(descriptor).first {
             context.delete(station)
         }
     }

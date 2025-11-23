@@ -6,7 +6,7 @@
 //
 import Foundation
 import SwiftData
-import SwiftUI
+import UIKit
 
 
 // https://de1.api.radio-browser.info/#General

@@ -8,9 +8,10 @@ import SwiftUI
 
 
 struct SettingsView: View {
-    @Binding var showSettings: Bool
     @Environment(Selector.self) var selector
     @Environment(ColorsModel.self) var colorsModel
+    
+    @Binding var showSettings: Bool
     
     var body: some View {
         @Bindable var selector = selector

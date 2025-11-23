@@ -59,7 +59,6 @@ struct StationPlayer: View {
                 
                 Spacer()
                 
-                // system volume
                 SystemVolumeSlider()
                     .frame(height: 40)
                     .padding(.top, 5)

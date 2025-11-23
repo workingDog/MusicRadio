@@ -38,7 +38,6 @@ struct StationTagMenu: View {
     @Environment(Selector.self) var selector
     
     var body: some View {
-        @Bindable var selector = selector
         Menu {
             ForEach(StationTag.allCases) { tag in
                 Button {

@@ -18,7 +18,7 @@ struct StationListView: View {
     
     @State private var searchText = ""
     
-    // max value of votes in the current list of stations
+    // max votes value in the current list of stations
     var maxRating: Int {
         stations.map(\.votes).max() ?? 1
     }

@@ -14,7 +14,7 @@ struct StationsTags: Codable {
     var stationcount: Int?
 }
 
-class Networker {
+struct Networker {
     
     // radio stations
     var radioServer = "https://de1.api.radio-browser.info/json"
