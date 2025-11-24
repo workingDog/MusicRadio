@@ -31,194 +31,46 @@ struct Networker {
         decoder.dateDecodingStrategy = .iso8601
     }
     
-    // for testing
-    func getAllTags() async throws -> [StationsTags] {
-        if let theUrl = URL(string: "\(radioServer)/tags") {
-            print("---> getAllTags fetching theUrl: \(theUrl.absoluteString)")
-            var request = URLRequest(url: theUrl)
-            request.httpMethod = "GET"
-            request.setValue("MusicRadio/1.0", forHTTPHeaderField: "User-Agent")
-            request.setValue("application/json", forHTTPHeaderField: "Accept")
-            do {
-                let (data, _) = try await URLSession.shared.data(for: request)
-                let tags = try JSONDecoder().decode([StationsTags].self, from: data)
-                print("---> tags: \(tags.count)\n")
-                
-                let sortedTags = tags.sorted(by: { ($0.stationcount ?? 0) > ($1.stationcount ?? 0) })
-                for tag in sortedTags.prefix(200) {
-                    print(" \(tag.name ?? "no name")  \(tag.stationcount ?? 0)")
-                }
-                
-                print("\n---> done fetching getAllTags \n")
-                return tags
-            } catch {
-                print(error)
+    private func fetchJSON<T: Decodable>(_ endpoint: String) async throws -> [T] {
+        guard let theUrl = URL(string: "\(radioServer)/\(endpoint)") else {
+            throw URLError(.badURL)
+        }
+        let (data, response) = try await URLSession.shared.data(from: theUrl)
+        if let httpResponse = response as? HTTPURLResponse {
+            if (400...599).contains(httpResponse.statusCode) {
+                print("\n---> HTTP error: \(httpResponse.statusCode) theUrl: \(theUrl.absoluteString)")
+                return []
             }
         }
-        return []
-    }
-    
-    
-    // for testing
-    func getAllStations() async throws -> [RadioStation] {
-        if let theUrl = URL(string: "\(radioServer)/stations") {
-            print("---> getAllStations fetching theUrl: \(theUrl.absoluteString)")
-            do {
-                let (data, _) = try await URLSession.shared.data(from: theUrl)
-                print("---> data: \(data)") // 62 MB
-                let stations = try decoder.decode([RadioStation].self, from: data)
-                print("---> stations: \(stations.count)") // 51680
-                print("\n---> done fetching getAllStations \n")
-                convertAllToHttps(stations)
-                return stations
-            } catch {
-                print(error)
-            }
-        }
-        return []
-    }
-    
-    // for testing
-    func getServers() async throws {
-        if let theUrl = URL(string: "\(radioServer)/servers") {
-            print("---> getServers fetching theUrl: \(theUrl.absoluteString)")
-            do {
-                let (data, _) = try await URLSession.shared.data(from: theUrl)
-                 print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
-            } catch {
-                print(error)
-            }
-        }
-        return
+        return try decoder.decode([T].self, from: data)
     }
     
     func getStationsForCountry(_ country: String) async throws -> [RadioStation] {
-        if let theUrl = URL(string: "\(radioServer)/stations/bycountryexact/\(country)") {
-            print("---> getStationsForCountry fetching theUrl: \(theUrl.absoluteString)")
-            do {
-                let (data, response) = try await URLSession.shared.data(from: theUrl)
-                // print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
-                
-                // Check HTTP status
-                if let httpResponse = response as? HTTPURLResponse {
-                    if (400...599).contains(httpResponse.statusCode) {
-                        print("\n---> HTTP error: \(httpResponse.statusCode) theUrl: \(theUrl.absoluteString)")
-                        return []
-                    }
-                }
-                
-                let stations = try decoder.decode([RadioStation].self, from: data)
-                print("---> stations: \(stations.count)")
-                convertAllToHttps(stations)
-                return stations
-            } catch {
-                print(error)
-            }
-        }
-        return []
+        let stations:[RadioStation] = try await fetchJSON("stations/bycountryexact/\(country)")
+        convertAllToHttps(stations)
+        return stations
     }
     
     func getAllCountries() async throws -> [Country] {
-        if let theUrl = URL(string: "\(radioServer)/countries") {
-            print("---> getAllCountries fetching theUrl: \(theUrl.absoluteString)")
-            do {
-                let (data, response) = try await URLSession.shared.data(from: theUrl)
-                // print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
-                
-                // Check HTTP status
-                if let httpResponse = response as? HTTPURLResponse {
-                    if (400...599).contains(httpResponse.statusCode) {
-                        print("\n---> HTTP error: \(httpResponse.statusCode) theUrl: \(theUrl.absoluteString)")
-                        return []
-                    }
-                }
-                
-                let countries = try JSONDecoder().decode([Country].self, from: data)
-                // print("---> countries: \(countries.count)")
-                return countries
-            } catch {
-                print(error)
-            }
-        }
-        return []
+        return try await fetchJSON("countries")
     }
 
     func getTopVotes( _ limit: Int = 10) async throws -> [RadioStation] {
-        if let theUrl = URL(string: "\(radioServer)/stations/topvote/\(limit)") {
-            print("---> getTopVotes fetching theUrl: \(theUrl.absoluteString)")
-            do {
-                let (data, response) = try await URLSession.shared.data(from: theUrl)
-// print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
-                
-                // Check HTTP status
-                if let httpResponse = response as? HTTPURLResponse {
-                    if (400...599).contains(httpResponse.statusCode) {
-                        print("\n---> HTTP error: \(httpResponse.statusCode) theUrl: \(theUrl.absoluteString)")
-                        return []
-                    }
-                }
-
-                let stations = try decoder.decode([RadioStation].self, from: data)
-       //         print("---> stations: \(stations)")
-                convertAllToHttps(stations)
-                return stations
-            } catch {
-                print(error)
-            }
-        }
-        return []
+        let stations:[RadioStation] = try await fetchJSON("stations/topvote/\(limit)")
+        convertAllToHttps(stations)
+        return stations
     }
 
     func getTopVotesFor(_ country: String, limit: Int = 10) async throws -> [RadioStation] {
-        if let theUrl = URL(string: "\(radioServer)/stations/search?country=\(country)&order=votes&reverse=true&limit=\(limit)") {
-            print("---> getTopVotesFor fetching theUrl: \(theUrl.absoluteString)")
-            do {
-                let (data, response) = try await URLSession.shared.data(from: theUrl)
-// print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
-                
-                // Check HTTP status
-                if let httpResponse = response as? HTTPURLResponse {
-                    if (400...599).contains(httpResponse.statusCode) {
-                        print("\n---> HTTP error: \(httpResponse.statusCode) theUrl: \(theUrl.absoluteString)")
-                        return []
-                    }
-                }
-
-                let stations = try decoder.decode([RadioStation].self, from: data)
-       //         print("---> stations: \(stations)")
-                convertAllToHttps(stations)
-                return stations
-            } catch {
-                print(error)
-            }
-        }
-        return []
+        let stations:[RadioStation] = try await fetchJSON("stations/search?country=\(country)&order=votes&reverse=true&limit=\(limit)")
+        convertAllToHttps(stations)
+        return stations
     }
     
     func findStations(_ station: String) async throws -> [RadioStation] {
-        if let theUrl = URL(string: "\(radioServer)/stations/byname/\(station)") {
-            print("---> findStations fetching theUrl: \(theUrl.absoluteString)")
-            do {
-                let (data, response) = try await URLSession.shared.data(from: theUrl)
-    //            print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
-                
-                // Check HTTP status
-                if let httpResponse = response as? HTTPURLResponse {
-                    if (400...599).contains(httpResponse.statusCode) {
-                        print("\n---> HTTP error: \(httpResponse.statusCode) theUrl: \(theUrl.absoluteString)")
-                        return []
-                    }
-                }
-
-                let stations = try decoder.decode([RadioStation].self, from: data)
-                //         print("---> stations: \(stations)")
-                convertAllToHttps(stations)
-                return stations
-            } catch {
-                print(error)
-            }
-        }
-        return []
+        let stations:[RadioStation] = try await fetchJSON("stations/byname/\(station)")
+        convertAllToHttps(stations)
+        return stations
     }
     
     // some url are http must make them all https
@@ -349,4 +201,68 @@ struct Networker {
         return "no lyrics"
     }
 
+    
+    
+    // for testing
+    func getAllTags() async throws -> [StationsTags] {
+        if let theUrl = URL(string: "\(radioServer)/tags") {
+            print("---> getAllTags fetching theUrl: \(theUrl.absoluteString)")
+            var request = URLRequest(url: theUrl)
+            request.httpMethod = "GET"
+            request.setValue("MusicRadio/1.0", forHTTPHeaderField: "User-Agent")
+            request.setValue("application/json", forHTTPHeaderField: "Accept")
+            do {
+                let (data, _) = try await URLSession.shared.data(for: request)
+                let tags = try JSONDecoder().decode([StationsTags].self, from: data)
+                print("---> tags: \(tags.count)\n")
+                
+                let sortedTags = tags.sorted(by: { ($0.stationcount ?? 0) > ($1.stationcount ?? 0) })
+                for tag in sortedTags.prefix(200) {
+                    print(" \(tag.name ?? "no name")  \(tag.stationcount ?? 0)")
+                }
+                
+                print("\n---> done fetching getAllTags \n")
+                return tags
+            } catch {
+                print(error)
+            }
+        }
+        return []
+    }
+    
+    
+    // for testing
+    func getAllStations() async throws -> [RadioStation] {
+        if let theUrl = URL(string: "\(radioServer)/stations") {
+            print("---> getAllStations fetching theUrl: \(theUrl.absoluteString)")
+            do {
+                let (data, _) = try await URLSession.shared.data(from: theUrl)
+                print("---> data: \(data)") // 62 MB
+                let stations = try decoder.decode([RadioStation].self, from: data)
+                print("---> stations: \(stations.count)") // 51680
+                print("\n---> done fetching getAllStations \n")
+                convertAllToHttps(stations)
+                return stations
+            } catch {
+                print(error)
+            }
+        }
+        return []
+    }
+    
+    // for testing
+    func getServers() async throws {
+        if let theUrl = URL(string: "\(radioServer)/servers") {
+            print("---> getServers fetching theUrl: \(theUrl.absoluteString)")
+            do {
+                let (data, _) = try await URLSession.shared.data(from: theUrl)
+                 print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
+            } catch {
+                print(error)
+            }
+        }
+        return
+    }
+    
+    
 }
