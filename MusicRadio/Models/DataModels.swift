@@ -195,23 +195,6 @@ final class RadioStation: Codable {
 //        try container.encodeIfPresent(hasExtendedInfo, forKey: .hasExtendedInfo)
     }
     
-    func faviconImage() -> UIImage {
-        if faviconData == nil {
-            Task { await fetchFavicon() }
-            if faviconData != nil, let img = UIImage(data: faviconData!) {
-                return img
-            } else {
-                return defaultImg()
-            }
-        } else {
-            if let img = UIImage(data: faviconData!) {
-                return img
-            } else {
-                return defaultImg()
-            }
-        }
-    }
-    
     func defaultImg() -> UIImage {
         if isTV {
             return UIImage(named: "teve")!
@@ -220,6 +203,28 @@ final class RadioStation: Codable {
         }
     }
     
+    func faviconImage() async -> UIImage {
+        // If no data cached, fetch it
+        if faviconData == nil {
+            await fetchFavicon()
+            if let data = faviconData, let img = UIImage(data: data) {
+                return img
+            } else {
+                let fallback = defaultImg()
+                faviconData = fallback.pngData()
+                return fallback
+            }
+        }
+        // If data exists, try to decode it
+        if let data = faviconData, let img = UIImage(data: data) {
+            return img
+        } else {
+            let fallback = defaultImg()
+            faviconData = fallback.pngData()
+            return fallback
+        }
+    }
+
     func fetchFavicon() async {
         if favicon == "null" || favicon.isEmpty { return }
         guard let faviconURL = URL(string: favicon) else { return }

@@ -23,6 +23,8 @@ struct StationView: View {
     @State private var showWeb = false
     @State private var stars = 1
     
+    @State private var logoIcon: UIImage?
+    
     var body: some View {
         ZStack{
             
@@ -75,10 +77,15 @@ struct StationView: View {
                 
                 RatingStarsView(station, maxRating)
                 
-                Image(uiImage: station.faviconImage())
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 44, height: 44)
+                Group {
+                    if let img = logoIcon {
+                        Image(uiImage: img).resizable()
+                    } else {
+                        Image(uiImage: station.defaultImg()).resizable()
+                    }
+                }
+                .scaledToFit()
+                .frame(width: 44, height: 44)
                 
                 Text(station.name)
                     .lineLimit(1)
@@ -106,6 +113,9 @@ struct StationView: View {
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .fullScreenCover(isPresented: $showWeb) {
             WebViewScreen(showWeb: $showWeb, station: station)
+        }
+        .task {
+            logoIcon = await station.faviconImage()
         }
     }
     

@@ -14,6 +14,7 @@ struct StationPlayer: View {
     @Environment(ColorsModel.self) var colorsModel
     
     @State private var showArt: Bool = false
+    @State private var logoIcon: UIImage?
     
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
@@ -29,12 +30,19 @@ struct StationPlayer: View {
                                 .cornerRadius(6)
                                 .shadow(radius: 3)
                         } else {
-                             Image(uiImage: playerManager.station!.faviconImage())
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 45, height: 45)
-                                .cornerRadius(6)
-                                .shadow(radius: 3)
+                            if let img = logoIcon {
+                                Image(uiImage: img).resizable()
+                                    .scaledToFit()
+                                    .frame(width: 45, height: 45)
+                                    .cornerRadius(6)
+                                    .shadow(radius: 3)
+                            } else {
+                                Image(uiImage: playerManager.defaultImg).resizable()
+                                    .scaledToFit()
+                                    .frame(width: 45, height: 45)
+                                    .cornerRadius(6)
+                                    .shadow(radius: 3)
+                            }
                         }
                     }
                     .onTapGesture {
@@ -100,6 +108,13 @@ struct StationPlayer: View {
             else {
                 playerManager.station = nil
                 playerManager.pause()
+            }
+            Task {
+                if let station = playerManager.station {
+                    logoIcon = await station.faviconImage()
+                } else {
+                    logoIcon = playerManager.defaultImg
+                }
             }
         }
         .sheet(isPresented: $showArt) {
