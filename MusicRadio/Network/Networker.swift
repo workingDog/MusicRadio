@@ -14,6 +14,19 @@ struct StationsTags: Codable {
     var stationcount: Int?
 }
 
+enum APIError: Swift.Error, LocalizedError {
+    
+    case unknown, apiError(reason: String), parserError(reason: String), networkError(from: URLError)
+    
+    var errorDescription: String? {
+        switch self {
+            case .unknown: return "Unknown error"
+            case .apiError(let reason), .parserError(let reason): return reason
+            case .networkError(let from): return from.localizedDescription
+        }
+    }
+}
+
 struct Networker {
     
     // radio stations
@@ -36,13 +49,24 @@ struct Networker {
             throw URLError(.badURL)
         }
         let (data, response) = try await URLSession.shared.data(from: theUrl)
-        if let httpResponse = response as? HTTPURLResponse {
-            if (400...599).contains(httpResponse.statusCode) {
-                print("\n---> HTTP error: \(httpResponse.statusCode) theUrl: \(theUrl.absoluteString)")
-                return []
-            }
-        }
+        try validate(response)
         return try decoder.decode([T].self, from: data)
+    }
+    
+    func validate(_ response: URLResponse) throws {
+        guard let http = response as? HTTPURLResponse else { return }
+
+        switch http.statusCode {
+            case 200..<300: return
+            case 401: throw APIError.apiError(reason: "Unauthorized")
+            case 402: throw APIError.apiError(reason: "Quota exceeded")
+            case 403: throw APIError.apiError(reason: "Resource forbidden")
+            case 404: throw APIError.apiError(reason: "Resource not found")
+            case 429: throw APIError.apiError(reason: "Requesting too quickly")
+            case 405..<500: throw APIError.apiError(reason: "Client error")
+            case 500..<600: throw APIError.apiError(reason: "Server error")
+            default: throw APIError.networkError(from: URLError(.badServerResponse))
+        }
     }
     
     func getStationsForCountry(_ country: String) async throws -> [RadioStation] {
@@ -107,13 +131,7 @@ struct Networker {
             let (data, response) = try await URLSession.shared.data(from: theUrl)
     //        print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
             
-            // Check HTTP status
-            if let httpResponse = response as? HTTPURLResponse {
-                if (400...599).contains(httpResponse.statusCode) {
-                    print("\n---> HTTP error: \(httpResponse.statusCode) theUrl: \(theUrl.absoluteString)")
-                    return nil
-                }
-            }
+            try validate(response)
 
             let arts = try decoder.decode(iTunesInfo.self, from: data)
 
@@ -181,13 +199,7 @@ struct Networker {
                     let (data, response) = try await URLSession.shared.data(from: theUrl)
                     //     print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
                     
-                    // Check HTTP status
-                    if let httpResponse = response as? HTTPURLResponse {
-                        if (400...599).contains(httpResponse.statusCode) {
-                            print("\n---> HTTP error: \(httpResponse.statusCode) theUrl: \(theUrl.absoluteString)")
-                            return "no lyrics"
-                        }
-                    }
+                    try validate(response)
 
                     let lyrics = try JSONDecoder().decode(Lyrics.self, from: data)
                     if let txt = lyrics.plainLyrics {
@@ -263,6 +275,5 @@ struct Networker {
         }
         return
     }
-    
-    
+
 }
