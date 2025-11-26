@@ -22,33 +22,25 @@ struct StationPlayer: View {
                 Group {
                     HStack {
                         if playerManager.station == nil {
-                            Image(uiImage: playerManager.defaultImg)
-                                .renderingMode(.original)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 45, height: 45)
-                                .cornerRadius(6)
-                                .shadow(radius: 3)
+                            Image(uiImage: playerManager.defaultImg).resizable()
                         } else {
                             if let img = logoIcon {
                                 Image(uiImage: img).resizable()
-                                    .scaledToFit()
-                                    .frame(width: 45, height: 45)
-                                    .cornerRadius(6)
-                                    .shadow(radius: 3)
                             } else {
                                 Image(uiImage: playerManager.defaultImg).resizable()
-                                    .scaledToFit()
-                                    .frame(width: 45, height: 45)
-                                    .cornerRadius(6)
-                                    .shadow(radius: 3)
                             }
                         }
                     }
                     .onTapGesture {
                         showArt = true
                     }
-                }.padding(4)
+                }
+                .scaledToFit()
+                .frame(width: 45, height: 45)
+                .cornerRadius(6)
+                .shadow(radius: 3)
+                .padding(4)
+                
                 VStack {
                     Text(playerManager.station?.name ?? "no station")
                     Text(playerManager.currentSong)

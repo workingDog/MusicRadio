@@ -196,11 +196,7 @@ final class RadioStation: Codable {
     }
     
     func defaultImg() -> UIImage {
-        if isTV {
-            return UIImage(named: "teve")!
-        } else {
-            return UIImage(named: "radio")!
-        }
+        isTV ? UIImage(named: "teve")! : UIImage(named: "radio")!
     }
     
     func faviconImage() async -> UIImage {

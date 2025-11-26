@@ -71,22 +71,6 @@ enum ViewTypes: String, CaseIterable, Identifiable {
     case stations = "Stations"
     
     var id: String { rawValue }
-    
-    var icon: String {
-        switch self {
-        case .favourites: return "🎵"
-        case .stations: return "📻"
-        case .countries: return "🎙️"
-        }
-    }
-    
-    var description: String {
-        switch self {
-        case .favourites: return "Enjoy your favorite songs."
-        case .stations: return "Search for radio stations."
-        case .countries: return "Check all countries radio stations."
-        }
-    }
 }
 
 enum StationTag: String, CaseIterable, Codable, Identifiable {
