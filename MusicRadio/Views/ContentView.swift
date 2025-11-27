@@ -61,17 +61,15 @@ struct ContentView: View {
                     // add the top voted stations to "Favourites"
                     var topStations: [RadioStation] = []
                     
-                    let countryCode = Locale.current.region?.identifier ?? "?"
-                    let countryName = Locale.current.localizedString(forRegionCode: countryCode) ?? ""
-                    
-                    if countryName.isEmpty {
+                    let countryCode = Locale.current.region?.identifier ?? ""
+                    if countryCode.isEmpty {
                         // overall top stations
                         topStations = try await network.getTopVotes(selector.topCount)
                         print("---> top \(topStations.count) stations")
                     } else {
                         // only current country top stations
-                        topStations = try await network.getTopVotesFor(countryName, limit: selector.topCount)
-                        print("---> top \(topStations.count) stations for \(countryName)")
+                        topStations = try await network.getTopVotesFor(countryCode, limit: selector.topCount)
+                        print("---> top \(topStations.count) stations for \(countryCode)")
                     }
                     // store them in SwiftData
                     for station in topStations {

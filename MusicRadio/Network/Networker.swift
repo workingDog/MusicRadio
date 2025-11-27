@@ -35,7 +35,7 @@ struct Networker {
     // lyrics
     let lyricsServer = "https://lrclib.net/api"
     
-    // artist
+    // artists
     let itunesServer = "https://itunes.apple.com/search?entity=song&limit=1"
 
     let decoder = JSONDecoder()
@@ -77,16 +77,14 @@ struct Networker {
     
     func getAllCountries() async throws -> [Country] {
         let allCountries: [Country] = try await fetchJSON("countries")
-        // remove empties if any
-        let kountries: [Country] = allCountries.compactMap { $0 }
         // remove the "The ", eg The United ...
-        for country in kountries {
+        for country in allCountries {
             if country.name.hasPrefix("The ") {
                 country.name.removeFirst("The ".count)
             }
         }
         // no duplicates and sorted
-        return Array(Set(kountries)).sorted { $0.name < $1.name }
+        return Array(Set(allCountries)).sorted { $0.name < $1.name }
     }
 
     func getTopVotes( _ limit: Int = 10) async throws -> [RadioStation] {
@@ -94,9 +92,9 @@ struct Networker {
         convertAllToHttps(stations)
         return stations
     }
-
-    func getTopVotesFor(_ country: String, limit: Int = 10) async throws -> [RadioStation] {
-        let stations:[RadioStation] = try await fetchJSON("stations/search?country=\(country)&order=votes&reverse=true&limit=\(limit)")
+    
+    func getTopVotesFor(_ code: String, limit: Int = 10) async throws -> [RadioStation] {
+        let stations:[RadioStation] = try await fetchJSON("stations/search?countrycode=\(code)&order=votes&reverse=true&limit=\(limit)")
         convertAllToHttps(stations)
         return stations
     }
@@ -166,14 +164,8 @@ struct Networker {
                     
                     // Fetch the artwork image data
                     let (imageData, _) = try await URLSession.shared.data(from: artworkUrl)
-                    
-                    // Check HTTP status
-                    if let httpResponse = response as? HTTPURLResponse {
-                        if (400...599).contains(httpResponse.statusCode) {
-                            print("\n---> HTTP error: \(httpResponse.statusCode) artworkUrl: \(artworkUrl.absoluteString)")
-                            return nil
-                        }
-                    }
+
+                    try validate(response)
                     
                     // add the imageData to the artist
                     artist.imageData = UIImage(data: imageData)
