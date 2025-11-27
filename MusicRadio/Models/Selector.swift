@@ -17,6 +17,7 @@ class Selector {
     var tag: StationTag = .all
     var topCount: Int = 10
     var searchStation: String = ""
+    var searchCountry: String = ""
     var pingSound: Bool = true
     
     static let keyTopCount: String = "topCount"
