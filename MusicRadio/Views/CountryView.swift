@@ -33,7 +33,7 @@ struct CountryView: View {
         }
         .task {
             do {
-                stations = try await network.getStationsForCountry(country.name)
+                stations = try await network.getStationsForCountryCode(country.iso_3166_1)
             } catch {
                 print(error)
             }

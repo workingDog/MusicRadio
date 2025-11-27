@@ -69,14 +69,24 @@ struct Networker {
         }
     }
     
-    func getStationsForCountry(_ country: String) async throws -> [RadioStation] {
-        let stations:[RadioStation] = try await fetchJSON("stations/bycountryexact/\(country)")
+    func getStationsForCountryCode(_ code: String) async throws -> [RadioStation] {
+        let stations:[RadioStation] = try await fetchJSON("stations/bycountrycodeexact/\(code)")
         convertAllToHttps(stations)
         return stations
     }
     
     func getAllCountries() async throws -> [Country] {
-        return try await fetchJSON("countries")
+        let allCountries: [Country] = try await fetchJSON("countries")
+        // remove empties if any
+        let kountries: [Country] = allCountries.compactMap { $0 }
+        // remove the "The ", eg The United ...
+        for country in kountries {
+            if country.name.hasPrefix("The ") {
+                country.name.removeFirst("The ".count)
+            }
+        }
+        // no duplicates and sorted
+        return Array(Set(kountries)).sorted { $0.name < $1.name }
     }
 
     func getTopVotes( _ limit: Int = 10) async throws -> [RadioStation] {
