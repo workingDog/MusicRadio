@@ -17,19 +17,24 @@ struct SettingsView: View {
         @Bindable var selector = selector
         @Bindable var colorsModel = colorsModel
         
-        ScrollView {
-            ZStack {
-                colorsModel.gradient.ignoresSafeArea()
+        ZStack {
+            colorsModel.gradient.ignoresSafeArea()
+            
+            VStack(spacing: 1) {
                 
-                VStack(spacing: 20) {
-                    Button("Done") {
-                        showSettings = false
+                VStack(spacing: 1) {
+                    HStack {
+                        Button("Done") {
+                            showSettings = false
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .padding(10)
+                        Spacer()
                     }
-                    .buttonStyle(.bordered)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(6)
-                    
                     Text("Settings").font(.largeTitle)
+                }
+                
+                ScrollView {
                     
                     HStack {
                         Text("Top-rated stations to show   ")
@@ -115,10 +120,10 @@ struct SettingsView: View {
                         Spacer()
                     }.fixedSize()
                     
-                    Spacer()
                 }
-                .padding(12)
+                Spacer()
             }
+            .padding(5)
         }
         .onDisappear {
             selector.storeSettings()
