@@ -11,25 +11,26 @@ import AVKit
 struct TvView: View {
     @Environment(ColorsModel.self) var colorsModel
     @Environment(PlayerManager.self) var playerManager
-
+    
     @Binding var showArt: Bool
     
     var body: some View {
-        VStack {
-            HStack {
-                Button("Done") {
-                    showArt = false
-                }
-                .buttonStyle(.bordered)
-                Spacer()
-            }
-            .padding(12)
-
+        ZStack {
             if let player = playerManager.radio?.player {
                 VideoPlayer(player: player)
+                    .ignoresSafeArea()
             }
-            
-            Spacer()
+            VStack {
+                HStack {
+                    Button("Done") {
+                        showArt = false
+                    }
+                    .buttonStyle(.bordered)
+                    .padding(10)
+                    Spacer()
+                }
+                Spacer()
+            }
         }
         .background(colorsModel.backColor)
         .onAppear {
