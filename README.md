@@ -34,7 +34,7 @@ Tap the **TV** station icon or the *Play* button to open the video, if it’s av
 
 ## Note
 
-This project uses SwiftUI and SwiftData to store only the list of countries and the *Favourites* stations. Currently setup for iOS-26, but can easily work on older iOS or MacOS with simple changes.
+This project uses SwiftUI and SwiftData to store only the list of countries and the *Favourites* stations. Currently setup for iOS-26, but can easily work on older iOS (remove the .glassEffect) or MacOS with simple changes.
      
 The type/genre of station displayed between the **heart** and the **globe** icons, 
 is inferred based on the various tags the station wants to be known for.    
