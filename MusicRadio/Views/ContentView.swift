@@ -12,12 +12,11 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(ColorsModel.self) var colorsModel
+    @Environment(\.networker) private var networker
     
     @State private var playerManager = PlayerManager()
     @State private var selector = Selector()
-    
-    let network = Networker()
-    
+
     @Query private var stations: [RadioStation]
     @Query private var countries: [Country]
     
@@ -52,7 +51,7 @@ struct ContentView: View {
             do {
                 // if first time, get all the countries and store them in SwiftData
                 if countries.count == 0 {
-                    let allCountries = try await network.getAllCountries()
+                    let allCountries = try await networker.getAllCountries()
                     print("---> allCountries.count: \(allCountries.count)")
                     for country in allCountries {
                         modelContext.insert(country)
@@ -64,11 +63,11 @@ struct ContentView: View {
                     let countryCode = Locale.current.region?.identifier ?? ""
                     if countryCode.isEmpty {
                         // overall top stations
-                        topStations = try await network.getTopVotes(selector.topCount)
+                        topStations = try await networker.getTopVotes(selector.topCount)
                         print("---> top \(topStations.count) stations")
                     } else {
                         // only current country top stations
-                        topStations = try await network.getTopVotesFor(countryCode, limit: selector.topCount)
+                        topStations = try await networker.getTopVotesFor(countryCode, limit: selector.topCount)
                         print("---> top \(topStations.count) stations for \(countryCode)")
                     }
                     // store them in SwiftData

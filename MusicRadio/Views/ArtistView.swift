@@ -12,14 +12,13 @@ import WebKit
 struct ArtistView: View {
     @Environment(PlayerManager.self) var playerManager
     @Environment(ColorsModel.self) var colorsModel
+    @Environment(\.networker) private var networker
     
     @Binding var showArt: Bool
     
     @State private var artist: Artist?
     @State private var isBusy = true
 
-    let network = Networker()
-    
     var body: some View {
         VStack {
             HStack {
@@ -54,7 +53,7 @@ struct ArtistView: View {
         .task {
             do {
                 isBusy = true
-                artist = try await network.fetchArtist(
+                artist = try await networker.fetchArtist(
                     for: playerManager.currentSong,
                     countryCode: playerManager.station?.countrycode ?? "us")
                 isBusy = false
@@ -88,7 +87,7 @@ struct ArtistView: View {
 }
 
 struct LyricsView: View {
-    let network = Networker()
+    @Environment(\.networker) private var networker
     let artist: Artist?
     
     @State private var isBusy: Bool = false
@@ -113,7 +112,7 @@ struct LyricsView: View {
             if artist != nil {
                 do {
                     isBusy = true
-                    lyrics = try await network.findLyrics(artist!)
+                    lyrics = try await networker.findLyrics(artist!)
                     isBusy = false
                 } catch {
                     print(error)

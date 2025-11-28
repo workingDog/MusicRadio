@@ -6,9 +6,10 @@
 //
 import Foundation
 import UIKit
+import SwiftUI
 
 
-// for testing 
+// for testing
 struct StationsTags: Codable {
     var name: String?
     var stationcount: Int?
@@ -20,14 +21,25 @@ enum APIError: Swift.Error, LocalizedError {
     
     var errorDescription: String? {
         switch self {
-            case .unknown: return "Unknown error"
-            case .apiError(let reason), .parserError(let reason): return reason
-            case .networkError(let from): return from.localizedDescription
+        case .unknown: return "Unknown error"
+        case .apiError(let reason), .parserError(let reason): return reason
+        case .networkError(let from): return from.localizedDescription
         }
     }
 }
 
-struct Networker {
+struct NetworkerKey: EnvironmentKey {
+    static let defaultValue = Networker()
+}
+
+extension EnvironmentValues {
+    var networker: Networker {
+        get { self[NetworkerKey.self] }
+        set { self[NetworkerKey.self] = newValue }
+    }
+}
+
+actor Networker {
     
     // radio stations
     var radioServer = "https://de1.api.radio-browser.info/json"
@@ -37,12 +49,25 @@ struct Networker {
     
     // artists
     let itunesServer = "https://itunes.apple.com/search?entity=song&limit=1"
-
+    
     let decoder = JSONDecoder()
-
+    
     init() {
         decoder.dateDecodingStrategy = .iso8601
     }
+    
+    static func defaultTVImg() -> UIImage {
+        UIImage(named: "teve")!
+    }
+    
+    static func defaultRadioImg() -> UIImage {
+        UIImage(named: "radio")!
+    }
+    
+    func defaultImg(for station: RadioStation) -> UIImage {
+        station.isTV ? Networker.defaultTVImg() : Networker.defaultRadioImg()
+    }
+    
     
     private func fetchJSON<T: Decodable>(_ endpoint: String) async throws -> [T] {
         guard let theUrl = URL(string: "\(radioServer)/\(endpoint)") else {
@@ -55,17 +80,17 @@ struct Networker {
     
     func validate(_ response: URLResponse) throws {
         guard let http = response as? HTTPURLResponse else { return }
-
+        
         switch http.statusCode {
-            case 200..<300: return
-            case 401: throw APIError.apiError(reason: "Unauthorized")
-            case 402: throw APIError.apiError(reason: "Quota exceeded")
-            case 403: throw APIError.apiError(reason: "Resource forbidden")
-            case 404: throw APIError.apiError(reason: "Resource not found")
-            case 429: throw APIError.apiError(reason: "Requesting too quickly")
-            case 405..<500: throw APIError.apiError(reason: "Client error")
-            case 500..<600: throw APIError.apiError(reason: "Server error")
-            default: throw APIError.networkError(from: URLError(.badServerResponse))
+        case 200..<300: return
+        case 401: throw APIError.apiError(reason: "Unauthorized")
+        case 402: throw APIError.apiError(reason: "Quota exceeded")
+        case 403: throw APIError.apiError(reason: "Resource forbidden")
+        case 404: throw APIError.apiError(reason: "Resource not found")
+        case 429: throw APIError.apiError(reason: "Requesting too quickly")
+        case 405..<500: throw APIError.apiError(reason: "Client error")
+        case 500..<600: throw APIError.apiError(reason: "Server error")
+        default: throw APIError.networkError(from: URLError(.badServerResponse))
         }
     }
     
@@ -86,7 +111,7 @@ struct Networker {
         // no duplicates and sorted
         return Array(Set(allCountries)).sorted { $0.name < $1.name }
     }
-
+    
     func getTopVotes( _ limit: Int = 10) async throws -> [RadioStation] {
         let stations:[RadioStation] = try await fetchJSON("stations/topvote/\(limit)")
         convertAllToHttps(stations)
@@ -122,13 +147,13 @@ struct Networker {
             }
         }
     }
-
+    
     // Fetch the artist artwork from iTunes from the local station country,
     // will also try the US if need be
     func fetchArtist(for queryText: String, countryCode: String, tries: Int = 0) async throws -> Artist? {
         // URL encode the search query
         let query = queryText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-
+        
         let urlString = "\(itunesServer)&term=\(query)&country=\(countryCode.lowercased())"
         guard let theUrl = URL(string: urlString) else { return nil }
         
@@ -137,12 +162,12 @@ struct Networker {
         do {
             // Fetch data from the local iTunes
             let (data, response) = try await URLSession.shared.data(from: theUrl)
-    //        print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
+            //        print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
             
             try validate(response)
-
+            
             let arts = try decoder.decode(iTunesInfo.self, from: data)
-
+            
             if var artist = arts.results?.first {
                 
                 // make sure all are https
@@ -164,7 +189,7 @@ struct Networker {
                     
                     // Fetch the artwork image data
                     let (imageData, _) = try await URLSession.shared.data(from: artworkUrl)
-
+                    
                     try validate(response)
                     
                     // add the imageData to the artist
@@ -202,7 +227,7 @@ struct Networker {
                     //     print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
                     
                     try validate(response)
-
+                    
                     let lyrics = try JSONDecoder().decode(Lyrics.self, from: data)
                     if let txt = lyrics.plainLyrics {
                         return txt
@@ -214,6 +239,40 @@ struct Networker {
         }
         return "no lyrics"
     }
+    
+    private func fetchFavicon(for station: RadioStation) async {
+        if station.favicon == "null" || station.favicon.isEmpty { return }
+        guard let faviconURL = URL(string: station.favicon) else { return }
+        do {
+            let (data, _) = try await URLSession.shared.data(from: faviconURL)
+            station.faviconData = data
+        } catch {
+            print(error)
+        }
+    }
+    
+    func faviconImage(for station: RadioStation) async -> UIImage {
+        // If no data cached, fetch it
+        if station.faviconData == nil {
+            await fetchFavicon(for: station)
+            if let data = station.faviconData, let img = UIImage(data: data) {
+                return img
+            } else {
+                let fallback = defaultImg(for: station)
+                station.faviconData = fallback.pngData()
+                return fallback
+            }
+        }
+        // If data exists, try to decode it
+        if let data = station.faviconData, let img = UIImage(data: data) {
+            return img
+        } else {
+            let fallback = defaultImg(for: station)
+            station.faviconData = fallback.pngData()
+            return fallback
+        }
+    }
+    
 
     
     

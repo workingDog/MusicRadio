@@ -11,8 +11,7 @@ struct SearchStationView: View {
     @Environment(PlayerManager.self) var playerManager
     @Environment(Selector.self) var selector
     @Environment(ColorsModel.self) var colorsModel
-    
-    let network = Networker()
+    @Environment(\.networker) private var networker
     
     @State private var stations: [RadioStation] = []
     @State private var isSearching = false
@@ -73,7 +72,7 @@ struct SearchStationView: View {
         let trimmed = selector.searchStation.trimmingCharacters(in: .whitespacesAndNewlines)
         selector.searchStation = trimmed
         if !trimmed.isEmpty {
-            return try await network.findStations(trimmed)
+            return try await networker.findStations(trimmed)
         }
         return []
     }

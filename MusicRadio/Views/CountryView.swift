@@ -11,8 +11,7 @@ import SwiftData
 struct CountryView: View {
     @Environment(Selector.self) var selector
     @Environment(ColorsModel.self) var colorsModel
-    
-    let network = Networker()
+    @Environment(\.networker) private var networker
     
     let country: Country
     
@@ -33,7 +32,7 @@ struct CountryView: View {
         }
         .task {
             do {
-                stations = try await network.getStationsForCountryCode(country.iso_3166_1)
+                stations = try await networker.getStationsForCountryCode(country.iso_3166_1)
             } catch {
                 print(error)
             }

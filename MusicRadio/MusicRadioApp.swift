@@ -20,6 +20,8 @@ import SwiftData
 struct MusicRadioApp: App {
     @State private var colorsModel = ColorsModel()
     
+    let networker = Networker()
+    
     var sharedModelContainer: ModelContainer = {
         let appSupportDir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).last
         let storeURL: URL = appSupportDir?.appending(path: "database.sqlite") ?? URL.documentsDirectory.appending(path: "database.sqlite")
@@ -37,6 +39,7 @@ struct MusicRadioApp: App {
         WindowGroup {
             ContentView()
                 .environment(colorsModel)
+                .environment(\.networker, networker)
         }
         .modelContainer(sharedModelContainer)
     }

@@ -12,6 +12,7 @@ import Foundation
 
 struct StationView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.networker) private var networker
     @Environment(PlayerManager.self) var playerManager
     @Environment(ColorsModel.self) var colorsModel
     @Environment(Selector.self) var selector
@@ -81,7 +82,7 @@ struct StationView: View {
                     if let img = logoIcon {
                         Image(uiImage: img).resizable()
                     } else {
-                        Image(uiImage: LogoService.shared.defaultImg(for: station)).resizable()
+                        Image(uiImage: networker.defaultImg(for: station)).resizable()
                     }
                 }
                 .scaledToFit()
@@ -115,7 +116,7 @@ struct StationView: View {
             WebViewScreen(showWeb: $showWeb, station: station)
         }
         .task {
-            logoIcon = await LogoService.shared.faviconImage(for: station)
+            logoIcon = await networker.faviconImage(for: station)
         }
     }
     

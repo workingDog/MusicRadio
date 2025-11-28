@@ -12,9 +12,10 @@ import MediaPlayer
 struct StationPlayer: View {
     @Environment(PlayerManager.self) var playerManager
     @Environment(ColorsModel.self) var colorsModel
+    @Environment(\.networker) private var networker
     
     @State private var showArt: Bool = false
-    @State private var logoIcon: UIImage = LogoService.defaultRadioImg()
+    @State private var logoIcon: UIImage = Networker.defaultRadioImg()
     
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
@@ -22,7 +23,7 @@ struct StationPlayer: View {
                 Group {
                     HStack {
                         if playerManager.station == nil {
-                            Image(uiImage: LogoService.defaultRadioImg()).resizable()
+                            Image(uiImage: Networker.defaultRadioImg()).resizable()
                         } else {
                             Image(uiImage: logoIcon).resizable()
                         }
@@ -99,7 +100,7 @@ struct StationPlayer: View {
             }
             Task {
                 if let station = playerManager.station {
-                    logoIcon = await LogoService.shared.faviconImage(for: station)
+                    logoIcon = await networker.faviconImage(for: station)
                 }
             }
         }
