@@ -14,7 +14,7 @@ struct StationPlayer: View {
     @Environment(ColorsModel.self) var colorsModel
     
     @State private var showArt: Bool = false
-    @State private var logoIcon: UIImage?
+    @State private var logoIcon: UIImage = LogoService.defaultRadioImg()
     
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
@@ -22,13 +22,9 @@ struct StationPlayer: View {
                 Group {
                     HStack {
                         if playerManager.station == nil {
-                            Image(uiImage: playerManager.defaultImg).resizable()
+                            Image(uiImage: LogoService.defaultRadioImg()).resizable()
                         } else {
-                            if let img = logoIcon {
-                                Image(uiImage: img).resizable()
-                            } else {
-                                Image(uiImage: playerManager.defaultImg).resizable()
-                            }
+                            Image(uiImage: logoIcon).resizable()
                         }
                     }
                     .onTapGesture {
@@ -103,9 +99,7 @@ struct StationPlayer: View {
             }
             Task {
                 if let station = playerManager.station {
-                    logoIcon = await station.faviconImage()
-                } else {
-                    logoIcon = playerManager.defaultImg
+                    logoIcon = await LogoService.shared.faviconImage(for: station)
                 }
             }
         }

@@ -81,7 +81,7 @@ struct StationView: View {
                     if let img = logoIcon {
                         Image(uiImage: img).resizable()
                     } else {
-                        Image(uiImage: station.defaultImg()).resizable()
+                        Image(uiImage: LogoService.shared.defaultImg(for: station)).resizable()
                     }
                 }
                 .scaledToFit()
@@ -115,7 +115,7 @@ struct StationView: View {
             WebViewScreen(showWeb: $showWeb, station: station)
         }
         .task {
-            logoIcon = await station.faviconImage()
+            logoIcon = await LogoService.shared.faviconImage(for: station)
         }
     }
     

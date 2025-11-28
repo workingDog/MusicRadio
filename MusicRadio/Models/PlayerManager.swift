@@ -14,14 +14,6 @@ import AVFoundation
 @Observable
 class PlayerManager {
     
-    var defaultImg: UIImage {
-        if let station = station, station.isTV {
-            return UIImage(named: "teve")!
-        } else {
-            return UIImage(named: "radio")!
-        }
-    }
-    
     var station: RadioStation?
     var isPlaying = false
     var currentSong: String = ""

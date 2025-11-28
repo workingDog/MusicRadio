@@ -12,6 +12,58 @@ import UIKit
 // https://de1.api.radio-browser.info/#General
 
 
+// helper actor to fetch logo icon
+actor LogoService {
+    static let shared = LogoService()
+
+    func defaultImg(for station: RadioStation) -> UIImage {
+        station.isTV ? UIImage(named: "teve")! : UIImage(named: "radio")!
+    }
+    
+    static func defaultTVImg() -> UIImage {
+         UIImage(named: "teve")!
+    }
+
+    static func defaultRadioImg() -> UIImage {
+        UIImage(named: "radio")!
+    }
+    
+    private func fetchFavicon(for station: RadioStation) async {
+        if station.favicon == "null" || station.favicon.isEmpty { return }
+        guard let faviconURL = URL(string: station.favicon) else { return }
+        do {
+            let (data, _) = try await URLSession.shared.data(from: faviconURL)
+            station.faviconData = data
+        } catch {
+            print(error)
+        }
+    }
+    
+    func faviconImage(for station: RadioStation) async -> UIImage {
+        // If no data cached, fetch it
+        if station.faviconData == nil {
+            await fetchFavicon(for: station)
+            if let data = station.faviconData, let img = UIImage(data: data) {
+                return img
+            } else {
+                let fallback = defaultImg(for: station)
+                station.faviconData = fallback.pngData()
+                return fallback
+            }
+        }
+        // If data exists, try to decode it
+        if let data = station.faviconData, let img = UIImage(data: data) {
+            return img
+        } else {
+            let fallback = defaultImg(for: station)
+            station.faviconData = fallback.pngData()
+            return fallback
+        }
+    }
+    
+}
+
+
 @Model
 final class Country: Codable {
     var name: String
@@ -193,43 +245,6 @@ final class RadioStation: Codable {
 //        try container.encodeIfPresent(clicktimestamp, forKey: .clicktimestamp)
 //        try container.encodeIfPresent(clicktimestampIso8601, forKey: .clicktimestampIso8601)
 //        try container.encodeIfPresent(hasExtendedInfo, forKey: .hasExtendedInfo)
-    }
-    
-    func defaultImg() -> UIImage {
-        isTV ? UIImage(named: "teve")! : UIImage(named: "radio")!
-    }
-    
-    func faviconImage() async -> UIImage {
-        // If no data cached, fetch it
-        if faviconData == nil {
-            await fetchFavicon()
-            if let data = faviconData, let img = UIImage(data: data) {
-                return img
-            } else {
-                let fallback = defaultImg()
-                faviconData = fallback.pngData()
-                return fallback
-            }
-        }
-        // If data exists, try to decode it
-        if let data = faviconData, let img = UIImage(data: data) {
-            return img
-        } else {
-            let fallback = defaultImg()
-            faviconData = fallback.pngData()
-            return fallback
-        }
-    }
-
-    func fetchFavicon() async {
-        if favicon == "null" || favicon.isEmpty { return }
-        guard let faviconURL = URL(string: favicon) else { return }
-        do {
-            let (data, _) = try await URLSession.shared.data(from: faviconURL)
-            self.faviconData = data
-        } catch {
-            print(error)
-        }
     }
     
 }
