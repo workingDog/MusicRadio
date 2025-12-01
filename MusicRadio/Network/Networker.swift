@@ -68,12 +68,16 @@ struct Networker {
         station.isTV ? Networker.defaultTVImg() : Networker.defaultRadioImg()
     }
     
-    
     private func fetchJSON<T: Decodable>(_ endpoint: String) async throws -> [T] {
         guard let theUrl = URL(string: "\(radioServer)/\(endpoint)") else {
             throw URLError(.badURL)
         }
-        let (data, response) = try await URLSession.shared.data(from: theUrl)
+        var request = URLRequest(url: theUrl)
+        request.httpMethod = "GET"
+        request.setValue("MusicRadio/1.0", forHTTPHeaderField: "User-Agent")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+
+        let (data, response) = try await URLSession.shared.data(for: request)
         try validate(response)
         return try decoder.decode([T].self, from: data)
     }

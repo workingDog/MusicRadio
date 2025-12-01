@@ -104,6 +104,11 @@ struct StationPlayer: View {
                 }
             }
         }
+        .task {
+            if let station = playerManager.station {
+                logoIcon = await networker.faviconImage(for: station)
+            }
+        }
         .sheet(isPresented: $showArt) {
             Viewer(showArt: $showArt)
                 .environment(colorsModel)
