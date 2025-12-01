@@ -21,9 +21,9 @@ enum APIError: Swift.Error, LocalizedError {
     
     var errorDescription: String? {
         switch self {
-        case .unknown: return "Unknown error"
-        case .apiError(let reason), .parserError(let reason): return reason
-        case .networkError(let from): return from.localizedDescription
+            case .unknown: return "Unknown error"
+            case .apiError(let reason), .parserError(let reason): return reason
+            case .networkError(let from): return from.localizedDescription
         }
     }
 }
@@ -39,7 +39,7 @@ extension EnvironmentValues {
     }
 }
 
-actor Networker {
+struct Networker {
     
     // radio stations
     var radioServer = "https://de1.api.radio-browser.info/json"
@@ -185,7 +185,7 @@ actor Networker {
                     
                     guard let artworkUrl = URL(string: artworkUrlString) else { return nil }
                     
-                    print("---> fetchArtist artworkUrl: \(artworkUrl.absoluteString)")
+          //          print("---> fetchArtist artworkUrl: \(artworkUrl.absoluteString)")
                     
                     // Fetch the artwork image data
                     let (imageData, _) = try await URLSession.shared.data(from: artworkUrl)
@@ -244,7 +244,8 @@ actor Networker {
         if station.favicon == "null" || station.favicon.isEmpty { return }
         guard let faviconURL = URL(string: station.favicon) else { return }
         do {
-            let (data, _) = try await URLSession.shared.data(from: faviconURL)
+            let (data, response) = try await URLSession.shared.data(from: faviconURL)
+            try validate(response)
             station.faviconData = data
         } catch {
             print(error)
