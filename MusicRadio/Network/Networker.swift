@@ -112,7 +112,9 @@ struct Networker {
             grouping: allCountries.map { country -> Country in
                 let c = country
                 c.name = c.name.trimmingCharacters(in: .whitespacesAndNewlines)
-                    .replacingOccurrences(of: #"^The\s+"#, with: "", options: .regularExpression)
+                if c.name.hasPrefix("The ") {
+                    c.name.removeFirst("The ".count)
+                }
                 return c
             },
             by: \.name
