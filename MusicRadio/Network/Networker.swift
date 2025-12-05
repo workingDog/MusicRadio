@@ -352,28 +352,3 @@ struct Networker {
     }
 
 }
-
-
-/*
- 
- I have this code and want to remove any duplicate Country and keep only those with the highest stationcount. How to do this?
- The code: "
- func getAllCountries() async throws -> [Country] {
-     let allCountries: [Country] = try await fetchJSON("countries")
-     // remove the "The ", eg The United ...
-     for country in allCountries {
-         var name = country.name
-         name = name.trimmingCharacters(in: .whitespacesAndNewlines)
-         if name.hasPrefix("The ") {
-             name.removeFirst("The ".count)
-             country.name = name
-         }
-     }
-     print("----> before allCountries: \(allCountries.count)")
-     // no duplicates and sorted
-     let results = Array(Set(allCountries)).sorted { $0.name < $1.name }
-     print("----> after allCountries: \(results.count)")
-     return results
- }"
- 
- */
