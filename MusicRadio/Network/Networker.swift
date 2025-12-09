@@ -68,7 +68,7 @@ struct Networker {
         station.isTV ? Networker.defaultTVImg() : Networker.defaultRadioImg()
     }
     
-    private func fetchJSON<T: Decodable>(_ endpoint: String) async throws -> [T] {
+    private func fetchJSON<T: Decodable>(_ endpoint: String) async throws -> T {
         guard let theUrl = URL(string: "\(radioServer)/\(endpoint)") else {
             throw URLError(.badURL)
         }
@@ -79,7 +79,7 @@ struct Networker {
 
         let (data, response) = try await URLSession.shared.data(for: request)
         try validate(response)
-        return try decoder.decode([T].self, from: data)
+        return try decoder.decode(T.self, from: data)
     }
     
     func validate(_ response: URLResponse) throws {
@@ -99,7 +99,7 @@ struct Networker {
     }
     
     func getStationsForCountryCode(_ code: String) async throws -> [RadioStation] {
-        let stations:[RadioStation] = try await fetchJSON("stations/bycountrycodeexact/\(code)")
+        let stations: [RadioStation] = try await fetchJSON("stations/bycountrycodeexact/\(code)")
         convertAllToHttps(stations)
         return stations
     }
@@ -126,19 +126,19 @@ struct Networker {
     }
     
     func getTopVotes( _ limit: Int = 10) async throws -> [RadioStation] {
-        let stations:[RadioStation] = try await fetchJSON("stations/topvote/\(limit)")
+        let stations: [RadioStation] = try await fetchJSON("stations/topvote/\(limit)")
         convertAllToHttps(stations)
         return stations
     }
     
     func getTopVotesFor(_ code: String, limit: Int = 10) async throws -> [RadioStation] {
-        let stations:[RadioStation] = try await fetchJSON("stations/search?countrycode=\(code)&order=votes&reverse=true&limit=\(limit)")
+        let stations: [RadioStation] = try await fetchJSON("stations/search?countrycode=\(code)&order=votes&reverse=true&limit=\(limit)")
         convertAllToHttps(stations)
         return stations
     }
     
     func findStations(_ station: String) async throws -> [RadioStation] {
-        let stations:[RadioStation] = try await fetchJSON("stations/byname/\(station)")
+        let stations: [RadioStation] = try await fetchJSON("stations/byname/\(station)")
         convertAllToHttps(stations)
         return stations
     }
@@ -288,7 +288,9 @@ struct Networker {
     }
     
 
-    
+    //-------------------------------------------------------------------
+    //-------------------------testing-----------------------------------
+    //-------------------------------------------------------------------
     
     // for testing
     func getAllTags() async throws -> [StationsTags] {
