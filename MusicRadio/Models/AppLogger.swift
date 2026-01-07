@@ -1,5 +1,5 @@
 //
-//  AppLoger.swift
+//  AppLogger.swift
 //  MusicRadio
 //
 //  Created by Ringo Wathelet on 2026/01/07.
