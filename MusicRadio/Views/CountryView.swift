@@ -34,7 +34,7 @@ struct CountryView: View {
             do {
                 stations = try await networker.getStationsForCountryCode(country.iso_3166_1)
             } catch {
-                print(error)
+                AppLogger.logPublic(error)
             }
         }
         .toolbar {

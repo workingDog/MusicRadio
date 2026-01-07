@@ -86,15 +86,15 @@ struct Networker {
         guard let http = response as? HTTPURLResponse else { return }
         
         switch http.statusCode {
-        case 200..<300: return
-        case 401: throw APIError.apiError(reason: "Unauthorized")
-        case 402: throw APIError.apiError(reason: "Quota exceeded")
-        case 403: throw APIError.apiError(reason: "Resource forbidden")
-        case 404: throw APIError.apiError(reason: "Resource not found")
-        case 429: throw APIError.apiError(reason: "Requesting too quickly")
-        case 405..<500: throw APIError.apiError(reason: "Client error")
-        case 500..<600: throw APIError.apiError(reason: "Server error")
-        default: throw APIError.networkError(from: URLError(.badServerResponse))
+            case 200..<300: return
+            case 401: throw APIError.apiError(reason: "Unauthorized")
+            case 402: throw APIError.apiError(reason: "Quota exceeded")
+            case 403: throw APIError.apiError(reason: "Resource forbidden")
+            case 404: throw APIError.apiError(reason: "Resource not found")
+            case 429: throw APIError.apiError(reason: "Requesting too quickly")
+            case 405..<500: throw APIError.apiError(reason: "Client error")
+            case 500..<600: throw APIError.apiError(reason: "Server error")
+            default: throw APIError.networkError(from: URLError(.badServerResponse))
         }
     }
     
@@ -169,14 +169,11 @@ struct Networker {
         
         let urlString = "\(itunesServer)&term=\(query)&country=\(countryCode.lowercased())"
         guard let theUrl = URL(string: urlString) else { return nil }
-        
-        print("---> fetchArtist url: \(theUrl.absoluteString)")
-        
+
         do {
             // Fetch data from the local iTunes
             let (data, response) = try await URLSession.shared.data(from: theUrl)
-            //        print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
-            
+
             try validate(response)
             
             let arts = try decoder.decode(iTunesInfo.self, from: data)
@@ -197,9 +194,7 @@ struct Networker {
                     let artworkUrlString: String = artwork.replacingOccurrences(of: "100x100", with: "600x600")
                     
                     guard let artworkUrl = URL(string: artworkUrlString) else { return nil }
-                    
-          //          print("---> fetchArtist artworkUrl: \(artworkUrl.absoluteString)")
-                    
+
                     // Fetch the artwork image data
                     let (imageData, _) = try await URLSession.shared.data(from: artworkUrl)
                     
@@ -221,7 +216,7 @@ struct Networker {
                 }
             }
         } catch {
-            print(error)
+            AppLogger.logPublic(error)
         }
         return nil
     }
@@ -234,19 +229,15 @@ struct Networker {
             let queryText = "\(lyricsServer)/get?artist_name=\(name)&track_name=\(track)"
             let query = queryText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
             if let theUrl = URL(string: query) {
-                print("---> findLyrics fetching theUrl: \(theUrl.absoluteString)")
                 do {
                     let (data, response) = try await URLSession.shared.data(from: theUrl)
-                    //     print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
-                    
                     try validate(response)
-                    
                     let lyrics = try JSONDecoder().decode(Lyrics.self, from: data)
                     if let txt = lyrics.plainLyrics {
                         return txt
                     }
                 } catch {
-                    print(error)
+                    AppLogger.logPublic(error)
                 }
             }
         }
@@ -261,7 +252,7 @@ struct Networker {
             try validate(response)
             station.faviconData = data
         } catch {
-            print(error)
+            AppLogger.logPublic(error)
         }
     }
     
@@ -298,7 +289,7 @@ struct Networker {
             print("---> getAllTags fetching theUrl: \(theUrl.absoluteString)")
             var request = URLRequest(url: theUrl)
             request.httpMethod = "GET"
-            request.setValue("MusicRadio/1.0", forHTTPHeaderField: "User-Agent")
+ //           request.setValue("MusicRadio/1.0", forHTTPHeaderField: "User-Agent")
             request.setValue("application/json", forHTTPHeaderField: "Accept")
             do {
                 let (data, _) = try await URLSession.shared.data(for: request)
@@ -309,11 +300,9 @@ struct Networker {
                 for tag in sortedTags.prefix(200) {
                     print(" \(tag.name ?? "no name")  \(tag.stationcount ?? 0)")
                 }
-                
-                print("\n---> done fetching getAllTags \n")
                 return tags
             } catch {
-                print(error)
+                AppLogger.logPublic(error)
             }
         }
         return []
@@ -333,7 +322,7 @@ struct Networker {
                 convertAllToHttps(stations)
                 return stations
             } catch {
-                print(error)
+                AppLogger.logPublic(error)
             }
         }
         return []
@@ -347,7 +336,7 @@ struct Networker {
                 let (data, _) = try await URLSession.shared.data(from: theUrl)
                  print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
             } catch {
-                print(error)
+                AppLogger.logPublic(error)
             }
         }
         return

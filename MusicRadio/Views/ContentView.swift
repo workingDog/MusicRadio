@@ -52,7 +52,6 @@ struct ContentView: View {
                 // if first time, get all the countries and store them in SwiftData
                 if countries.count == 0 {
                     let allCountries = try await networker.getAllCountries()
-                    print("---> allCountries.count: \(allCountries.count)")
                     for country in allCountries {
                         modelContext.insert(country)
                     }
@@ -64,11 +63,9 @@ struct ContentView: View {
                     if countryCode.isEmpty {
                         // overall top stations
                         topStations = try await networker.getTopVotes(selector.topCount)
-                        print("---> top \(topStations.count) stations")
                     } else {
                         // only current country top stations
                         topStations = try await networker.getTopVotesFor(countryCode, limit: selector.topCount)
-                        print("---> top \(topStations.count) stations for \(countryCode)")
                     }
                     // store them in SwiftData
                     for station in topStations {
@@ -77,7 +74,7 @@ struct ContentView: View {
                     }
                 }
             } catch {
-                print(error)
+                AppLogger.logPublic("", error)
             }
         }
     }

@@ -36,91 +36,71 @@ class ColorsModel {
     
     // store settings in UserDefaults
     public func storeSettings() {
-        UserDefaults.standard.set(self.favouriteColor.toHex(), forKey: ColorsModel.keyFavouriteColor)
-        UserDefaults.standard.set(self.netColor.toHex(), forKey: ColorsModel.keyNetColor)
-        UserDefaults.standard.set(self.starColor.toHex(), forKey: ColorsModel.keyStarColor)
-        UserDefaults.standard.set(self.equaliserColor.toHex(), forKey: ColorsModel.keyEqualiserColor)
-        UserDefaults.standard.set(self.backColor.toHex(), forKey: ColorsModel.keyBackColor)
-        UserDefaults.standard.set(self.stationBackColor.toHex(), forKey: ColorsModel.keyStationBackColor)
-        UserDefaults.standard.set(self.countryBackColor.toHex(), forKey: ColorsModel.keyCountryBackColor)
+        saveColor(favouriteColor, key: ColorsModel.keyFavouriteColor)
+        saveColor(netColor, key: ColorsModel.keyNetColor)
+        saveColor(starColor, key: ColorsModel.keyStarColor)
+        saveColor(equaliserColor, key: ColorsModel.keyEqualiserColor)
+        saveColor(backColor, key: ColorsModel.keyBackColor)
+        saveColor(stationBackColor, key: ColorsModel.keyStationBackColor)
+        saveColor(countryBackColor, key: ColorsModel.keyCountryBackColor)
     }
     
     // retrieve settings from UserDefaults
     public func retrieveSettings() {
-        let fav = UserDefaults.standard.string(forKey: ColorsModel.keyFavouriteColor)
-        let net = UserDefaults.standard.string(forKey: ColorsModel.keyNetColor)
-        let star = UserDefaults.standard.string(forKey: ColorsModel.keyStarColor)
-        let equ = UserDefaults.standard.string(forKey: ColorsModel.keyEqualiserColor)
-        let back = UserDefaults.standard.string(forKey: ColorsModel.keyBackColor)
-        let sback = UserDefaults.standard.string(forKey: ColorsModel.keyStationBackColor)
-        let cback = UserDefaults.standard.string(forKey: ColorsModel.keyCountryBackColor)
         
-        self.favouriteColor = (fav != nil) ? Color(hex: fav!) : Color.teal
-        self.netColor = (net != nil) ? Color(hex: net!) : Color.blue
-        self.starColor = (star != nil) ? Color(hex: star!) : Color.orange
-        self.equaliserColor = (equ != nil) ? Color(hex: equ!) : Color.accentColor
-        self.backColor = (back != nil) ? Color(hex: back!) : Color.mint.opacity(0.4)
-        self.stationBackColor = (sback != nil) ? Color(hex: sback!) : Color.white.opacity(0.4)
-        self.countryBackColor = (cback != nil) ? Color(hex: cback!) : Color.teal.opacity(0.4)
+        let fav = retrieveColorFor(ColorsModel.keyFavouriteColor)
+        let net = retrieveColorFor(ColorsModel.keyNetColor)
+        let star = retrieveColorFor(ColorsModel.keyStarColor)
+        let equ = retrieveColorFor(ColorsModel.keyEqualiserColor)
+        let back = retrieveColorFor(ColorsModel.keyBackColor)
+        let sback = retrieveColorFor(ColorsModel.keyStationBackColor)
+        let cback = retrieveColorFor(ColorsModel.keyCountryBackColor)
+        
+        self.favouriteColor = (fav != nil) ? fav! : Color.teal
+        self.netColor = (net != nil) ? net! : Color.blue
+        self.starColor = (star != nil) ? star! : Color.orange
+        self.equaliserColor = (equ != nil) ? equ! : Color.accentColor
+        self.backColor = (back != nil) ? back! : Color.mint.opacity(0.4)
+        self.stationBackColor = (sback != nil) ? sback! : Color.white.opacity(0.4)
+        self.countryBackColor = (cback != nil) ? cback! : Color.teal.opacity(0.4)
+    }
+    
+    func saveColor(_ color: Color, key: String) {
+        guard let rgba = color.rgba() else { return }
+        
+        UserDefaults.standard.set(
+            [rgba.r, rgba.g, rgba.b, rgba.a],
+            forKey: key
+        )
+    }
+    
+    func retrieveColorFor(_ key: String) -> Color? {
+        guard let values = UserDefaults.standard.array(forKey: key) as? [Double],
+              values.count == 4 else { return nil }
+        
+        return Color(.sRGB,
+                     red: values[0],
+                     green: values[1],
+                     blue: values[2],
+                     opacity: values[3]
+        )
     }
     
 }
 
 extension Color {
-    public init(hex: String) {
-        self.init(UIColor(hex: hex))
-    }
-
-    public func toHex(alpha: Bool = true) -> String? {
-        UIColor(self).toHex(alpha: alpha)
-    }
-}
-
-extension UIColor {
     
-    convenience init(hex: String) {
-        let trimHex = hex.trimmingCharacters(in: .whitespacesAndNewlines)
-        let dropHash = String(trimHex.dropFirst()).trimmingCharacters(in: .whitespacesAndNewlines)
-        let hexString = trimHex.starts(with: "#") ? dropHash : trimHex
-        let ui64 = UInt64(hexString, radix: 16)
-        let value = ui64 != nil ? Int(ui64!) : 0
-        // #RRGGBB
-        var components = (
-            R: CGFloat((value >> 16) & 0xff) / 255,
-            G: CGFloat((value >> 08) & 0xff) / 255,
-            B: CGFloat((value >> 00) & 0xff) / 255,
-            a: CGFloat(1)
-        )
-        if String(hexString).count == 8 {
-            // #RRGGBBAA
-            components = (
-                R: CGFloat((value >> 24) & 0xff) / 255,
-                G: CGFloat((value >> 16) & 0xff) / 255,
-                B: CGFloat((value >> 08) & 0xff) / 255,
-                a: CGFloat((value >> 00) & 0xff) / 255
-            )
-        }
-        self.init(red: components.R, green: components.G, blue: components.B, alpha: components.a)
-    }
-    
-    func toHex(alpha: Bool = true) -> String? {
-        guard let components = cgColor.components, components.count >= 3 else {
+    func rgba() -> (r: Double, g: Double, b: Double, a: Double)? {
+        let uiColor = UIColor(self)
+        var r: CGFloat = 0
+        var g: CGFloat = 0
+        var b: CGFloat = 0
+        var a: CGFloat = 0
+        
+        guard uiColor.getRed(&r, green: &g, blue: &b, alpha: &a) else {
             return nil
         }
         
-        let r = Float(components[0])
-        let g = Float(components[1])
-        let b = Float(components[2])
-        var a = Float(1.0)
-        
-        if components.count >= 4 {
-            a = Float(components[3])
-        }
-        
-        if alpha {
-            return String(format: "%02lX%02lX%02lX%02lX", lroundf(r * 255), lroundf(g * 255), lroundf(b * 255), lroundf(a * 255))
-        } else {
-            return String(format: "%02lX%02lX%02lX", lroundf(r * 255), lroundf(g * 255), lroundf(b * 255))
-        }
+        return (Double(r), Double(g), Double(b), Double(a))
     }
 }

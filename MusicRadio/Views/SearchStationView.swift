@@ -64,7 +64,7 @@ struct SearchStationView: View {
             stations = try await fetchStations()
             isSearching = false
         } catch {
-            print(error)
+            AppLogger.logPublic(error)
         }
     }
     

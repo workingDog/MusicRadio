@@ -58,7 +58,7 @@ struct ArtistView: View {
                     countryCode: playerManager.station?.countrycode ?? "us")
                 isBusy = false
             } catch {
-                print(error)
+                AppLogger.logPublic(error)
             }
         }
     }
@@ -115,7 +115,7 @@ struct LyricsView: View {
                     lyrics = try await networker.findLyrics(artist!)
                     isBusy = false
                 } catch {
-                    print(error)
+                    AppLogger.logPublic(error)
                 }
             }
         }

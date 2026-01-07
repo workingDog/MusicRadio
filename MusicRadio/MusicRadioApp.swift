@@ -25,12 +25,15 @@ struct MusicRadioApp: App {
     var sharedModelContainer: ModelContainer = {
         let appSupportDir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).last
         let storeURL: URL = appSupportDir?.appending(path: "database.sqlite") ?? URL.documentsDirectory.appending(path: "database.sqlite")
+        
         print("---> database at: \(storeURL.absoluteString)\n")
+        
         let schema = Schema([RadioStation.self, Country.self])
         let config = ModelConfiguration(schema: schema, url: storeURL)
         do {
             return try ModelContainer(for: schema, configurations: config)
         } catch {
+            AppLogger.logPublic("Could not create ModelContainer: ", error)
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
