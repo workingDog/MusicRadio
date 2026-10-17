@@ -18,9 +18,9 @@ struct SettingsView: View {
         @Bindable var colorsModel = colorsModel
         
         ZStack {
-            colorsModel.gradient.ignoresSafeArea()
+            AppBackground().ignoresSafeArea()
             
-            VStack(spacing: 1) {
+            VStack(spacing: 10) {
                 
                 VStack(spacing: 1) {
                     HStack {
@@ -35,95 +35,108 @@ struct SettingsView: View {
                 }
                 
                 ScrollView {
-                    
-                    HStack {
-                        Text("Top-rated stations to show   ")
-                        CompactStepper(value: $selector.topCount, range: 10...100, step: 10)
-                        Spacer()
-                    }
-                    .padding(.top, 20)
-                    
-                    HStack {
-                        Text("Countries back color ")
-                        Image(systemName: "backpack.fill")
-                            .font(.title)
-                            .foregroundStyle(colorsModel.countryBackColor)
-                        ColorPicker("", selection: $colorsModel.countryBackColor)
-                            .labelsHidden()
-                        Spacer()
-                    }
-                    
-                    HStack {
-                        Text("Stations back color ")
-                        Image(systemName: "backpack.fill")
-                            .font(.title)
-                            .foregroundStyle(colorsModel.stationBackColor)
-                        ColorPicker("", selection: $colorsModel.stationBackColor)
-                            .labelsHidden()
-                        Spacer()
-                    }
-                    
-                    HStack {
-                        Text("Background color ")
-                        Image(systemName: "backpack.fill")
-                            .font(.title)
-                            .foregroundStyle(colorsModel.backColor)
-                        ColorPicker("", selection: $colorsModel.backColor)
-                            .labelsHidden()
-                        Spacer()
-                    }
-                    
-                    HStack {
-                        Text("Equaliser Color    ")
-                        Image(systemName: "chart.bar.fill")
-                            .font(.title)
-                            .foregroundStyle(colorsModel.equaliserColor)
-                        ColorPicker("", selection: $colorsModel.equaliserColor)
-                            .labelsHidden()
-                        Spacer()
-                    }
-                    
-                    HStack {
-                        Text("Favourite Color ")
-                        Image(systemName: "heart.fill")
-                            .font(.title)
-                            .foregroundStyle(colorsModel.favouriteColor)
-                        ColorPicker("", selection: $colorsModel.favouriteColor)
-                            .labelsHidden()
-                        Spacer()
-                    }
-                    HStack {
-                        Text("Network Color ")
-                        Image(systemName: "network")
-                            .font(.title)
-                            .foregroundStyle(colorsModel.netColor)
-                        ColorPicker("", selection: $colorsModel.netColor)
-                            .labelsHidden()
-                        Spacer()
-                    }
-                    HStack {
-                        Text("Star Color    ")
-                        Image(systemName: "star.fill")
-                            .font(.title)
-                            .foregroundStyle(colorsModel.starColor)
-                        ColorPicker("", selection: $colorsModel.starColor)
-                            .labelsHidden()
-                        Spacer()
-                    }
-                    
-                    HStack {
-                        Text("Station select sound  ")
-                        Image(systemName: "hand.tap.fill")
-                            .font(.title)
-                            .foregroundStyle(selector.pingSound ? Color.accentColor : .black)
-                        Toggle("", isOn: $selector.pingSound)
-                        Spacer()
-                    }.fixedSize()
-                    
+                    VStack(spacing: 20) {
+                        
+                        HStack {
+                            Text("Top-rated stations to show   ")
+                            CompactStepper(value: $selector.topCount, range: 10...100, step: 10)
+                            Spacer()
+                        }
+                        .padding(.top, 20)
+                        
+                        HStack {
+                            Text("Countries back color ")
+                            Image(systemName: "backpack.fill")
+                                .font(.title)
+                                .foregroundStyle(colorsModel.countryBackColor)
+                                .overlay {
+                                    ColorPicker("", selection: $colorsModel.countryBackColor)
+                                        .labelsHidden()
+                                        .colorMultiply(.clear)
+                                }
+                            Spacer()
+                        }
+                        
+                        HStack {
+                            Text("Stations back color ")
+                            Image(systemName: "backpack.fill")
+                                .font(.title)
+                                .foregroundStyle(colorsModel.stationBackColor)
+                                .overlay {
+                                    ColorPicker("", selection: $colorsModel.stationBackColor)
+                                        .labelsHidden()
+                                        .colorMultiply(.clear)
+                                }
+                            Spacer()
+                        }
+                        
+                        HStack {
+                            Text("Equaliser Color    ")
+                            Image(systemName: "chart.bar.fill")
+                                .font(.title)
+                                .foregroundStyle(colorsModel.equaliserColor)
+                                .overlay {
+                                    ColorPicker("", selection: $colorsModel.equaliserColor)
+                                        .labelsHidden()
+                                        .colorMultiply(.clear)
+                                }
+                            Spacer()
+                        }
+                        
+                        HStack {
+                            Text("Favourite Color ")
+                            Image(systemName: "heart.fill")
+                                .font(.title)
+                                .foregroundStyle(colorsModel.favouriteColor)
+                                .overlay {
+                                    ColorPicker("", selection: $colorsModel.favouriteColor)
+                                        .labelsHidden()
+                                        .colorMultiply(.clear)
+                                }
+                            Spacer()
+                        }
+                        
+                        HStack {
+                            Text("Network Color ")
+                            Image(systemName: "network")
+                                .font(.title)
+                                .foregroundStyle(colorsModel.netColor)
+                                .overlay {
+                                    ColorPicker("", selection: $colorsModel.netColor)
+                                        .labelsHidden()
+                                        .colorMultiply(.clear)
+                                }
+                            Spacer()
+                        }
+                        
+                        HStack {
+                            Text("Star Color    ")
+                            Image(systemName: "star.fill")
+                                .font(.title)
+                                .foregroundStyle(colorsModel.starColor)
+                                .overlay {
+                                    ColorPicker("", selection: $colorsModel.starColor)
+                                        .labelsHidden()
+                                        .colorMultiply(.clear)
+                                }
+                            Spacer()
+                        }
+                        
+                        HStack {
+                            Text("Station select sound  ")
+                            Image(systemName: "hand.tap.fill")
+                                .font(.title)
+                                .foregroundStyle(selector.pingSound ? Color.accentColor : .black)
+                            Toggle("", isOn: $selector.pingSound).fixedSize()
+                            Spacer()
+                        }
+                        
+                    }.padding(15)
                 }
+                
                 Spacer()
             }
-            .padding(5)
+            .padding(10)
         }
         .onDisappear {
             selector.storeSettings()

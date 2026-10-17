@@ -52,12 +52,19 @@ struct Artist: Identifiable, Codable {
 }
 
 struct Lyrics: Identifiable, Codable {
-    let id: Int
-    var name, trackName: String?
+    let id: Int?
+    var name: String?
+    var trackName: String?
     var artistName: String?
     var albumName: String?
     var duration: Double?
     var instrumental: Bool?
     var plainLyrics: String?
     var syncedLyrics: String?
+}
+
+struct LyricsError: Codable {
+    let statusCode: Int
+    let name: String
+    let message: String
 }

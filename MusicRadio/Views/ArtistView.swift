@@ -49,7 +49,7 @@ struct ArtistView: View {
             }
             
         }
-        .background(colorsModel.backColor)
+        .background(AppBackground())
         .task {
             do {
                 isBusy = true
@@ -65,7 +65,7 @@ struct ArtistView: View {
     
     @ViewBuilder
     func overView() -> some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 10) {
             if let img = artist?.imageData  {
                 Image(uiImage: img)
                     .resizable()

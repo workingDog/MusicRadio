@@ -86,8 +86,7 @@ struct StationPlayer: View {
             }.padding(6)
             
         } // VStack
-        .background(colorsModel.backColor.opacity(0.4))
-        .glassEffect(.regular.tint(colorsModel.backColor.opacity(0.4)).interactive(), in: RoundedRectangle(cornerRadius: 12)) // for iOS26+
+        .background(AppBackground())
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .shadow(radius: 5)
         .onChange(of: playerManager.station?.id) {

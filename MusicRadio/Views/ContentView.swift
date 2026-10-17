@@ -22,7 +22,7 @@ struct ContentView: View {
     
     var body: some View {
         ZStack(alignment: .top) {
-            colorsModel.gradient.ignoresSafeArea()
+            AppBackground().ignoresSafeArea()
                 .animation(.easeInOut(duration: 0.4), value: selector.view)
             
             VStack {
@@ -74,7 +74,7 @@ struct ContentView: View {
                     }
                 }
             } catch {
-                AppLogger.logPublic("", error)
+                AppLogger.logPublic(error)
             }
         }
     }

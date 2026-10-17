@@ -32,7 +32,7 @@ struct TvView: View {
                 Spacer()
             }
         }
-        .background(colorsModel.backColor)
+        .background(AppBackground())
         .onAppear {
             playerManager.isPlaying = true
         }

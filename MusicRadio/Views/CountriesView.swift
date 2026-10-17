@@ -26,7 +26,7 @@ struct CountriesView: View {
         @Bindable var selector = selector
         NavigationStack {
             ZStack {
-                colorsModel.gradient.ignoresSafeArea()
+                AppBackground().ignoresSafeArea()
                 
                 ScrollView {
                     LazyVGrid(

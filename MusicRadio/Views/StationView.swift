@@ -8,6 +8,7 @@ import SwiftUI
 import WebKit
 import AVFoundation
 import Foundation
+import SwiftData
 
 
 struct StationView: View {
@@ -76,7 +77,9 @@ struct StationView: View {
                     }.buttonStyle(.borderless)
                 }
                 
-                RatingStarsView(station, maxRating)
+        //        RatingStarsView(station, maxRating)
+
+                LocationClock(station: station)
                 
                 Group {
                     if let img = logoIcon {
@@ -119,7 +122,7 @@ struct StationView: View {
             logoIcon = await networker.faviconImage(for: station)
         }
     }
-    
+
     func playClick() {
         var id: SystemSoundID = 0
         if let url = Bundle.main.url(forResource: "click3", withExtension: "wav") {
