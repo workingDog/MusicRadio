@@ -38,8 +38,9 @@ struct SettingsView: View {
                     VStack(spacing: 20) {
                         
                         HStack {
-                            Text("Top-rated stations to show   ")
+                            Text("Top-rated stations")
                             CompactStepper(value: $selector.topCount, range: 10...100, step: 10)
+                                .frame(width: 222)
                             Spacer()
                         }
                         .padding(.top, 20)
@@ -71,7 +72,7 @@ struct SettingsView: View {
                         }
                         
                         HStack {
-                            Text("Equaliser Color    ")
+                            Text("Equaliser Color ")
                             Image(systemName: "chart.bar.fill")
                                 .font(.title)
                                 .foregroundStyle(colorsModel.equaliserColor)
@@ -110,7 +111,7 @@ struct SettingsView: View {
                         }
                         
                         HStack {
-                            Text("Star Color    ")
+                            Text("Star Color  ")
                             Image(systemName: "star.fill")
                                 .font(.title)
                                 .foregroundStyle(colorsModel.starColor)
@@ -123,7 +124,7 @@ struct SettingsView: View {
                         }
                         
                         HStack {
-                            Text("Station select sound  ")
+                            Text("Selection sound  ")
                             Image(systemName: "hand.tap.fill")
                                 .font(.title)
                                 .foregroundStyle(selector.pingSound ? Color.accentColor : .black)
@@ -131,7 +132,7 @@ struct SettingsView: View {
                             Spacer()
                         }
                         
-                    }.padding(15)
+                    }.padding(10)
                 }
                 
                 Spacer()
@@ -174,7 +175,7 @@ struct CompactStepper: View {
             }.buttonStyle(.borderless) // <-- important
         }
         .padding(6)
-        .background(colorsModel.backColor)
+        .background(AppBackground())
         .clipShape(Capsule())
         .contentShape(Rectangle())
     }

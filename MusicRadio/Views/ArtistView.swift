@@ -82,6 +82,7 @@ struct ArtistView: View {
             Text(artist?.trackName ?? "")
             Spacer()
         }
+        .padding(5)
     }
     
 }

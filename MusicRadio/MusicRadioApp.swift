@@ -24,7 +24,7 @@ struct MusicRadioApp: App {
     
     var sharedModelContainer: ModelContainer = {
         let appSupportDir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).last
-        let storeURL: URL = appSupportDir?.appending(path: "database.sqlite") ?? URL.documentsDirectory.appending(path: "database.sqlite")
+        let storeURL: URL = appSupportDir?.appending(path: "musicRadio.sqlite") ?? URL.documentsDirectory.appending(path: "musicRadio.sqlite")
         
         print("---> database at: \(storeURL.absoluteString)\n")
         

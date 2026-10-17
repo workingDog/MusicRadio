@@ -34,9 +34,7 @@ struct ContentView: View {
                 
                 switch selector.view {
                     case .favourites: StationListView(stations: stations.filter({$0.isFavourite}))
-                        
                     case .countries: CountriesView()
-                        
                     case .stations: SearchStationView()
                 }
             }
