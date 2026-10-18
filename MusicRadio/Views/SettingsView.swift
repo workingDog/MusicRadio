@@ -37,13 +37,13 @@ struct SettingsView: View {
                 ScrollView {
                     VStack(spacing: 20) {
                         
-                        HStack {
-                            Text("Top-rated stations")
-                            CompactStepper(value: $selector.topCount, range: 10...100, step: 10)
-                                .frame(width: 222)
-                            Spacer()
-                        }
-                        .padding(.top, 20)
+//                        HStack {
+//                            Text("Top-rated stations")
+//                            CompactStepper(value: $selector.topCount, range: 10...100, step: 10)
+//                                .frame(width: 222)
+//                            Spacer()
+//                        }
+//                        .padding(.top, 20)
                         
                         HStack {
                             Text("Countries back color ")
@@ -98,8 +98,8 @@ struct SettingsView: View {
                         }
                         
                         HStack {
-                            Text("Network Color ")
-                            Image(systemName: "network")
+                            Text("Home Color ")
+                            Image(systemName: "house.fill")
                                 .font(.title)
                                 .foregroundStyle(colorsModel.netColor)
                                 .overlay {
@@ -110,18 +110,18 @@ struct SettingsView: View {
                             Spacer()
                         }
                         
-                        HStack {
-                            Text("Star Color  ")
-                            Image(systemName: "star.fill")
-                                .font(.title)
-                                .foregroundStyle(colorsModel.starColor)
-                                .overlay {
-                                    ColorPicker("", selection: $colorsModel.starColor)
-                                        .labelsHidden()
-                                        .colorMultiply(.clear)
-                                }
-                            Spacer()
-                        }
+//                        HStack {
+//                            Text("Star Color  ")
+//                            Image(systemName: "star.fill")
+//                                .font(.title)
+//                                .foregroundStyle(colorsModel.starColor)
+//                                .overlay {
+//                                    ColorPicker("", selection: $colorsModel.starColor)
+//                                        .labelsHidden()
+//                                        .colorMultiply(.clear)
+//                                }
+//                            Spacer()
+//                        }
                         
                         HStack {
                             Text("Selection sound  ")

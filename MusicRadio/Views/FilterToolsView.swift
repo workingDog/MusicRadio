@@ -15,18 +15,18 @@ struct FilterToolsView: View {
         @Bindable var selector = selector
         VStack {
             HStack {
-                Picker("", selection: $selector.filter) {
-                    ForEach(FilterTypes.allCases(topRatedValue: selector.topCount)) { tool in
-                        Text(tool.displayName).tag(tool)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .padding(.horizontal)
+//                Picker("", selection: $selector.filter) {
+//                    ForEach(FilterTypes.allCases(topRatedValue: selector.topCount)) { tool in
+//                        Text(tool.displayName).tag(tool)
+//                    }
+//                }
+//                .pickerStyle(.segmented)
+//                .padding(.horizontal)
                 Spacer()
                 StationTagMenu()
                 Spacer()
             }
-            .padding(4)
+            .padding(5)
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .shadow(radius: 2)

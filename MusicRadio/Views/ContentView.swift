@@ -35,9 +35,9 @@ struct ContentView: View {
                 }
                 
                 switch selector.view {
-                case .favourites: StationListView(stations: stations.filter({$0.isFavourite}))
-                case .countries: CountriesView()
-                case .stations: SearchStationView()
+                    case .favourites: StationListView(stations: stations.filter({$0.isFavourite}))
+                    case .countries: CountriesView()
+                    case .stations: SearchStationView()
                 }
             }
             .onAppear {
@@ -72,7 +72,7 @@ struct ContentView: View {
                     // Refresh country station counts after 30 days
                     let allCountries = try await networker.getAllCountries()
                     let existingCountries = Dictionary(uniqueKeysWithValues: countries.map { ($0.name, $0) })
-                    for country in allCountries {
+                    for country in allCountries where !country.name.trim().isEmpty {
                         if let existing = existingCountries[country.name] {
                             existing.stationcount = country.stationcount
                         } else {

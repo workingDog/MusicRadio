@@ -69,7 +69,7 @@ struct StationView: View {
                     Button {
                         showWeb = true
                     } label: {
-                        Image(systemName: "network")
+                        Image(systemName: "house.fill")
                             .resizable()
                             .foregroundColor(colorsModel.netColor)
                             .frame(width: 30, height: 30)

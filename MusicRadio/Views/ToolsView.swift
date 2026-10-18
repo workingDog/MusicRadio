@@ -23,14 +23,7 @@ struct ToolsView: View {
                     .padding(5)
                 Spacer()
                 
-                Picker("", selection: $selector.view) {
-                    ForEach(ViewTypes.allCases) { tool in
-                        Text(tool.rawValue).tag(tool)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .frame(width: 250)
-                .padding(.horizontal)
+                tools().frame(width: 222).padding(.horizontal)
                 
                 Spacer()
                 
@@ -55,12 +48,63 @@ struct ToolsView: View {
                 .presentationDetents([.large])
         }
     }
+    
+    @ViewBuilder
+    func tools() -> some View {
+        HStack(spacing: 30) {
+            ForEach([ViewTypes.favourites, .countries, .stations], id: \.self) { view in
+                Button {
+                    selector.view = view
+                } label: {
+                    if view == .favourites {
+                        Image(systemName: "heart.fill").padding(5)
+                            .font(.title)
+                            .foregroundStyle(colorsModel.favouriteColor)
+                            .frame(height: 45)
+                            .background(selector.view == view ? Color.primary.opacity(0.12) : .clear)
+                            .contentShape(Rectangle())
+                            .overlay {
+                                Image(systemName: "heart")
+                                    .font(.title)
+                                    .foregroundStyle(.black)
+                            }
+                    } else {
+                        Image(systemName: symbol(for: view)).padding(5)
+                            .font(.title)
+                            .foregroundStyle(iconColor(for: view))
+                            .frame(height: 45)
+                            .background(selector.view == view ? Color.primary.opacity(0.12) : .clear)
+                            .contentShape(Rectangle())
+                    }
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: 9))
+    }
+    
+    private func symbol(for view: ViewTypes) -> String {
+        switch view {
+            case .favourites: "heart.fill"
+            case .countries: "globe"
+            case .stations: "dot.radiowaves.left.and.right"
+        }
+    }
+    
+    private func iconColor(for view: ViewTypes) -> Color {
+        switch view {
+            case .favourites: colorsModel.favouriteColor
+            case .countries: .blue
+            case .stations: .primary
+        }
+    }
+    
 }
 
 struct AirPlayButton: UIViewRepresentable {
     func makeUIView(context: Context) -> AVRoutePickerView {
         let view = AVRoutePickerView()
- //       view.prioritizesVideoDevices = false    // set to true for Apple TV
+        //       view.prioritizesVideoDevices = false    // set to true for Apple TV
         view.activeTintColor = .systemBlue      // highlighted color
         view.tintColor = .gray                  // normal color
         view.prioritizesVideoDevices = false    // audio only
