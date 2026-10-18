@@ -31,7 +31,7 @@ struct SettingsView: View {
                         .padding(10)
                         Spacer()
                     }
-                    Text("Settings").font(.largeTitle)
+                    Text("Color Settings").font(.largeTitle).padding(.top, 20)
                 }
                 
                 ScrollView {
@@ -46,7 +46,7 @@ struct SettingsView: View {
 //                        .padding(.top, 20)
                         
                         HStack {
-                            Text("Countries back color ")
+                            Text("Countries back ")
                             Image(systemName: "backpack.fill")
                                 .font(.title)
                                 .foregroundStyle(colorsModel.countryBackColor)
@@ -59,7 +59,7 @@ struct SettingsView: View {
                         }
                         
                         HStack {
-                            Text("Stations back color ")
+                            Text("Stations back ")
                             Image(systemName: "backpack.fill")
                                 .font(.title)
                                 .foregroundStyle(colorsModel.stationBackColor)
@@ -72,7 +72,7 @@ struct SettingsView: View {
                         }
                         
                         HStack {
-                            Text("Equaliser Color ")
+                            Text("Equaliser ")
                             Image(systemName: "chart.bar.fill")
                                 .font(.title)
                                 .foregroundStyle(colorsModel.equaliserColor)
@@ -85,7 +85,7 @@ struct SettingsView: View {
                         }
                         
                         HStack {
-                            Text("Favourite Color ")
+                            Text("Favourite ")
                             Image(systemName: "heart.fill")
                                 .font(.title)
                                 .foregroundStyle(colorsModel.favouriteColor)
@@ -98,7 +98,7 @@ struct SettingsView: View {
                         }
                         
                         HStack {
-                            Text("Home Color ")
+                            Text("Home ")
                             Image(systemName: "house.fill")
                                 .font(.title)
                                 .foregroundStyle(colorsModel.netColor)
@@ -123,14 +123,14 @@ struct SettingsView: View {
 //                            Spacer()
 //                        }
                         
-                        HStack {
-                            Text("Selection sound  ")
-                            Image(systemName: "hand.tap.fill")
-                                .font(.title)
-                                .foregroundStyle(selector.pingSound ? Color.accentColor : .black)
-                            Toggle("", isOn: $selector.pingSound).fixedSize()
-                            Spacer()
-                        }
+//                        HStack {
+//                            Text("Selection sound  ")
+//                            Image(systemName: "hand.tap.fill")
+//                                .font(.title)
+//                                .foregroundStyle(selector.pingSound ? Color.accentColor : .black)
+//                            Toggle("", isOn: $selector.pingSound).fixedSize()
+//                            Spacer()
+//                        }
                         
                     }.padding(10)
                 }
