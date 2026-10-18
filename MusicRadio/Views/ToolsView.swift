@@ -78,6 +78,7 @@ struct ToolsView: View {
                     }
                 }
                 .buttonStyle(.plain)
+                .glassEffect()
             }
         }
         .background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: 9))
