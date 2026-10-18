@@ -61,7 +61,7 @@ struct ToolsView: View {
                             .font(.title)
                             .foregroundStyle(colorsModel.favouriteColor)
                             .frame(height: 45)
-                            .background(selector.view == view ? Color.primary.opacity(0.12) : .clear)
+                            .background(selector.view == view ? colorsModel.stationBackColor : .clear)
                             .contentShape(Rectangle())
                             .overlay {
                                 Image(systemName: "heart")
@@ -73,7 +73,7 @@ struct ToolsView: View {
                             .font(.title)
                             .foregroundStyle(iconColor(for: view))
                             .frame(height: 45)
-                            .background(selector.view == view ? Color.primary.opacity(0.12) : .clear)
+                            .background(selector.view == view ? colorsModel.stationBackColor : .clear)
                             .contentShape(Rectangle())
                     }
                 }
