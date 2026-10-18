@@ -50,7 +50,8 @@ struct ContentView: View {
                 // if first time, get all the countries and store them in SwiftData
                 if countries.count == 0 {
                     let allCountries = try await networker.getAllCountries()
-                    for country in allCountries {
+                    let allValidCountries = allCountries.filter({!$0.name.trim().isEmpty})
+                    for country in allValidCountries {
                         modelContext.insert(country)
                     }
 

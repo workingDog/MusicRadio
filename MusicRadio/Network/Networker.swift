@@ -9,6 +9,15 @@ import UIKit
 import SwiftUI
 
 
+extension String {
+    
+    func trim() -> String {
+        trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+       
+}
+
+
 // for testing
 struct StationsTags: Codable {
     var name: String?
