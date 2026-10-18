@@ -37,7 +37,7 @@ struct ToolsView: View {
                 Button {
                     showSettings = true
                 } label: {
-                    Image(systemName: "gear")
+                    Image(systemName: "gear").tint(.primary)
                 }
                 .font(.system(size: 26))
                 .padding(5)
