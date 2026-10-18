@@ -48,7 +48,6 @@ extension EnvironmentValues {
     }
 }
 
-
 enum LRCLIBError: Error {
     case invalidURL
     case notFound
@@ -58,7 +57,7 @@ enum LRCLIBError: Error {
 struct Networker {
     
     // radio stations
-    var radioServer = "https://de1.api.radio-browser.info/json"
+    let radioServer = URL(string: "https://de1.api.radio-browser.info/json")!
 
     // lyrics
     let lyricsServer = URL(string: "https://lrclib.net/api/get")!
@@ -83,12 +82,12 @@ struct Networker {
     func defaultImg(for station: RadioStation) -> UIImage {
         station.isTV ? Networker.defaultTVImg() : Networker.defaultRadioImg()
     }
-    
-    private func fetchJSON<T: Decodable>(_ endpoint: String) async throws -> T {
-        guard let theUrl = URL(string: "\(radioServer)/\(endpoint)") else {
-            throw URLError(.badURL)
+
+    private func fetchJSON<T: Decodable>(_ components: URLComponents) async throws -> T {
+        guard let url = components.url else {
+            throw LRCLIBError.invalidURL
         }
-        var request = URLRequest(url: theUrl)
+        var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue("MusicRadio/1.0", forHTTPHeaderField: "User-Agent")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
@@ -115,19 +114,26 @@ struct Networker {
     }
     
     func getStationsForCountryCode(_ code: String) async throws -> [RadioStation] {
-        let stations: [RadioStation] = try await fetchJSON("stations/bycountrycodeexact/\(code)")
+        let components = URLComponents(
+            url: radioServer.appending(path: "stations/bycountrycodeexact/\(code)"),
+            resolvingAgainstBaseURL: false
+        )!
+        let stations: [RadioStation] = try await fetchJSON(components)
         convertAllToHttps(stations)
         return stations
     }
     
     func getAllCountries() async throws -> [Country] {
-        let allCountries: [Country] = try await fetchJSON("countries")
-
+        let components = URLComponents(
+            url: radioServer.appending(path: "countries"),
+            resolvingAgainstBaseURL: false
+        )!
+        let allCountries: [Country] = try await fetchJSON(components)
         // normalize and de-duplicate
         let grouped = Dictionary(
             grouping: allCountries.map { country -> Country in
                 let c = country
-                c.name = c.name.trimmingCharacters(in: .whitespacesAndNewlines)
+                c.name = c.name.trim()
                 if c.name.hasPrefix("The ") {
                     c.name.removeFirst("The ".count)
                 }
@@ -142,19 +148,38 @@ struct Networker {
     }
     
     func getTopVotes( _ limit: Int = 10) async throws -> [RadioStation] {
-        let stations: [RadioStation] = try await fetchJSON("stations/topvote/\(limit)")
+        var components = URLComponents(
+            url: radioServer.appending(path: "stations/topvote"),
+            resolvingAgainstBaseURL: false
+        )!
+        components.queryItems = [ URLQueryItem(name: "limit", value: "1") ]
+        let stations: [RadioStation] = try await fetchJSON(components)
         convertAllToHttps(stations)
         return stations
     }
-    
+
     func getTopVotesFor(_ code: String, limit: Int = 10) async throws -> [RadioStation] {
-        let stations: [RadioStation] = try await fetchJSON("stations/search?countrycode=\(code)&order=votes&reverse=true&limit=\(limit)")
+        var components = URLComponents(
+            url: radioServer.appending(path: "stations/search"),
+            resolvingAgainstBaseURL: false
+        )!
+        components.queryItems = [
+            URLQueryItem(name: "countrycode", value: code),
+            URLQueryItem(name: "order", value: "votes"),
+            URLQueryItem(name: "reverse", value: "true"),
+            URLQueryItem(name: "limit", value: "\(limit)")
+        ]
+        let stations: [RadioStation] = try await fetchJSON(components)
         convertAllToHttps(stations)
         return stations
     }
     
     func findStations(_ station: String) async throws -> [RadioStation] {
-        let stations: [RadioStation] = try await fetchJSON("stations/byname/\(station)")
+        let components = URLComponents(
+            url: radioServer.appending(path: "stations/byname/\(station)"),
+            resolvingAgainstBaseURL: false
+        )!
+        let stations: [RadioStation] = try await fetchJSON(components)
         convertAllToHttps(stations)
         return stations
     }
@@ -347,7 +372,6 @@ struct Networker {
         }
         return []
     }
-    
     
     // for testing
     func getAllStations() async throws -> [RadioStation] {
