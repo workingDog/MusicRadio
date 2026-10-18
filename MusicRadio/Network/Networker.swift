@@ -48,16 +48,23 @@ extension EnvironmentValues {
     }
 }
 
+
+enum LRCLIBError: Error {
+    case invalidURL
+    case notFound
+    case invalidResponse
+}
+
 struct Networker {
     
     // radio stations
     var radioServer = "https://de1.api.radio-browser.info/json"
-    
+
     // lyrics
-    let lyricsServer = "https://lrclib.net/api"
+    let lyricsServer = URL(string: "https://lrclib.net/api/get")!
     
     // artists
-    let itunesServer = "https://itunes.apple.com/search?entity=song&limit=1"
+    let itunesServer = URL(string: "https://itunes.apple.com/search")!
     
     let decoder = JSONDecoder()
     
@@ -173,15 +180,29 @@ struct Networker {
     // Fetch the artist artwork from iTunes from the local station country,
     // will also try the US if need be
     func fetchArtist(for queryText: String, countryCode: String, tries: Int = 0) async throws -> Artist? {
-        // URL encode the search query
-        let query = queryText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+
+        var components = URLComponents(
+            url: itunesServer,
+            resolvingAgainstBaseURL: false
+        )!
+
+        components.queryItems = [
+            URLQueryItem(name: "entity", value: "song"),
+            URLQueryItem(name: "limit", value: "1"),
+            URLQueryItem(name: "term", value: queryText),
+            URLQueryItem(name: "country", value: countryCode.lowercased())
+        ]
+
+        guard let url = components.url else {
+            throw LRCLIBError.invalidURL
+        }
         
-        let urlString = "\(itunesServer)&term=\(query)&country=\(countryCode.lowercased())"
-        guard let theUrl = URL(string: urlString) else { return nil }
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
 
         do {
             // Fetch data from the local iTunes
-            let (data, response) = try await URLSession.shared.data(from: theUrl)
+            let (data, response) = try await URLSession.shared.data(for: request)
 
             try validate(response)
             
@@ -216,12 +237,7 @@ struct Networker {
             } else {
                 // try to fetch the info from the US, when no local results
                 if tries < 1 {
-                    Task {
-                        return try await fetchArtist(
-                            for: queryText,
-                            countryCode: "us",
-                            tries: tries + 1)
-                    }
+                    return try await fetchArtist(for: queryText, countryCode: "us", tries: tries + 1)
                 }
             }
         } catch {
@@ -235,19 +251,33 @@ struct Networker {
     
     func findLyrics(_ artist: Artist) async throws -> String {
         if let name = artist.artistName, let track = artist.trackName {
-            let queryText = "\(lyricsServer)/get?artist_name=\(name)&track_name=\(track)"
-            let query = queryText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-            if let theUrl = URL(string: query) {
-                do {
-                    let (data, response) = try await URLSession.shared.data(from: theUrl)
-                    try validate(response)
-                    let lyrics = try JSONDecoder().decode(Lyrics.self, from: data)
-                    if let txt = lyrics.plainLyrics {
-                        return txt
-                    }
-                } catch {
-                    AppLogger.logPublic(error)
+            
+            var components = URLComponents(
+                url: lyricsServer,
+                resolvingAgainstBaseURL: false
+            )!
+
+            components.queryItems = [
+                URLQueryItem(name: "artist_name", value: name),
+                URLQueryItem(name: "track_name", value: track)
+            ]
+
+            guard let url = components.url else {
+                throw LRCLIBError.invalidURL
+            }
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            
+            do {
+                let (data, response) = try await URLSession.shared.data(for: request)
+                try validate(response)
+                let lyrics = try JSONDecoder().decode(Lyrics.self, from: data)
+                if let txt = lyrics.plainLyrics {
+                    return txt
                 }
+            } catch {
+                AppLogger.logPublic(error)
             }
         }
         return "no lyrics"
