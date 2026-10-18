@@ -187,6 +187,7 @@ struct Networker {
         )!
 
         components.queryItems = [
+            URLQueryItem(name: "media", value: "music"),
             URLQueryItem(name: "entity", value: "song"),
             URLQueryItem(name: "limit", value: "1"),
             URLQueryItem(name: "term", value: queryText),
