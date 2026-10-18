@@ -14,9 +14,11 @@ struct ContentView: View {
     @Environment(ColorsModel.self) var colorsModel
     @Environment(\.networker) private var networker
     
+    @AppStorage("lastCountriesUpdate") private var lastUpdate: Date = .distantPast
+    
     @State private var playerManager = PlayerManager()
     @State private var selector = Selector()
-
+    
     @Query private var stations: [RadioStation]
     @Query private var countries: [Country]
     
@@ -33,9 +35,9 @@ struct ContentView: View {
                 }
                 
                 switch selector.view {
-                    case .favourites: StationListView(stations: stations.filter({$0.isFavourite}))
-                    case .countries: CountriesView()
-                    case .stations: SearchStationView()
+                case .favourites: StationListView(stations: stations.filter({$0.isFavourite}))
+                case .countries: CountriesView()
+                case .stations: SearchStationView()
                 }
             }
             .onAppear {
@@ -47,35 +49,43 @@ struct ContentView: View {
         .environment(selector)
         .task {
             do {
-                // if first time, get all the countries and store them in SwiftData
-                if countries.count == 0 {
+                if countries.isEmpty {
+                    // First launch: fetch and store all countries
                     let allCountries = try await networker.getAllCountries()
-                    let allValidCountries = allCountries.filter({!$0.name.trim().isEmpty})
-                    for country in allValidCountries {
+                    for country in allCountries where !country.name.trim().isEmpty {
                         modelContext.insert(country)
                     }
-
-                    // add the top voted stations to "Favourites"
-                    var topStations: [RadioStation] = []
+                    try modelContext.save()
                     
+                    // Add top-voted stations to Favourites
                     let countryCode = Locale.current.region?.identifier ?? ""
-                    if countryCode.isEmpty {
-                        // overall top stations
-                        topStations = try await networker.getTopVotes(selector.topCount)
-                    } else {
-                        // only current country top stations
-                        topStations = try await networker.getTopVotesFor(countryCode, limit: selector.topCount)
-                    }
-                    // store them in SwiftData
+                    let topStations = countryCode.isEmpty
+                    ? try await networker.getTopVotes(selector.topCount)
+                    : try await networker.getTopVotesFor(countryCode, limit: selector.topCount)
                     for station in topStations {
                         station.isFavourite = true
                         modelContext.insert(station)
                     }
+                    try modelContext.save()
+                    lastUpdate = .now
+                } else if Date.now.timeIntervalSince(lastUpdate) >= 30 * 24 * 60 * 60 { // 30 days
+                    // Refresh country station counts after 30 days
+                    let allCountries = try await networker.getAllCountries()
+                    let existingCountries = Dictionary(uniqueKeysWithValues: countries.map { ($0.name, $0) })
+                    for country in allCountries {
+                        if let existing = existingCountries[country.name] {
+                            existing.stationcount = country.stationcount
+                        } else {
+                            modelContext.insert(country)
+                        }
+                    }
+                    try modelContext.save()
+                    lastUpdate = .now
                 }
             } catch {
                 AppLogger.logPublic(error)
             }
         }
     }
-   
+    
 }

@@ -14,7 +14,7 @@ extension String {
     func trim() -> String {
         trimmingCharacters(in: .whitespacesAndNewlines)
     }
-       
+    
 }
 
 
@@ -30,9 +30,9 @@ enum APIError: Swift.Error, LocalizedError {
     
     var errorDescription: String? {
         switch self {
-            case .unknown: return "Unknown error"
-            case .apiError(let reason), .parserError(let reason): return reason
-            case .networkError(let from): return from.localizedDescription
+        case .unknown: return "Unknown error"
+        case .apiError(let reason), .parserError(let reason): return reason
+        case .networkError(let from): return from.localizedDescription
         }
     }
 }
@@ -58,7 +58,7 @@ struct Networker {
     
     // radio stations
     let radioServer = URL(string: "https://de1.api.radio-browser.info/json")!
-
+    
     // lyrics
     let lyricsServer = URL(string: "https://lrclib.net/api/get")!
     
@@ -82,7 +82,7 @@ struct Networker {
     func defaultImg(for station: RadioStation) -> UIImage {
         station.isTV ? Networker.defaultTVImg() : Networker.defaultRadioImg()
     }
-
+    
     private func fetchJSON<T: Decodable>(_ components: URLComponents) async throws -> T {
         guard let url = components.url else {
             throw LRCLIBError.invalidURL
@@ -91,7 +91,7 @@ struct Networker {
         request.httpMethod = "GET"
         request.setValue("MusicRadio/1.0", forHTTPHeaderField: "User-Agent")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
-
+        
         let (data, response) = try await URLSession.shared.data(for: request)
         try validate(response)
         return try decoder.decode(T.self, from: data)
@@ -141,7 +141,7 @@ struct Networker {
             },
             by: \.name
         )
-
+        
         return grouped.values
             .compactMap { $0.max(by: { $0.stationcount ?? 0 < $1.stationcount ?? 0 }) }
             .sorted { $0.name < $1.name }
@@ -157,7 +157,7 @@ struct Networker {
         convertAllToHttps(stations)
         return stations
     }
-
+    
     func getTopVotesFor(_ code: String, limit: Int = 10) async throws -> [RadioStation] {
         var components = URLComponents(
             url: radioServer.appending(path: "stations/search"),
@@ -205,12 +205,12 @@ struct Networker {
     // Fetch the artist artwork from iTunes from the local station country,
     // will also try the US if need be
     func fetchArtist(for queryText: String, countryCode: String, tries: Int = 0) async throws -> Artist? {
-
+        
         var components = URLComponents(
             url: itunesServer,
             resolvingAgainstBaseURL: false
         )!
-
+        
         components.queryItems = [
             URLQueryItem(name: "media", value: "music"),
             URLQueryItem(name: "entity", value: "song"),
@@ -218,18 +218,18 @@ struct Networker {
             URLQueryItem(name: "term", value: queryText),
             URLQueryItem(name: "country", value: countryCode.lowercased())
         ]
-
+        
         guard let url = components.url else {
             throw LRCLIBError.invalidURL
         }
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-
+        
         do {
             // Fetch data from the local iTunes
             let (data, response) = try await URLSession.shared.data(for: request)
-
+            
             try validate(response)
             
             let arts = try decoder.decode(iTunesInfo.self, from: data)
@@ -250,7 +250,7 @@ struct Networker {
                     let artworkUrlString: String = artwork.replacingOccurrences(of: "100x100", with: "600x600")
                     
                     guard let artworkUrl = URL(string: artworkUrlString) else { return nil }
-
+                    
                     // Fetch the artwork image data
                     let (imageData, _) = try await URLSession.shared.data(from: artworkUrl)
                     
@@ -282,12 +282,12 @@ struct Networker {
                 url: lyricsServer,
                 resolvingAgainstBaseURL: false
             )!
-
+            
             components.queryItems = [
                 URLQueryItem(name: "artist_name", value: name),
                 URLQueryItem(name: "track_name", value: track)
             ]
-
+            
             guard let url = components.url else {
                 throw LRCLIBError.invalidURL
             }
@@ -343,67 +343,64 @@ struct Networker {
         }
     }
     
-
+    
     //-------------------------------------------------------------------
     //-------------------------testing-----------------------------------
     //-------------------------------------------------------------------
     
     // for testing
     func getAllTags() async throws -> [StationsTags] {
-        if let theUrl = URL(string: "\(radioServer)/tags") {
-            print("---> getAllTags fetching theUrl: \(theUrl.absoluteString)")
-            var request = URLRequest(url: theUrl)
-            request.httpMethod = "GET"
- //           request.setValue("MusicRadio/1.0", forHTTPHeaderField: "User-Agent")
-            request.setValue("application/json", forHTTPHeaderField: "Accept")
-            do {
-                let (data, _) = try await URLSession.shared.data(for: request)
-                let tags = try JSONDecoder().decode([StationsTags].self, from: data)
-                print("---> tags: \(tags.count)\n")
-                
-                let sortedTags = tags.sorted(by: { ($0.stationcount ?? 0) > ($1.stationcount ?? 0) })
-                for tag in sortedTags.prefix(200) {
-                    print(" \(tag.name ?? "no name")  \(tag.stationcount ?? 0)")
-                }
-                return tags
-            } catch {
-                AppLogger.logPublic(error)
+        let theUrl = radioServer.appending(path: "/tags")
+        print("---> getAllTags fetching theUrl: \(theUrl.absoluteString)")
+        var request = URLRequest(url: theUrl)
+        request.httpMethod = "GET"
+        //           request.setValue("MusicRadio/1.0", forHTTPHeaderField: "User-Agent")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        do {
+            let (data, _) = try await URLSession.shared.data(for: request)
+            let tags = try JSONDecoder().decode([StationsTags].self, from: data)
+            print("---> tags: \(tags.count)\n")
+            
+            let sortedTags = tags.sorted(by: { ($0.stationcount ?? 0) > ($1.stationcount ?? 0) })
+            for tag in sortedTags.prefix(200) {
+                print(" \(tag.name ?? "no name")  \(tag.stationcount ?? 0)")
             }
+            return tags
+        } catch {
+            AppLogger.logPublic(error)
         }
         return []
     }
     
     // for testing
     func getAllStations() async throws -> [RadioStation] {
-        if let theUrl = URL(string: "\(radioServer)/stations") {
-            print("---> getAllStations fetching theUrl: \(theUrl.absoluteString)")
-            do {
-                let (data, _) = try await URLSession.shared.data(from: theUrl)
-                print("---> data: \(data)") // 62 MB
-                let stations = try decoder.decode([RadioStation].self, from: data)
-                print("---> stations: \(stations.count)") // 51680
-                print("\n---> done fetching getAllStations \n")
-                convertAllToHttps(stations)
-                return stations
-            } catch {
-                AppLogger.logPublic(error)
-            }
+        let theUrl = radioServer.appending(path: "/stations")
+        print("---> getAllStations fetching theUrl: \(theUrl.absoluteString)")
+        do {
+            let (data, _) = try await URLSession.shared.data(from: theUrl)
+            print("---> data: \(data)") // 62 MB
+            let stations = try decoder.decode([RadioStation].self, from: data)
+            print("---> stations: \(stations.count)") // 51680
+            print("\n---> done fetching getAllStations \n")
+            convertAllToHttps(stations)
+            return stations
+        } catch {
+            AppLogger.logPublic(error)
         }
         return []
     }
     
     // for testing
     func getServers() async throws {
-        if let theUrl = URL(string: "\(radioServer)/servers") {
-            print("---> getServers fetching theUrl: \(theUrl.absoluteString)")
-            do {
-                let (data, _) = try await URLSession.shared.data(from: theUrl)
-                 print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
-            } catch {
-                AppLogger.logPublic(error)
-            }
+        let theUrl = radioServer.appending(path: "/servers")
+        print("---> getServers fetching theUrl: \(theUrl.absoluteString)")
+        do {
+            let (data, _) = try await URLSession.shared.data(from: theUrl)
+            print("---> data: \n \(String(data: data, encoding: .utf8) as AnyObject) \n")
+        } catch {
+            AppLogger.logPublic(error)
         }
         return
     }
-
+    
 }
