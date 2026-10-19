@@ -62,6 +62,8 @@ struct Networker {
     // lyrics
     let lyricsServer = URL(string: "https://lrclib.net/api/get")!
     
+    let lrclibid = "uffDOEor4luWEl3ltIARG5BFdaw29uImqIKBTIHVBYY"
+    
     // artists
     let itunesServer = URL(string: "https://itunes.apple.com/search")!
     
@@ -294,6 +296,7 @@ struct Networker {
             
             var request = URLRequest(url: url)
             request.httpMethod = "GET"
+            request.setValue(lrclibid, forHTTPHeaderField: "Lrclib-App-Id")
             
             do {
                 let (data, response) = try await URLSession.shared.data(for: request)
