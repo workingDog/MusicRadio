@@ -61,17 +61,17 @@ class PlayerManager {
         pause()
         station = nil
     }
-
+    
     func keepPlayInBackground() async {
         let session = AVAudioSession.sharedInstance()
         do {
             try session.setCategory(.playback, mode: .default)
-            try session.setActive(true)
+            try await session.activate(options: [])
         } catch {
             AppLogger.logPublic("AudioSession error", error)
         }
     }
- 
+
 }
 
 // To get the song title
