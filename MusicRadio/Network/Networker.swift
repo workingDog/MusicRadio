@@ -207,7 +207,7 @@ struct Networker {
     // Fetch the artist artwork from iTunes from the local station country,
     // will also try the US if need be
     func fetchArtist(for queryText: String, countryCode: String, tries: Int = 0) async throws -> Artist? {
-        
+
         var components = URLComponents(
             url: itunesServer,
             resolvingAgainstBaseURL: false
@@ -232,6 +232,8 @@ struct Networker {
             // Fetch data from the local iTunes
             let (data, response) = try await URLSession.shared.data(for: request)
             
+   //         print("---> fetchArtist data: \(String(data: data, encoding: .utf8))")
+ 
             try validate(response)
             
             let arts = try decoder.decode(iTunesInfo.self, from: data)
@@ -270,6 +272,10 @@ struct Networker {
             }
         } catch {
             AppLogger.logPublic(error)
+            // could have an error due to countrycode, so try us
+            if tries < 1 {
+                return try await fetchArtist(for: queryText, countryCode: "us", tries: tries + 1)
+            }
         }
         return nil
     }
@@ -278,6 +284,9 @@ struct Networker {
     // https://lrclib.net/docs
     
     func findLyrics(_ artist: Artist) async throws -> String {
+        
+//        print("---> findLyrics \(artist.artistName)  \(artist.trackName)")
+
         if let name = artist.artistName, let track = artist.trackName {
             
             var components = URLComponents(
