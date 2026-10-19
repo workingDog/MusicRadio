@@ -52,13 +52,13 @@ struct StationView: View {
                             .padding(5)
                     }.buttonStyle(.borderless)
                     
-                    .confirmationDialog("Remove from favourites", isPresented: $showConfirm) {
-                        Button("Yes") {
+                        .confirmationDialog("Remove from favourites", isPresented: $showConfirm) {
+                            Button("Yes") {
                                 station.isFavourite = false
                                 SwiftDataHelper.findAndRemove(station: station, in: modelContext)
-                        }
-                        Button("No", role: .cancel) { }
-                    } message: { Text("Really remove this station from favourites?") }
+                            }
+                            Button("No", role: .cancel) { }
+                        } message: { Text("Really remove this station from favourites?") }
                     
                     Spacer()
                     
@@ -77,8 +77,8 @@ struct StationView: View {
                     }.buttonStyle(.borderless)
                 }
                 
-        //        RatingStarsView(station, maxRating)
-
+                //        RatingStarsView(station, maxRating)
+                
                 LocationClock(station: station)
                 
                 Group {
@@ -113,7 +113,7 @@ struct StationView: View {
             }
         }
         .background(colorsModel.stationBackColor)
-        .glassEffect(.regular.tint(colorsModel.stationBackColor).interactive(), in: RoundedRectangle(cornerRadius: 12)) // for iOS26+
+        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 12))
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .fullScreenCover(isPresented: $showWeb) {
             WebViewScreen(showWeb: $showWeb, station: station)
@@ -122,7 +122,7 @@ struct StationView: View {
             logoIcon = await networker.faviconImage(for: station)
         }
     }
-
+    
     func playClick() {
         var id: SystemSoundID = 0
         if let url = Bundle.main.url(forResource: "click3", withExtension: "wav") {
@@ -136,7 +136,7 @@ struct StationView: View {
 struct WebViewScreen: View {
     @Binding var showWeb: Bool
     let station: RadioStation
-    
+
     var body: some View {
         VStack {
             Button("Done") {
@@ -149,18 +149,20 @@ struct WebViewScreen: View {
             Divider()
             
             if let url = URL(string: station.homepage),
-               UIApplication.shared.canOpenURL(url) {
-                if #available(iOS 26.0, *) {
-                    WebView(url: url)
-                } else {
-                    OldWebView(urlString: station.homepage)
-                }
+               ["http", "https"].contains(url.scheme?.lowercased() ?? "") {
+//                if #available(iOS 26.0, *) {
+//                    HomepageView(url: url)
+//                } else {
+//                    OldWebView(urlString: station.homepage)
+//                }
+                HomepageView(url: url)
             } else {
-                Text("No homepage available").font(Font.largeTitle.bold())
-                Spacer()
+                ContentUnavailableView("No Homepage", systemImage: "globe", description: Text("No homepage is available for this station."))
             }
+            
         }
     }
+    
 }
 
 struct OldWebView: UIViewRepresentable {
@@ -187,4 +189,38 @@ struct OldWebView: UIViewRepresentable {
     func makeCoordinator() -> Coordinator { Coordinator() }
     
     final class Coordinator: NSObject, WKNavigationDelegate { }
+}
+
+struct HomepageView: View {
+    let url: URL
+    
+    @State private var page = WebPage()
+    @State private var loadFailed = false
+
+    var body: some View {
+        Group {
+            if loadFailed {
+                ContentUnavailableView("Webpage Unavailable", systemImage: "network.slash", description: Text("This website could not be loaded."))
+            } else {
+                WebView(page)
+                    .overlay {
+                        if page.isLoading {
+                            ProgressView("Loading website…")
+                                .padding()
+                                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
+                        }
+                    }
+            }
+        }
+        .task {
+            do {
+                for try await _ in page.navigations {}
+            } catch {
+                loadFailed = true
+            }
+        }
+        .onAppear {
+            page.load(url)
+        }
+    }
 }
