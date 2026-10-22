@@ -7,6 +7,7 @@
 import Foundation
 import UIKit
 import SwiftUI
+import LRCLIBKit
 
 
 extension String {
@@ -48,7 +49,7 @@ extension EnvironmentValues {
     }
 }
 
-enum LRCLIBError: Error {
+enum ServerError: Error {
     case invalidURL
     case notFound
     case invalidResponse
@@ -59,10 +60,9 @@ struct Networker {
     // radio stations
     let radioServer = URL(string: "https://de1.api.radio-browser.info/json")!
     
-    // lyrics
-    let lyricsServer = URL(string: "https://lrclib.net/api/get")!
-    
-    let lrclibid = "uffDOEor4luWEl3ltIARG5BFdaw29uImqIKBTIHVBYY"
+    // lyrics client
+    let lyricsClient: LrcClient
+    let lrclibID = "uffDOEor4luWEl3ltIARG5BFdaw29uImqIKBTIHVBYY"
     
     // artists
     let itunesServer = URL(string: "https://itunes.apple.com/search")!
@@ -71,6 +71,7 @@ struct Networker {
     
     init() {
         decoder.dateDecodingStrategy = .iso8601
+        lyricsClient = LrcClient(lrclibID: lrclibID)
     }
     
     static func defaultTVImg() -> UIImage {
@@ -87,7 +88,7 @@ struct Networker {
     
     private func fetchJSON<T: Decodable>(_ components: URLComponents) async throws -> T {
         guard let url = components.url else {
-            throw LRCLIBError.invalidURL
+            throw ServerError.invalidURL
         }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -222,7 +223,7 @@ struct Networker {
         ]
         
         guard let url = components.url else {
-            throw LRCLIBError.invalidURL
+            throw ServerError.invalidURL
         }
         
         var request = URLRequest(url: url)
@@ -284,38 +285,11 @@ struct Networker {
     // https://lrclib.net/docs
     
     func findLyrics(_ artist: Artist) async throws -> String {
-        
-//        print("---> findLyrics \(artist.artistName)  \(artist.trackName)")
-
+        //        print("---> findLyrics \(artist.artistName)  \(artist.trackName)")
         if let name = artist.artistName, let track = artist.trackName {
-            
-            var components = URLComponents(
-                url: lyricsServer,
-                resolvingAgainstBaseURL: false
-            )!
-            
-            components.queryItems = [
-                URLQueryItem(name: "artist_name", value: name),
-                URLQueryItem(name: "track_name", value: track)
-            ]
-            
-            guard let url = components.url else {
-                throw LRCLIBError.invalidURL
-            }
-            
-            var request = URLRequest(url: url)
-            request.httpMethod = "GET"
-            request.setValue(lrclibid, forHTTPHeaderField: "Lrclib-App-Id")
-            
-            do {
-                let (data, response) = try await URLSession.shared.data(for: request)
-                try validate(response)
-                let lyrics = try JSONDecoder().decode(Lyrics.self, from: data)
-                if let txt = lyrics.plainLyrics {
-                    return txt
-                }
-            } catch {
-                AppLogger.logPublic(error)
+            let lyrics = try await lyricsClient.get(trackName: track, artistName: name)
+            if let txt = lyrics.plainLyrics {
+                return txt
             }
         }
         return "no lyrics"

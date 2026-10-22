@@ -1,0 +1,15 @@
+{
+  "originHash" : "0e5d59691c61ab9f147240dff3074f0c7f7f72921e30106437aebb334d070353",
+  "pins" : [
+    {
+      "identity" : "lrclibkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/workingDog/LRCLIBKit",
+      "state" : {
+        "branch" : "main",
+        "revision" : "2d8a073d73a32610bbf5f38fb1d42349c329cc61"
+      }
+    }
+  ],
+  "version" : 3
+}

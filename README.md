@@ -58,3 +58,8 @@ is inferred based on the various tags the station wants to be known for.
 
 -    [LRCLIB](https://lrclib.net/) 
 
+
+### Dependencies
+
+-    [LRCLIBKit](https://github.com/workingDog/LRCLIBKit) 
+
