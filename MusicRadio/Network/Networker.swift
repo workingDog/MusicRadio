@@ -46,7 +46,7 @@ extension EnvironmentValues {
     }
 }
 
-enum ServerError: Error {
+enum ServerHostError: Error {
     case invalidURL
     case invalidResponse
     case httpError(statusCode: Int, reason: String)
@@ -93,7 +93,7 @@ struct Networker {
 
     private func fetchJSON<T: Decodable>(_ components: URLComponents) async throws -> T {
         guard let url = components.url else {
-            throw ServerError.invalidURL
+            throw ServerHostError.invalidURL
         }
         let data = try await fetch(url)
         return try decoder.decode(T.self, from: data)
@@ -113,7 +113,7 @@ struct Networker {
     
     private func validate(_ response: URLResponse) throws {
         guard let response = response as? HTTPURLResponse else {
-            throw ServerError.invalidResponse
+            throw ServerHostError.invalidResponse
         }
         guard (200..<300).contains(response.statusCode) else {
             let reason = switch response.statusCode {
@@ -126,7 +126,7 @@ struct Networker {
                 case 500..<600: "Server error"
                 default: "Unexpected HTTP status"
             }
-            throw ServerError.httpError(statusCode: response.statusCode, reason: reason)
+            throw ServerHostError.httpError(statusCode: response.statusCode, reason: reason)
         }
     }
     
@@ -243,6 +243,8 @@ struct Networker {
     }
     
     private func searchArtist(_ queryText: String, countryCode: String) async throws -> Artist? {
+        guard !queryText.isEmpty else { return nil }
+
         var components = URLComponents(url: itunesServer, resolvingAgainstBaseURL: false)!
         components.queryItems = [
             URLQueryItem(name: "media", value: "music"),
@@ -252,9 +254,9 @@ struct Networker {
             URLQueryItem(name: "country", value: countryCode.lowercased())
         ]
         guard let url = components.url else {
-            throw ServerError.invalidURL
+            throw ServerHostError.invalidURL
         }
-        
+
         let data = try await fetch(url)
         
         let response = try decoder.decode(iTunesInfo.self, from: data)
@@ -275,7 +277,7 @@ struct Networker {
         guard let artwork = artist.artworkUrl100 else { return artist }
         let artworkURLString = artwork.replacingOccurrences(of: "100x100", with: "600x600")
         guard let artworkURL = URL(string: artworkURLString) else {
-            throw ServerError.invalidURL
+            throw ServerHostError.invalidURL
         }
         var artist = artist
         
@@ -290,18 +292,19 @@ struct Networker {
     // see: https://lrclib.net/
     // https://lrclib.net/docs
     func findLyrics(_ artist: Artist) async throws -> String {
-        //        print("---> findLyrics \(artist.artistName)  \(artist.trackName)")
-        if let name = artist.artistName, let track = artist.trackName {
-            
-            let lyrics = try await lyricsClient.getLyrics(trackName: track, artistName: name)
-            
-            if let txt = lyrics.plainLyrics {
-                return txt
-            }
+        guard let name = artist.artistName, let track = artist.trackName else {
+            return "no lyrics"
         }
-        return "no lyrics"
+        do {
+            let lyrics = try await lyricsClient.getLyrics(trackName: track, artistName: name)
+            return lyrics.plainLyrics ?? "no lyrics"
+        } catch let LRCLIBKit.ServerError.apiError(error, retryAfter: _) where error.statusCode == 404 {
+            return "no lyrics"
+        } catch LRCLIBKit.ServerError.httpErrorCode(404) {
+            return "no lyrics"
+        }
     }
-    
+
     private func fetchFavicon(for station: RadioStation) async {
         if station.favicon == "null" || station.favicon.isEmpty { return }
         guard let faviconURL = URL(string: station.favicon) else { return }
