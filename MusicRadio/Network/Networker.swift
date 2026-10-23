@@ -293,7 +293,7 @@ struct Networker {
         //        print("---> findLyrics \(artist.artistName)  \(artist.trackName)")
         if let name = artist.artistName, let track = artist.trackName {
             
-            let lyrics = try await lyricsClient.get(trackName: track, artistName: name)
+            let lyrics = try await lyricsClient.getLyrics(trackName: track, artistName: name)
             
             if let txt = lyrics.plainLyrics {
                 return txt
