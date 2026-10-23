@@ -11,11 +11,9 @@ import LRCLIBKit
 
 
 extension String {
-    
     func trim() -> String {
         trimmingCharacters(in: .whitespacesAndNewlines)
     }
-    
 }
 
 
@@ -26,14 +24,13 @@ struct StationsTags: Codable {
 }
 
 enum APIError: Swift.Error, LocalizedError {
-    
     case unknown, apiError(reason: String), parserError(reason: String), networkError(from: URLError)
     
     var errorDescription: String? {
         switch self {
-        case .unknown: return "Unknown error"
-        case .apiError(let reason), .parserError(let reason): return reason
-        case .networkError(let from): return from.localizedDescription
+            case .unknown: return "Unknown error"
+            case .apiError(let reason), .parserError(let reason): return reason
+            case .networkError(let from): return from.localizedDescription
         }
     }
 }
@@ -51,8 +48,8 @@ extension EnvironmentValues {
 
 enum ServerError: Error {
     case invalidURL
-    case notFound
     case invalidResponse
+    case httpError(statusCode: Int, reason: String)
 }
 
 struct Networker {
@@ -71,7 +68,15 @@ struct Networker {
     
     init() {
         decoder.dateDecodingStrategy = .iso8601
-        lyricsClient = LrcClient(lrclibID: lrclibID)
+        
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.timeoutIntervalForRequest = 8
+        configuration.timeoutIntervalForResource = 12
+        configuration.waitsForConnectivity = false
+        
+        let session = URLSession(configuration: configuration)
+        
+        lyricsClient = LrcClient(lrclibID: lrclibID, session: session)
     }
     
     static func defaultTVImg() -> UIImage {
@@ -85,11 +90,16 @@ struct Networker {
     func defaultImg(for station: RadioStation) -> UIImage {
         station.isTV ? Networker.defaultTVImg() : Networker.defaultRadioImg()
     }
-    
+
     private func fetchJSON<T: Decodable>(_ components: URLComponents) async throws -> T {
         guard let url = components.url else {
             throw ServerError.invalidURL
         }
+        let data = try await fetch(url)
+        return try decoder.decode(T.self, from: data)
+    }
+    
+    private func fetch(_ url: URL) async throws -> Data {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue("MusicRadio/1.0", forHTTPHeaderField: "User-Agent")
@@ -97,22 +107,26 @@ struct Networker {
         
         let (data, response) = try await URLSession.shared.data(for: request)
         try validate(response)
-        return try decoder.decode(T.self, from: data)
+        
+        return data
     }
     
-    func validate(_ response: URLResponse) throws {
-        guard let http = response as? HTTPURLResponse else { return }
-        
-        switch http.statusCode {
-            case 200..<300: return
-            case 401: throw APIError.apiError(reason: "Unauthorized")
-            case 402: throw APIError.apiError(reason: "Quota exceeded")
-            case 403: throw APIError.apiError(reason: "Resource forbidden")
-            case 404: throw APIError.apiError(reason: "Resource not found")
-            case 429: throw APIError.apiError(reason: "Requesting too quickly")
-            case 405..<500: throw APIError.apiError(reason: "Client error")
-            case 500..<600: throw APIError.apiError(reason: "Server error")
-            default: throw APIError.networkError(from: URLError(.badServerResponse))
+    private func validate(_ response: URLResponse) throws {
+        guard let response = response as? HTTPURLResponse else {
+            throw ServerError.invalidResponse
+        }
+        guard (200..<300).contains(response.statusCode) else {
+            let reason = switch response.statusCode {
+                case 401: "Unauthorized"
+                case 402: "Quota exceeded"
+                case 403: "Resource forbidden"
+                case 404: "Resource not found"
+                case 429: "Requesting too quickly"
+                case 400..<500: "Client error"
+                case 500..<600: "Server error"
+                default: "Unexpected HTTP status"
+            }
+            throw ServerError.httpError(statusCode: response.statusCode, reason: reason)
         }
     }
     
@@ -121,7 +135,9 @@ struct Networker {
             url: radioServer.appending(path: "stations/bycountrycodeexact/\(code)"),
             resolvingAgainstBaseURL: false
         )!
+        
         let stations: [RadioStation] = try await fetchJSON(components)
+        
         convertAllToHttps(stations)
         return stations
     }
@@ -131,7 +147,9 @@ struct Networker {
             url: radioServer.appending(path: "countries"),
             resolvingAgainstBaseURL: false
         )!
+        
         let allCountries: [Country] = try await fetchJSON(components)
+        
         // normalize and de-duplicate
         let grouped = Dictionary(
             grouping: allCountries.map { country -> Country in
@@ -146,7 +164,9 @@ struct Networker {
         )
         
         return grouped.values
-            .compactMap { $0.max(by: { $0.stationcount ?? 0 < $1.stationcount ?? 0 }) }
+            .compactMap { countries in
+                countries.max { ($0.stationcount ?? 0) < ($1.stationcount ?? 0) }
+            }
             .sorted { $0.name < $1.name }
     }
     
@@ -155,8 +175,10 @@ struct Networker {
             url: radioServer.appending(path: "stations/topvote"),
             resolvingAgainstBaseURL: false
         )!
-        components.queryItems = [ URLQueryItem(name: "limit", value: "1") ]
+        components.queryItems = [URLQueryItem(name: "limit", value: "\(limit)")]
+        
         let stations: [RadioStation] = try await fetchJSON(components)
+        
         convertAllToHttps(stations)
         return stations
     }
@@ -172,48 +194,56 @@ struct Networker {
             URLQueryItem(name: "reverse", value: "true"),
             URLQueryItem(name: "limit", value: "\(limit)")
         ]
+        
         let stations: [RadioStation] = try await fetchJSON(components)
+        
         convertAllToHttps(stations)
         return stations
     }
     
     func findStations(_ station: String) async throws -> [RadioStation] {
-        let components = URLComponents(
-            url: radioServer.appending(path: "stations/byname/\(station)"),
+        var components = URLComponents(
+            url: radioServer.appending(path: "stations/search"),
             resolvingAgainstBaseURL: false
         )!
+        components.queryItems = [
+            URLQueryItem(name: "name", value: station)
+        ]
+        
         let stations: [RadioStation] = try await fetchJSON(components)
+        
         convertAllToHttps(stations)
         return stations
     }
     
+    private func httpsURL(_ string: String) -> String {
+        guard string.hasPrefix("http://") else { return string }
+        return "https://" + string.dropFirst("http://".count)
+    }
+    
     // some url are http must make them all https
-    func convertAllToHttps(_ stations: [RadioStation]) {
+    private func convertAllToHttps(_ stations: [RadioStation]) {
         for station in stations {
-            if station.url.starts(with: "http://") {
-                station.url = station.url.replacingOccurrences(of: "http://", with: "https://")
-            }
-            if station.homepage.starts(with: "http://") {
-                station.homepage = station.homepage.replacingOccurrences(of: "http://", with: "https://")
-            }
-            if station.favicon.starts(with: "http://") {
-                station.favicon = station.favicon.replacingOccurrences(of: "http://", with: "https://")
-            }
-            if station.urlResolved.starts(with: "http://") {
-                station.urlResolved = station.urlResolved.replacingOccurrences(of: "http://", with: "https://")
-            }
+            station.url = httpsURL(station.url)
+            station.homepage = httpsURL(station.homepage)
+            station.favicon = httpsURL(station.favicon)
+            station.urlResolved = httpsURL(station.urlResolved)
         }
     }
     
-    // Fetch the artist artwork from iTunes from the local station country,
-    // will also try the US if need be
-    func fetchArtist(for queryText: String, countryCode: String, tries: Int = 0) async throws -> Artist? {
-
-        var components = URLComponents(
-            url: itunesServer,
-            resolvingAgainstBaseURL: false
-        )!
-        
+    // Fetch the artist artwork from iTunes from the US,
+    // will also try the local station country if need be
+    func fetchArtist(for queryText: String, countryCode: String) async throws -> Artist? {
+        if let artist = try await searchArtist(queryText, countryCode: "us") {
+            return try await fetchArtwork(for: artist)
+        }
+        guard countryCode.lowercased() != "us" else { return nil }
+        guard let artist = try await searchArtist(queryText, countryCode: countryCode) else { return nil }
+        return try await fetchArtwork(for: artist)
+    }
+    
+    private func searchArtist(_ queryText: String, countryCode: String) async throws -> Artist? {
+        var components = URLComponents(url: itunesServer, resolvingAgainstBaseURL: false)!
         components.queryItems = [
             URLQueryItem(name: "media", value: "music"),
             URLQueryItem(name: "entity", value: "song"),
@@ -221,73 +251,50 @@ struct Networker {
             URLQueryItem(name: "term", value: queryText),
             URLQueryItem(name: "country", value: countryCode.lowercased())
         ]
-        
         guard let url = components.url else {
             throw ServerError.invalidURL
         }
         
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
+        let data = try await fetch(url)
         
-        do {
-            // Fetch data from the local iTunes
-            let (data, response) = try await URLSession.shared.data(for: request)
-            
-   //         print("---> fetchArtist data: \(String(data: data, encoding: .utf8))")
- 
-            try validate(response)
-            
-            let arts = try decoder.decode(iTunesInfo.self, from: data)
-            
-            if var artist = arts.results?.first {
-                
-                // make sure all are https
-                artist.artistViewURL = artist.artistViewURL.replacingOccurrences(of: "http://", with: "https://")
-                artist.collectionViewURL = artist.collectionViewURL.replacingOccurrences(of: "http://", with: "https://")
-                artist.trackViewURL = artist.trackViewURL.replacingOccurrences(of: "http://", with: "https://")
-                artist.previewURL = artist.previewURL?.replacingOccurrences(of: "http://", with: "https://")
-                artist.artworkUrl100 = artist.artworkUrl100?.replacingOccurrences(of: "http://", with: "https://")
-                artist.artworkUrl30 = artist.artworkUrl30?.replacingOccurrences(of: "http://", with: "https://")
-                artist.artworkUrl60 = artist.artworkUrl60?.replacingOccurrences(of: "http://", with: "https://")
-                
-                if let artwork = artist.artworkUrl100 {
-                    // Replace "100x100" with "600x600" for high-resolution image
-                    let artworkUrlString: String = artwork.replacingOccurrences(of: "100x100", with: "600x600")
-                    
-                    guard let artworkUrl = URL(string: artworkUrlString) else { return nil }
-                    
-                    // Fetch the artwork image data
-                    let (imageData, _) = try await URLSession.shared.data(from: artworkUrl)
-                    
-                    try validate(response)
-                    
-                    // add the imageData to the artist
-                    artist.imageData = UIImage(data: imageData)
-                    return artist
-                }
-            } else {
-                // try to fetch the info from the US, when no local results
-                if tries < 1 {
-                    return try await fetchArtist(for: queryText, countryCode: "us", tries: tries + 1)
-                }
-            }
-        } catch {
-            AppLogger.logPublic(error)
-            // could have an error due to countrycode, so try us
-            if tries < 1 {
-                return try await fetchArtist(for: queryText, countryCode: "us", tries: tries + 1)
-            }
+        let response = try decoder.decode(iTunesInfo.self, from: data)
+        
+        guard var artist = response.results?.first else { return nil }
+        artist.artistViewURL = httpsURL(artist.artistViewURL)
+        artist.collectionViewURL = httpsURL(artist.collectionViewURL)
+        artist.trackViewURL = httpsURL(artist.trackViewURL)
+        artist.previewURL = artist.previewURL.map(httpsURL)
+        artist.artworkUrl100 = artist.artworkUrl100.map(httpsURL)
+        artist.artworkUrl30 = artist.artworkUrl30.map(httpsURL)
+        artist.artworkUrl60 = artist.artworkUrl60.map(httpsURL)
+        
+        return artist
+    }
+    
+    private func fetchArtwork(for artist: Artist) async throws -> Artist? {
+        guard let artwork = artist.artworkUrl100 else { return artist }
+        let artworkURLString = artwork.replacingOccurrences(of: "100x100", with: "600x600")
+        guard let artworkURL = URL(string: artworkURLString) else {
+            throw ServerError.invalidURL
         }
-        return nil
+        var artist = artist
+        
+        let (data, response) = try await URLSession.shared.data(from: artworkURL)
+        
+        try validate(response)
+        artist.imageData = UIImage(data: data)
+        
+        return artist
     }
     
     // see: https://lrclib.net/
     // https://lrclib.net/docs
-    
     func findLyrics(_ artist: Artist) async throws -> String {
         //        print("---> findLyrics \(artist.artistName)  \(artist.trackName)")
         if let name = artist.artistName, let track = artist.trackName {
+            
             let lyrics = try await lyricsClient.get(trackName: track, artistName: name)
+            
             if let txt = lyrics.plainLyrics {
                 return txt
             }
@@ -308,25 +315,16 @@ struct Networker {
     }
     
     func faviconImage(for station: RadioStation) async -> UIImage {
-        // If no data cached, fetch it
-        if station.faviconData == nil {
-            await fetchFavicon(for: station)
-            if let data = station.faviconData, let img = UIImage(data: data) {
-                return img
-            } else {
-                let fallback = defaultImg(for: station)
-                station.faviconData = fallback.pngData()
-                return fallback
-            }
+        if let data = station.faviconData, let image = UIImage(data: data) {
+            return image
         }
-        // If data exists, try to decode it
-        if let data = station.faviconData, let img = UIImage(data: data) {
-            return img
-        } else {
-            let fallback = defaultImg(for: station)
-            station.faviconData = fallback.pngData()
-            return fallback
+        await fetchFavicon(for: station)
+        if let data = station.faviconData, let image = UIImage(data: data) {
+            return image
         }
+        let fallback = defaultImg(for: station)
+        station.faviconData = fallback.pngData()
+        return fallback
     }
     
     
