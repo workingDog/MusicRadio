@@ -19,6 +19,7 @@ class ColorsModel {
     var backColor = Color.mint.opacity(0.4)
     var stationBackColor = Color.white.opacity(0.4)
     var countryBackColor = Color.teal.opacity(0.4)
+    var toolsColor = Color.accentColor
     
     // keys for UserDefaults
     static let keyFavouriteColor: String = "favouriteColor"
@@ -28,6 +29,7 @@ class ColorsModel {
     static let keyBackColor: String = "backColor"
     static let keyStationBackColor: String = "stationBackColor"
     static let keyCountryBackColor: String = "countryBackColor"
+    static let keyToolsColor: String = "toolsColor"
     
     // convenience color gradient
     public var gradient: LinearGradient {
@@ -43,6 +45,7 @@ class ColorsModel {
         saveColor(backColor, key: ColorsModel.keyBackColor)
         saveColor(stationBackColor, key: ColorsModel.keyStationBackColor)
         saveColor(countryBackColor, key: ColorsModel.keyCountryBackColor)
+        saveColor(toolsColor, key: ColorsModel.keyToolsColor)
     }
     
     // retrieve settings from UserDefaults
@@ -55,6 +58,7 @@ class ColorsModel {
         let back = retrieveColorFor(ColorsModel.keyBackColor)
         let sback = retrieveColorFor(ColorsModel.keyStationBackColor)
         let cback = retrieveColorFor(ColorsModel.keyCountryBackColor)
+        let tcol = retrieveColorFor(ColorsModel.keyToolsColor)
         
         self.favouriteColor = (fav != nil) ? fav! : Color.teal
         self.netColor = (net != nil) ? net! : Color.blue
@@ -63,6 +67,7 @@ class ColorsModel {
         self.backColor = (back != nil) ? back! : Color.mint.opacity(0.4)
         self.stationBackColor = (sback != nil) ? sback! : Color.white.opacity(0.4)
         self.countryBackColor = (cback != nil) ? cback! : Color.teal.opacity(0.4)
+        self.toolsColor = (tcol != nil) ? tcol! : Color.accentColor
     }
     
     func saveColor(_ color: Color, key: String) {

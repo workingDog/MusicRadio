@@ -244,6 +244,8 @@ struct Networker {
     
     private func searchArtist(_ queryText: String, countryCode: String) async throws -> Artist? {
         guard !queryText.isEmpty else { return nil }
+        
+        print("----> searchArtist: \(queryText)   country: \(countryCode)")
 
         var components = URLComponents(url: itunesServer, resolvingAgainstBaseURL: false)!
         components.queryItems = [

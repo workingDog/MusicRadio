@@ -110,6 +110,19 @@ struct SettingsView: View {
                             Spacer()
                         }
                         
+                        HStack {
+                            Text("Tools back ")
+                            Image(systemName: "pad.header")
+                                .font(.title)
+                                .foregroundStyle(colorsModel.toolsColor)
+                                .overlay {
+                                    ColorPicker("", selection: $colorsModel.toolsColor)
+                                        .labelsHidden()
+                                        .colorMultiply(.clear)
+                                }
+                            Spacer()
+                        }
+                        
 //                        HStack {
 //                            Text("Star Color  ")
 //                            Image(systemName: "star.fill")
