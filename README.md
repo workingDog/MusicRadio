@@ -8,9 +8,9 @@ This is yet another radio stations player based on the [RadioBrowser](https://ww
 
 
 <p float="left">
-  <img src="ScreenShots/picture1.png"  width="200"  height="400" />
-  <img src="ScreenShots/picture2a.png"  width="200"  height="400" /> 
-  <img src="ScreenShots/picture3.png"  width="200"  height="400" /> 
+  <img src="ScreenShots/pict3.png"  width="200"  height="400" />
+  <img src="ScreenShots/pict2.png"  width="200"  height="400" /> 
+  <img src="ScreenShots/pict1.png"  width="200"  height="400" /> 
 </p>
 
 
@@ -24,7 +24,7 @@ make the station **Favourite**. That radio station will appear in the **Favourit
 
 Similarly, when you search for particular **Stations**.
 
-Tap on the **globe** icon of a radio station to bring its internet home page, if it has one.
+Tap on the **home** icon of a radio station to bring its internet home page, if it has one.
 
 Tap on the **gear** icon to setup various settings. 
 
