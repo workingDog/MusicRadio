@@ -298,10 +298,9 @@ struct Networker {
     
     
     // for testing, to be removed
-    func getTestLyrics(_ id: String) async throws -> LyricsRecord? {
+    func getTestLyrics(_ id: Int64) async throws -> LyricsRecord? {
         do {
-            return try await lyricsClient.getLyrics(id: 36497565)
-         //   return try await lyricsClient.getLyrics(trackName: track, artistName: name)
+            return try await lyricsClient.getLyrics(id: id)
         } catch let LRCLIBKit.ServerError.apiError(error, retryAfter: _) where error.statusCode == 404 {
             return nil
         } catch LRCLIBKit.ServerError.httpErrorCode(404) {
@@ -322,7 +321,7 @@ struct Networker {
         }
     }
     
-    func getLyricsfile(lyricsfile: String?) -> LyricsFile? {
+    func decodeLyricsfile(lyricsfile: String?) -> LyricsFile? {
         guard let lyricsfile else { return nil }
         do {
             return try YAMLdecoder.decode(LyricsFile.self, from: lyricsfile)

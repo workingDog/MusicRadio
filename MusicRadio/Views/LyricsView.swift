@@ -38,10 +38,10 @@ struct LyricsView: View {
                     isBusy = true
                     lyricsRecord = try await networker.findLyrics(artist!)
                     
-                 //   lyricsRecord = try await networker.getTestLyrics("")
+               //     lyricsRecord = try await networker.getTestLyrics(36497565)
                        
                     if let rec = lyricsRecord, let lyricsf = rec.lyricsfile {
-                        lyricsfile = networker.getLyricsfile(lyricsfile: lyricsf)
+                        lyricsfile = networker.decodeLyricsfile(lyricsfile: lyricsf)
                     }
                     isBusy = false
                 } catch {
