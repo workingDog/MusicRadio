@@ -8,48 +8,6 @@ import SwiftUI
 import UIKit
 import LRCLIBKit
 
-//
-//struct LyricsView: View {
-//    @Environment(\.networker) private var networker
-//    let artist: Artist?
-//    
-//    @State private var isBusy: Bool = false
-//    @State private var lyrics: String = "no lyrics"
-//    
-//    var body: some View {
-//        VStack {
-//            if isBusy {
-//                HStack {
-//                    Spacer()
-//                    ProgressView()
-//                    Spacer()
-//                }
-//                Spacer()
-//            } else {
-//                Text(lyrics)
-//                    .font(.title2)
-//                    .padding(15)
-//            }
-//        }
-//        .task {
-//            if artist != nil {
-//                do {
-//                    isBusy = true
-//                    if let lyricsRecord = try await networker.findLyrics(artist!),
-//                        let plainLyrics = lyricsRecord.plainLyrics {
-//                        lyrics = plainLyrics
-//                    } else {
-//                        lyrics = "no lyrics"
-//                    }
-//                    isBusy = false
-//                } catch {
-//                    AppLogger.logPublic(error)
-//                }
-//            }
-//        }
-//    }
-//}
-
 
 struct LyricsView: View {
     @Environment(\.networker) private var networker
@@ -71,13 +29,7 @@ struct LyricsView: View {
                 }
                 Spacer()
             } else {
-                if let lyricsfile {
-                    SyncedLyricsView(lyrics: lyricsfile) {
-                        Int(playerManager.currentTime * 1000)
-                    }
-                } else {
-                    Text("no lyrics").font(.title2).padding(15)
-                }
+                lyricsContent
             }
         }
         .task {
@@ -89,7 +41,7 @@ struct LyricsView: View {
                  //   lyricsRecord = try await networker.getTestLyrics("")
                        
                     if let rec = lyricsRecord, let lyricsf = rec.lyricsfile {
-                        lyricsfile = networker.getLyricsfile(lyricsfile: lyricsf) 
+                        lyricsfile = networker.getLyricsfile(lyricsfile: lyricsf)
                     }
                     isBusy = false
                 } catch {
@@ -98,6 +50,21 @@ struct LyricsView: View {
             }
         }
     }
+    
+    @ViewBuilder
+    var lyricsContent: some View {
+        if lyricsRecord?.hasWordSync == true,
+           let lyricsfile {
+            SyncedLyricsView(lyrics: lyricsfile) {
+                Int(playerManager.currentTime * 1000)
+            }
+        } else if let lyrics = lyricsRecord?.plainLyrics {
+            Text(lyrics)
+                .font(.title2)
+                .padding(15)
+        }
+    }
+
 }
 
 struct LyricsSyncView: View {
