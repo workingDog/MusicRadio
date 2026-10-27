@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C785E3DD308F3CF9003E6A64 /* Yams in Frameworks */ = {isa = PBXBuildFile; productRef = C785E3DC308F3CF9003E6A64 /* Yams */; };
 		C797BDEF2EC7FE6A007F738D /* click1.wav in Resources */ = {isa = PBXBuildFile; fileRef = C797BDEE2EC7FE6A007F738D /* click1.wav */; };
 		C797BDF12EC7FF23007F738D /* click2.wav in Resources */ = {isa = PBXBuildFile; fileRef = C797BDF02EC7FF23007F738D /* click2.wav */; };
 		C797BDF32EC7FFA2007F738D /* click3.wav in Resources */ = {isa = PBXBuildFile; fileRef = C797BDF22EC7FFA2007F738D /* click3.wav */; };
@@ -57,6 +58,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C7A60157308B89BB00D12F6D /* LRCLIBKit in Frameworks */,
+				C785E3DD308F3CF9003E6A64 /* Yams in Frameworks */,
 				C7E3A3CD308B99EF00388868 /* LRCLIBKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -118,6 +120,7 @@
 			packageProductDependencies = (
 				C7A60156308B89BB00D12F6D /* LRCLIBKit */,
 				C7E3A3CC308B99EF00388868 /* LRCLIBKit */,
+				C785E3DC308F3CF9003E6A64 /* Yams */,
 			);
 			productName = MusicRadio;
 			productReference = C79B44CA2EB6EFAE00FCC9B9 /* MusicRadio.app */;
@@ -149,6 +152,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				C7E3A3CB308B99EF00388868 /* XCRemoteSwiftPackageReference "LRCLIBKit" */,
+				C785E3DB308F3CF9003E6A64 /* XCRemoteSwiftPackageReference "Yams" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C79B44CB2EB6EFAE00FCC9B9 /* Products */;
@@ -440,17 +444,30 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		C785E3DB308F3CF9003E6A64 /* XCRemoteSwiftPackageReference "Yams" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jpsim/Yams";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.2.2;
+			};
+		};
 		C7E3A3CB308B99EF00388868 /* XCRemoteSwiftPackageReference "LRCLIBKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/workingDog/LRCLIBKit";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
+				branch = main;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		C785E3DC308F3CF9003E6A64 /* Yams */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C785E3DB308F3CF9003E6A64 /* XCRemoteSwiftPackageReference "Yams" */;
+			productName = Yams;
+		};
 		C7A60156308B89BB00D12F6D /* LRCLIBKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = LRCLIBKit;

@@ -8,6 +8,7 @@ import Foundation
 import UIKit
 import SwiftUI
 import LRCLIBKit
+import Yams
 
 
 extension String {
@@ -60,6 +61,7 @@ struct Networker {
     // lyrics client
     let lyricsClient: LrcClient
     let lrclibID = "uffDOEor4luWEl3ltIARG5BFdaw29uImqIKBTIHVBYY"
+    let YAMLdecoder = YAMLDecoder()
     
     // artists
     let itunesServer = URL(string: "https://itunes.apple.com/search")!
@@ -293,18 +295,41 @@ struct Networker {
     
     // see: https://lrclib.net/
     // https://lrclib.net/docs
-    func findLyrics(_ artist: Artist) async throws -> String {
+    
+    
+    // for testing, to be removed
+    func getTestLyrics(_ id: String) async throws -> LyricsRecord? {
+        do {
+            return try await lyricsClient.getLyrics(id: 36497565)
+         //   return try await lyricsClient.getLyrics(trackName: track, artistName: name)
+        } catch let LRCLIBKit.ServerError.apiError(error, retryAfter: _) where error.statusCode == 404 {
+            return nil
+        } catch LRCLIBKit.ServerError.httpErrorCode(404) {
+            return nil
+        }
+    }
+    
+    func findLyrics(_ artist: Artist) async throws -> LyricsRecord? {
         guard let name = artist.artistName, let track = artist.trackName else {
-            return "no lyrics"
+            return nil
         }
         do {
-            let lyrics = try await lyricsClient.getLyrics(trackName: track, artistName: name)
-            return lyrics.plainLyrics ?? "no lyrics"
+            return try await lyricsClient.getLyrics(trackName: track, artistName: name)
         } catch let LRCLIBKit.ServerError.apiError(error, retryAfter: _) where error.statusCode == 404 {
-            return "no lyrics"
+            return nil
         } catch LRCLIBKit.ServerError.httpErrorCode(404) {
-            return "no lyrics"
+            return nil
         }
+    }
+    
+    func getLyricsfile(lyricsfile: String?) -> LyricsFile? {
+        guard let lyricsfile else { return nil }
+        do {
+            return try YAMLdecoder.decode(LyricsFile.self, from: lyricsfile)
+        } catch  {
+            print("getLyricsfile error: \(error)")
+        }
+        return nil
     }
 
     private func fetchFavicon(for station: RadioStation) async {

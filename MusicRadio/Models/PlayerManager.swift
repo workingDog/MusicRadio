@@ -21,6 +21,11 @@ class PlayerManager {
     private var metadataOutput: AVPlayerItemMetadataOutput?
     var radio: RadioPlayer?
     
+    var currentTime: Double {
+        guard let player = radio?.player else { return 0 }
+        return player.currentTime().seconds
+    }
+    
     init() {
         Task {
             await keepPlayInBackground()

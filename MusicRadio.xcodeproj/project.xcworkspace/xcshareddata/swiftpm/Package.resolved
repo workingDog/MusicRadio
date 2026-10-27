@@ -1,13 +1,22 @@
 {
-  "originHash" : "0e5d59691c61ab9f147240dff3074f0c7f7f72921e30106437aebb334d070353",
+  "originHash" : "be3ad31073acb06cfbe733921cd1c36ee2e8334f3ba80fc5e171291f7737bc1e",
   "pins" : [
     {
       "identity" : "lrclibkit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/workingDog/LRCLIBKit",
       "state" : {
-        "revision" : "e267db2331de49b55a460da4f362bcef0dc6ba8b",
-        "version" : "1.0.1"
+        "branch" : "main",
+        "revision" : "f03c5149ace6318a98b4b75a5781410648cdaf67"
+      }
+    },
+    {
+      "identity" : "yams",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jpsim/Yams",
+      "state" : {
+        "revision" : "a27b21e0c81c5bf42049b897a62aaf387e80f279",
+        "version" : "6.2.2"
       }
     }
   ],
