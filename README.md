@@ -61,5 +61,6 @@ is inferred based on the various tags the station wants to be known for.
 
 ### Dependencies
 
--    [LRCLIBKit](https://github.com/workingDog/LRCLIBKit) 
+-   [LRCLIBKit](https://github.com/workingDog/LRCLIBKit) 
 
+-   [YAMLDecoder](https://github.com/jpsim/Yams)
