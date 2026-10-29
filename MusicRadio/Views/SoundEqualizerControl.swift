@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SoundEqualizerControl: View {
     @Environment(PlayerManager.self) private var playerManager
+    @Environment(\.dismiss) private var dismiss
     
     
     var body: some View {
@@ -19,14 +20,39 @@ struct SoundEqualizerControl: View {
             ScrollView {
                 VStack(spacing: 20) {
                     
-                    Text("Preset").font(.title2).padding(.bottom, 5)
+//                    HStack {
+//                        Button("Done") {
+//                            dismiss()
+//                        }
+//                        .buttonStyle(.bordered)
+//                        Spacer()
+//                    }
+//                    .padding(8)
+                    
                     Picker("", selection: $playerManager.selectedPreset) {
                         ForEach(Preset.allCases) { preset in
-                            Text(preset.rawValue).tag(preset)
+                            Text(preset.rawValue + (preset == playerManager.selectedPreset && playerManager.isPresetModified ? " *" : ""))
+                                .tag(preset)
                         }
                     }
                     .pickerStyle(.segmented)
                     .frame(width: 360)
+   
+                    // does not work because the Picker put the Image on the left, not below 
+//                    Picker("", selection: $playerManager.selectedPreset) {
+//                        ForEach(Preset.allCases) { preset in
+//                            VStack {
+//                                Text(preset.rawValue)
+//                                if (preset == playerManager.selectedPreset) && playerManager.isPresetModified {
+//                                    Image(systemName: "slider.horizontal.3")
+//                                        .font(.caption)
+//                                        .foregroundStyle(.blue)
+//                                }
+//                            }.tag(preset)
+//                        }
+//                    }
+//                    .pickerStyle(.segmented)
+//                    .frame(width: 360)
 
                     Text("dB").font(.title3).offset(y: 30)
                     

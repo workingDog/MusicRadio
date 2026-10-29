@@ -19,6 +19,9 @@ struct ContentView: View {
     @State private var playerManager = PlayerManager()
     @State private var selector = Selector()
     
+    @State private var showEqualizer = false
+    @State private var showNewStation = false
+    
     @Query private var stations: [RadioStation]
     @Query private var countries: [Country]
     
@@ -31,7 +34,32 @@ struct ContentView: View {
                 ToolsView()
                 
                 if selector.view != .countries {
-                    FilterToolsView().fixedSize()
+                    HStack {
+//                        Spacer()
+//                        Button {
+//                            showEqualizer = true
+//                        } label: {
+//                            Image(systemName: "slider.horizontal.3")
+//                        }
+//                        .padding(8)
+//                        .background(.ultraThinMaterial)
+//                        .clipShape(RoundedRectangle(cornerRadius: 16))
+//                        .shadow(radius: 2)
+                        Spacer()
+                        FilterToolsView().fixedSize()
+                        Spacer()
+//                        Button {
+//                            showNewStation = true
+//                        } label: {
+//                            Image(systemName: "radio")
+//                        }
+//                        .padding(8)
+//                        .background(.ultraThinMaterial)
+//                        .clipShape(RoundedRectangle(cornerRadius: 16))
+//                        .shadow(radius: 2)
+//                        Spacer()
+                    }
+                    .padding(.top, 8)
                 }
                 
                 switch selector.view {
@@ -40,6 +68,15 @@ struct ContentView: View {
                     case .stations: SearchStationView()
                 }
             }
+//            .sheet(isPresented: $showEqualizer) {
+//                SoundEqualizerControl()
+//                    .environment(playerManager)
+//            }
+//            .sheet(isPresented: $showNewStation) {
+//                NewStationView()
+//                    .environment(playerManager)
+//                    .environment(colorsModel)
+//            }
             .onAppear {
                 selector.retrieveSettings()
                 colorsModel.retrieveSettings()

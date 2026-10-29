@@ -43,6 +43,11 @@ final class PlayerManager {
     }
 
     private var preset: Preset = .custom
+    
+    var isPresetModified: Bool {
+        guard selectedPreset != .custom else { return false }
+        return audioBands.map(\.gain) != selectedPreset.gains
+    }
 
     private let frequencies: [Float] = [
         32, 63, 125, 250, 500,
@@ -53,7 +58,6 @@ final class PlayerManager {
         audio.progress
     }
 
-    
     private let defaults = UserDefaults.standard
 
     init() {
@@ -71,9 +75,16 @@ final class PlayerManager {
         audioBands = frequencies.enumerated().map {
             Band(id: $0.offset, frequency: $0.element, gain: 0)
         }
-        preset = Preset(rawValue: defaults.string(forKey: "audioPreset") ?? "") ?? .custom
+  //      preset = Preset(rawValue: defaults.string(forKey: "audioPreset") ?? "") ?? .custom
         audio.delegate = self
         equalizer.activate()
+        
+        let savedPreset = defaults.string(forKey: "audioPreset")
+            .flatMap(Preset.init(rawValue:)) ?? .custom
+
+        preset = savedPreset
+        applyPreset(savedPreset)
+        
     }
 
     func setStation(_ radioStation: RadioStation) {
@@ -126,16 +137,13 @@ final class PlayerManager {
     
     func setCustomGain(_ gain: Float, at index: Int) {
         guard audioBands.indices.contains(index) else { return }
-
-        if selectedPreset != .custom {
-            selectedPreset = .custom
-        }
-
         audioBands[index].gain = gain
         equalizer.update(gain: gain, for: index)
-        saveCustomGains()
+        if selectedPreset == .custom {
+            saveCustomGains()
+        }
     }
-
+    
     private func applyPreset(_ preset: Preset) {
         let gains = preset == .custom ? loadCustomGains() : preset.gains
 

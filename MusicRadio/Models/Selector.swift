@@ -75,7 +75,7 @@ enum ViewTypes: String, CaseIterable, Identifiable {
 }
 
 enum StationTag: String, CaseIterable, Codable, Identifiable {
-    case all = "All types"
+    case all = "All"
     case mix
     case jazz
     case pop

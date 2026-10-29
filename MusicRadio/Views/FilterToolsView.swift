@@ -9,27 +9,15 @@ import SwiftUI
 
 struct FilterToolsView: View {
     @Environment(Selector.self) var selector
-    
-    
+        
     var body: some View {
         @Bindable var selector = selector
         VStack {
-            HStack {
-//                Picker("", selection: $selector.filter) {
-//                    ForEach(FilterTypes.allCases(topRatedValue: selector.topCount)) { tool in
-//                        Text(tool.displayName).tag(tool)
-//                    }
-//                }
-//                .pickerStyle(.segmented)
-//                .padding(.horizontal)
-                Spacer()
-                StationTagMenu()
-                Spacer()
-            }
-            .padding(5)
-            .background(.ultraThinMaterial)
-            .clipShape(RoundedRectangle(cornerRadius: 16))
-            .shadow(radius: 2)
+            StationTagMenu()
+                .padding(8)
+                .background(.ultraThinMaterial)
+                .clipShape(RoundedRectangle(cornerRadius: 16))
+                .shadow(radius: 2)
         }
     }
 }
