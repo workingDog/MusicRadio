@@ -110,6 +110,48 @@ final class RadioStation: Codable {
 //        case hasExtendedInfo = "has_extended_info"
     }
     
+    init(name: String, url: String, favicon: String,
+         
+        changeuuid: String = UUID().uuidString,
+        stationuuid: String = UUID().uuidString,
+        urlResolved: String = "",
+        homepage: String = "",
+        tags: String = "",
+        country: String = "",
+        countrycode: String = "",
+        iso3166_2: String? = nil,
+        state: String = "",
+        language: String = "",
+        languagecodes: String = "",
+        votes: Int = 0,
+        clickcount: Int? = nil,
+        clicktrend: Int? = nil,
+        geoLat: Double? = nil,
+        geoLong: Double? = nil,
+        geoDistance: Double? = nil
+    ) {
+        self.changeuuid = changeuuid
+        self.stationuuid = stationuuid
+        self.name = name
+        self.url = url
+        self.urlResolved = urlResolved
+        self.homepage = homepage
+        self.favicon = favicon
+        self.tags = tags
+        self.country = country
+        self.countrycode = countrycode
+        self.iso3166_2 = iso3166_2
+        self.state = state
+        self.language = language
+        self.languagecodes = languagecodes
+        self.votes = votes
+        self.clickcount = clickcount
+        self.clicktrend = clicktrend
+        self.geoLat = geoLat
+        self.geoLong = geoLong
+        self.geoDistance = geoDistance
+    }
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         

@@ -172,7 +172,7 @@ struct Networker {
             .sorted { $0.name < $1.name }
     }
     
-    func getTopVotes( _ limit: Int = 10) async throws -> [RadioStation] {
+    func getTopVotes( _ limit: Int = 5) async throws -> [RadioStation] {
         var components = URLComponents(
             url: radioServer.appending(path: "stations/topvote"),
             resolvingAgainstBaseURL: false
@@ -185,7 +185,7 @@ struct Networker {
         return stations
     }
     
-    func getTopVotesFor(_ code: String, limit: Int = 10) async throws -> [RadioStation] {
+    func getTopVotesFor(_ code: String, limit: Int = 5) async throws -> [RadioStation] {
         var components = URLComponents(
             url: radioServer.appending(path: "stations/search"),
             resolvingAgainstBaseURL: false

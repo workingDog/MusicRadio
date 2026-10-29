@@ -43,6 +43,10 @@ struct ContentView: View {
             .onAppear {
                 selector.retrieveSettings()
                 colorsModel.retrieveSettings()
+                
+//                for station in stations {
+//                    print("---> \(station.name)\n \(station.url)\n  \(station.favicon)")
+//                }
             }
         }
         .environment(playerManager)

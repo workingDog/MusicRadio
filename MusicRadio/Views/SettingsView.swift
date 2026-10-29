@@ -5,6 +5,7 @@
 //  Created by Ringo Wathelet on 2025/11/05.
 //
 import SwiftUI
+import SwiftData
 
 
 struct SettingsView: View {
@@ -129,7 +130,13 @@ struct SettingsView: View {
                         SoundEqualizerControl()
                     } label: {
                         Image(systemName: "slider.horizontal.3")
-                            .foregroundStyle(colorsModel.toolsColor)
+                    }
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    NavigationLink {
+                        NewStationView()
+                    } label: {
+                        Image(systemName: "radio")
                     }
                 }
             }

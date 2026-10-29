@@ -4,7 +4,7 @@
 **MusicRadio** lets you play radio stations from the [RadioBrowser](https://www.radio-browser.info/) community project (over 50,000 stations). When a song is playing, it can also display the artist info and artwork retrieved from [iTunes](https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/index.html#//apple_ref/doc/uid/TP40017632-CH3-SW1).
 In addition it can also display the **lyrics** of the current song from the community project [LRCLIB](https://lrclib.net/), when available. If the station is one of the rare **TV** station, you can also view its broadcast.
 
-This is yet another radio stations player based on the [RadioBrowser](https://www.radio-browser.info/) and its server at [Community Radio Station Index](https://de1.api.radio-browser.info/#General). Was meant to be a weekend project but ended up taking a week to polish.
+This is yet another radio stations player based on the [RadioBrowser](https://www.radio-browser.info/) and its server at [Community Radio Station Index](https://de1.api.radio-browser.info/#General). Was meant to be a weekend project but ended up taking longer to polish.
 
 
 <p float="left">
@@ -36,7 +36,7 @@ Tap the **TV** station icon or the *Play* button to open the video, if it’s av
 
 ## Note
 
-This project uses SwiftUI and SwiftData to store only the list of countries and the *Favourites* stations. Currently setup for iOS-26, but can easily work on older iOS (remove the .glassEffect) or MacOS with simple changes.
+This project uses SwiftData to store only the list of countries and the *Favourites* stations. Currently setup for iOS-26, but can easily work on older iOS (remove the .glassEffect) or MacOS with simple changes.
      
 The type/genre of station displayed between the **heart** and the **globe** icons, 
 is inferred based on the various tags the station wants to be known for.    
