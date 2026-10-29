@@ -342,7 +342,7 @@ struct Networker {
             AppLogger.logPublic(error)
         }
     }
-    
+
     func faviconImage(for station: RadioStation) async -> UIImage {
         if let data = station.faviconData, let image = UIImage(data: data) {
             return image
@@ -351,11 +351,8 @@ struct Networker {
         if let data = station.faviconData, let image = UIImage(data: data) {
             return image
         }
-        let fallback = defaultImg(for: station)
-        station.faviconData = fallback.pngData()
-        return fallback
+        return defaultImg(for: station)
     }
-    
     
     //-------------------------------------------------------------------
     //-------------------------testing-----------------------------------
