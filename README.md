@@ -64,3 +64,5 @@ is inferred based on the various tags the station wants to be known for.
 -   [LRCLIBKit](https://github.com/workingDog/LRCLIBKit) 
 
 -   [YAMLDecoder](https://github.com/jpsim/Yams)
+
+-   [AudioStreaming](https://github.com/dimitris-c/AudioStreaming)

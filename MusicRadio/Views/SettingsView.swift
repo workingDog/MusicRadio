@@ -17,144 +17,122 @@ struct SettingsView: View {
         @Bindable var selector = selector
         @Bindable var colorsModel = colorsModel
         
-        ZStack {
-            AppBackground().ignoresSafeArea()
-            
-            VStack(spacing: 10) {
+        NavigationStack {
+            ZStack {
+                AppBackground().ignoresSafeArea()
                 
-                VStack(spacing: 1) {
-                    HStack {
-                        Button("Done") {
-                            showSettings = false
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .padding(10)
-                        Spacer()
-                    }
+                VStack(spacing: 10) {
+                    
                     Text("Color Settings").font(.largeTitle).padding(.top, 20)
+                    
+                    ScrollView {
+                        VStack(spacing: 20) {
+
+                            HStack {
+                                Text("Countries back ")
+                                Image(systemName: "backpack.fill")
+                                    .font(.title)
+                                    .foregroundStyle(colorsModel.countryBackColor)
+                                    .overlay {
+                                        ColorPicker("", selection: $colorsModel.countryBackColor)
+                                            .labelsHidden()
+                                            .colorMultiply(.clear)
+                                    }
+                                Spacer()
+                            }
+                            
+                            HStack {
+                                Text("Stations back ")
+                                Image(systemName: "backpack.fill")
+                                    .font(.title)
+                                    .foregroundStyle(colorsModel.stationBackColor)
+                                    .overlay {
+                                        ColorPicker("", selection: $colorsModel.stationBackColor)
+                                            .labelsHidden()
+                                            .colorMultiply(.clear)
+                                    }
+                                Spacer()
+                            }
+                            
+                            HStack {
+                                Text("Equaliser ")
+                                Image(systemName: "chart.bar.fill")
+                                    .font(.title)
+                                    .foregroundStyle(colorsModel.equaliserColor)
+                                    .overlay {
+                                        ColorPicker("", selection: $colorsModel.equaliserColor)
+                                            .labelsHidden()
+                                            .colorMultiply(.clear)
+                                    }
+                                Spacer()
+                            }
+                            
+                            HStack {
+                                Text("Favourite ")
+                                Image(systemName: "heart.fill")
+                                    .font(.title)
+                                    .foregroundStyle(colorsModel.favouriteColor)
+                                    .overlay {
+                                        ColorPicker("", selection: $colorsModel.favouriteColor)
+                                            .labelsHidden()
+                                            .colorMultiply(.clear)
+                                    }
+                                Spacer()
+                            }
+                            
+                            HStack {
+                                Text("Home ")
+                                Image(systemName: "house.fill")
+                                    .font(.title)
+                                    .foregroundStyle(colorsModel.netColor)
+                                    .overlay {
+                                        ColorPicker("", selection: $colorsModel.netColor)
+                                            .labelsHidden()
+                                            .colorMultiply(.clear)
+                                    }
+                                Spacer()
+                            }
+                            
+                            HStack {
+                                Text("Tools back ")
+                                Image(systemName: "pad.header")
+                                    .font(.title)
+                                    .foregroundStyle(colorsModel.toolsColor)
+                                    .overlay {
+                                        ColorPicker("", selection: $colorsModel.toolsColor)
+                                            .labelsHidden()
+                                            .colorMultiply(.clear)
+                                    }
+                                Spacer()
+                            }
+                            
+                        }.padding(10)
+                    }
+                    
+                    Spacer()
                 }
+                .padding(10)
                 
-                ScrollView {
-                    VStack(spacing: 20) {
-                        
-//                        HStack {
-//                            Text("Top-rated stations")
-//                            CompactStepper(value: $selector.topCount, range: 10...100, step: 10)
-//                                .frame(width: 222)
-//                            Spacer()
-//                        }
-//                        .padding(.top, 20)
-                        
-                        HStack {
-                            Text("Countries back ")
-                            Image(systemName: "backpack.fill")
-                                .font(.title)
-                                .foregroundStyle(colorsModel.countryBackColor)
-                                .overlay {
-                                    ColorPicker("", selection: $colorsModel.countryBackColor)
-                                        .labelsHidden()
-                                        .colorMultiply(.clear)
-                                }
-                            Spacer()
-                        }
-                        
-                        HStack {
-                            Text("Stations back ")
-                            Image(systemName: "backpack.fill")
-                                .font(.title)
-                                .foregroundStyle(colorsModel.stationBackColor)
-                                .overlay {
-                                    ColorPicker("", selection: $colorsModel.stationBackColor)
-                                        .labelsHidden()
-                                        .colorMultiply(.clear)
-                                }
-                            Spacer()
-                        }
-                        
-                        HStack {
-                            Text("Equaliser ")
-                            Image(systemName: "chart.bar.fill")
-                                .font(.title)
-                                .foregroundStyle(colorsModel.equaliserColor)
-                                .overlay {
-                                    ColorPicker("", selection: $colorsModel.equaliserColor)
-                                        .labelsHidden()
-                                        .colorMultiply(.clear)
-                                }
-                            Spacer()
-                        }
-                        
-                        HStack {
-                            Text("Favourite ")
-                            Image(systemName: "heart.fill")
-                                .font(.title)
-                                .foregroundStyle(colorsModel.favouriteColor)
-                                .overlay {
-                                    ColorPicker("", selection: $colorsModel.favouriteColor)
-                                        .labelsHidden()
-                                        .colorMultiply(.clear)
-                                }
-                            Spacer()
-                        }
-                        
-                        HStack {
-                            Text("Home ")
-                            Image(systemName: "house.fill")
-                                .font(.title)
-                                .foregroundStyle(colorsModel.netColor)
-                                .overlay {
-                                    ColorPicker("", selection: $colorsModel.netColor)
-                                        .labelsHidden()
-                                        .colorMultiply(.clear)
-                                }
-                            Spacer()
-                        }
-                        
-                        HStack {
-                            Text("Tools back ")
-                            Image(systemName: "pad.header")
-                                .font(.title)
-                                .foregroundStyle(colorsModel.toolsColor)
-                                .overlay {
-                                    ColorPicker("", selection: $colorsModel.toolsColor)
-                                        .labelsHidden()
-                                        .colorMultiply(.clear)
-                                }
-                            Spacer()
-                        }
-                        
-//                        HStack {
-//                            Text("Star Color  ")
-//                            Image(systemName: "star.fill")
-//                                .font(.title)
-//                                .foregroundStyle(colorsModel.starColor)
-//                                .overlay {
-//                                    ColorPicker("", selection: $colorsModel.starColor)
-//                                        .labelsHidden()
-//                                        .colorMultiply(.clear)
-//                                }
-//                            Spacer()
-//                        }
-                        
-//                        HStack {
-//                            Text("Selection sound  ")
-//                            Image(systemName: "hand.tap.fill")
-//                                .font(.title)
-//                                .foregroundStyle(selector.pingSound ? Color.accentColor : .black)
-//                            Toggle("", isOn: $selector.pingSound).fixedSize()
-//                            Spacer()
-//                        }
-                        
-                    }.padding(10)
-                }
-                
-                Spacer()
             }
-            .padding(10)
-        }
-        .onDisappear {
-            selector.storeSettings()
-            colorsModel.storeSettings()
+            .onDisappear {
+                selector.storeSettings()
+                colorsModel.storeSettings()
+            }
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Done") {
+                        showSettings = false
+                    }
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    NavigationLink {
+                        SoundEqualizerControl()
+                    } label: {
+                        Image(systemName: "slider.horizontal.3")
+                            .foregroundStyle(colorsModel.toolsColor)
+                    }
+                }
+            }
         }
     }
     

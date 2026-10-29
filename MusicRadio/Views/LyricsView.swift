@@ -56,7 +56,7 @@ struct LyricsView: View {
         if lyricsRecord?.hasWordSync == true,
            let lyricsfile {
             SyncedLyricsView(lyrics: lyricsfile) {
-                Int(playerManager.currentTime * 1000)
+                Int(playerManager.currentTime)  // <--- in seconds, want ms
             }
         } else if let lyrics = lyricsRecord?.plainLyrics {
             Text(lyrics)

@@ -13,16 +13,17 @@ struct TvView: View {
     @Environment(PlayerManager.self) var playerManager
     
     @Binding var showArt: Bool
-    
+
     var body: some View {
         ZStack {
-            if let player = playerManager.radio?.player {
+            if let player = playerManager.videoPlayer {
                 VideoPlayer(player: player)
                     .ignoresSafeArea()
             }
             VStack {
                 HStack {
                     Button("Done") {
+                        playerManager.stopVideo()
                         showArt = false
                     }
                     .buttonStyle(.bordered)
@@ -33,9 +34,5 @@ struct TvView: View {
             }
         }
         .background(AppBackground())
-        .onAppear {
-            playerManager.isPlaying = true
-        }
     }
-    
 }
