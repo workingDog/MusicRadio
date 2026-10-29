@@ -29,6 +29,8 @@ struct SoundEqualizerControl: View {
 //                    }
 //                    .padding(8)
                     
+                    Text("Presets").font(.title3).padding(.vertical, 10)
+                    
                     Picker("", selection: $playerManager.selectedPreset) {
                         ForEach(Preset.allCases) { preset in
                             Text(preset.rawValue + (preset == playerManager.selectedPreset && playerManager.isPresetModified ? " *" : ""))
@@ -38,7 +40,7 @@ struct SoundEqualizerControl: View {
                     .pickerStyle(.segmented)
                     .frame(width: 360)
    
-                    // does not work because the Picker put the Image on the left, not below 
+                    // does not work because the Picker puts the Image on the left, not below 
 //                    Picker("", selection: $playerManager.selectedPreset) {
 //                        ForEach(Preset.allCases) { preset in
 //                            VStack {

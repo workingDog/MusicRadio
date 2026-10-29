@@ -66,6 +66,7 @@ struct NewStationView: View {
                 }
                 .padding(.top, 30)
             }
+            .padding(8)
         }
         
     }

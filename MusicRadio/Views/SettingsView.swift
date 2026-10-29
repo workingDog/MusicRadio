@@ -11,6 +11,7 @@ import SwiftData
 struct SettingsView: View {
     @Environment(Selector.self) var selector
     @Environment(ColorsModel.self) var colorsModel
+    @Environment(PlayerManager.self) var playerManager
     
     @Binding var showSettings: Bool
     
@@ -22,13 +23,27 @@ struct SettingsView: View {
             ZStack {
                 AppBackground().ignoresSafeArea()
                 
-                VStack(spacing: 10) {
+                VStack(alignment: .leading, spacing: 15) {
                     
-                    Text("Color Settings").font(.largeTitle).padding(.top, 20)
+                    HStack {
+                        Spacer()
+                        Text("Settings").font(.largeTitle)
+                        Spacer()
+                    }
+                    
+                    HStack {
+                        Text("Sleep timer ").font(.title2)
+                        SleepTimerMenu(playerManager: playerManager)
+                        Spacer()
+                    }
+                    .frame(width: 380)
+                    .padding(.vertical, 20)
+                    
+                    Text("Colors").font(.largeTitle).padding(.top, 12)
                     
                     ScrollView {
                         VStack(spacing: 20) {
-
+                            
                             HStack {
                                 Text("Countries back ")
                                 Image(systemName: "backpack.fill")
