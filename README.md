@@ -8,9 +8,10 @@ This is yet another radio stations player based on the [RadioBrowser](https://ww
 
 
 <p float="left">
-  <img src="ScreenShots/pict3.png"  width="200"  height="400" />
-  <img src="ScreenShots/pict2.png"  width="200"  height="400" /> 
-  <img src="ScreenShots/pict1.png"  width="200"  height="400" /> 
+  <img src="ScreenShots/s1.png"  width="200"  height="400" />
+  <img src="ScreenShots/s2.png"  width="200"  height="400" /> 
+  <img src="ScreenShots/s3.png"  width="200"  height="400" /> 
+  <img src="ScreenShots/s4.png"  width="200"  height="400" /> 
 </p>
 
 
