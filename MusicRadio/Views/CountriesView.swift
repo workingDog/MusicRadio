@@ -60,11 +60,11 @@ struct CountryCard: View {
     let country: Country
     
     var body: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 8) {
             Image(country.iso_3166_1.lowercased())
                 .resizable()
                 .scaledToFit()
-                .frame(height: 50)
+                .frame(height: 40)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
             
             Text(country.name)
@@ -79,7 +79,7 @@ struct CountryCard: View {
             .foregroundColor(.primary)
             .font(.subheadline)
             .padding(.vertical, 4)
-            .padding(.horizontal, 10)
+            .padding(.horizontal, 3)
             .glassEffect(.regular, in: .capsule)
             .background(colorsModel.countryBackColor.opacity(0.7))
             .clipShape(Capsule())
@@ -92,7 +92,6 @@ struct CountryCard: View {
         .shadow(color: .black.opacity(0.25), radius: 8, y: 4)
     }
 }
-
 
 struct SearchBar: View {
     @Binding var text: String

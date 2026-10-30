@@ -18,26 +18,26 @@ protocol AudioPlayerServiceDelegate: AnyObject {
 
 final class AudioPlayerService {
     weak var delegate: AudioPlayerServiceDelegate?
-
+    
     var player: AudioPlayer
     private var audioSystemResetObserver: Any?
-
+    
     var duration: Double {
         player.duration
     }
-
+    
     var progress: Double {
         player.progress
     }
-
+    
     var isMuted: Bool {
         player.muted
     }
-
+    
     var rate: Float {
         player.rate
     }
-
+    
     var state: AudioPlayerState {
         player.state
     }
@@ -46,70 +46,70 @@ final class AudioPlayerService {
         get { player.loopMode }
         set { player.loopMode = newValue }
     }
-
+    
     var statusChangedNotifier = Notifier<AudioPlayerState>()
     var metadataReceivedNotifier = Notifier<[String: String]>()
     var playingStartedStopped = Notifier<(started: Bool, AudioEntryId, AudioPlayerStopReason?)>()
-
+    
     private let audioPlayerProvider: () -> AudioPlayer
-
+    
     init(audioPlayerProvider: @escaping () -> AudioPlayer) {
         self.audioPlayerProvider = audioPlayerProvider
         player = audioPlayerProvider()
         player.delegate = self
-
+        
         configureAudioSession()
         registerSessionEvents()
     }
-
+    
     func play(url: URL) {
         activateAudioSession()
         player.play(url: url)
     }
-
+    
     func play(source: CoreAudioStreamSource, entryId: String, format: AVAudioFormat) {
         activateAudioSession()
         player.play(source: source, entryId: entryId, format: format)
     }
-
+    
     func queue(url: URL) {
         activateAudioSession()
         player.queue(url: url)
     }
-
+    
     func stop() {
         player.stop()
         deactivateAudioSession()
     }
-
+    
     func pause() {
         player.pause()
     }
-
+    
     func resume() {
         player.resume()
     }
-
+    
     func toggleMute() {
         player.muted = !player.muted
     }
-
+    
     func update(rate: Float) {
         player.rate = rate
     }
-
+    
     func update(volume: Float) {
         player.volume = volume
     }
-
+    
     func add(_ node: AVAudioNode) {
         player.attach(node: node)
     }
-
+    
     func remove(_ node: AVAudioNode) {
         player.detach(node: node)
     }
-
+    
     func toggle() {
         if player.state == .paused {
             player.resume()
@@ -117,7 +117,7 @@ final class AudioPlayerService {
             player.pause()
         }
     }
-
+    
     func seek(at time: Double) {
         player.seek(to: time)
     }
@@ -147,12 +147,12 @@ final class AudioPlayerService {
             player.loopMode = .all(times: times)
         }
     }
-
+    
     private func recreatePlayer() {
         player = audioPlayerProvider()
         player.delegate = self
     }
-
+    
     private func registerSessionEvents() {
         // Note that a real app might need to observer other AVAudioSession notifications as well
 #if os(iOS)
@@ -166,7 +166,7 @@ final class AudioPlayerService {
         }
 #endif
     }
-
+    
     private func configureAudioSession() {
 #if os(iOS)
         do {
@@ -178,19 +178,18 @@ final class AudioPlayerService {
         }
 #endif
     }
-
+    
     private func activateAudioSession() {
 #if os(iOS)
         do {
             print("AudioSession is active")
             try AVAudioSession.sharedInstance().setActive(true, options: [])
-
         } catch let error as NSError {
             print("Couldn't set audio session to active: \(error.localizedDescription)")
         }
 #endif
     }
-
+    
     private func deactivateAudioSession() {
 #if os(iOS)
         do {
@@ -210,15 +209,15 @@ extension AudioPlayerService: AudioPlayerDelegate {
         delegate?.didStartPlaying(id: id)
         Task { await playingStartedStopped.send((true, id, nil)) }
     }
-
+    
     func audioPlayerDidFinishBuffering(player _: AudioPlayer, with _: AudioEntryId) {}
-
+    
     func audioPlayerStateChanged(player _: AudioPlayer, with newState: AudioPlayerState, previous _: AudioPlayerState) {
         print("audioPlayerStateChanged newState: \(newState)")
         Task { await statusChangedNotifier.send(newState) }
         delegate?.statusChanged(status: newState)
     }
-
+    
     func audioPlayerDidFinishPlaying(player _: AudioPlayer,
                                      entryId id: AudioEntryId,
                                      stopReason reason: AudioPlayerStopReason,
@@ -229,13 +228,13 @@ extension AudioPlayerService: AudioPlayerDelegate {
         Task { await playingStartedStopped.send((false, id, reason)) }
         delegate?.didStopPlaying(id: id, reason: reason)
     }
-
+    
     func audioPlayerUnexpectedError(player _: AudioPlayer, error: AudioPlayerError) {
         delegate?.errorOccurred(error: error)
     }
-
+    
     func audioPlayerDidCancel(player _: AudioPlayer, queuedItems _: [AudioEntryId]) {}
-
+    
     func audioPlayerDidReadMetadata(player _: AudioPlayer, metadata: [String: String]) {
         Task { await metadataReceivedNotifier.send(metadata) }
         delegate?.metadataReceived(metadata: metadata)
@@ -245,7 +244,7 @@ extension AudioPlayerService: AudioPlayerDelegate {
 
 actor Notifier<Output> {
     private var continuations: [UUID: AsyncStream<Output>.Continuation] = [:]
-
+    
     func values(bufferingPolicy limit: AsyncStream<Output>.Continuation.BufferingPolicy = .bufferingNewest(1)) -> AsyncStream<Output> {
         AsyncStream<Output>(bufferingPolicy: limit) { continuation in
             let id = UUID()
@@ -255,13 +254,13 @@ actor Notifier<Output> {
             }
         }
     }
-
+    
     func send(_ value: Output) {
         for continuation in continuations.values {
             continuation.yield(value)
         }
     }
-
+    
     private func cancel(_ id: UUID) {
         continuations[id] = nil
     }

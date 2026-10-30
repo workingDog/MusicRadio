@@ -58,6 +58,7 @@ struct ArtistView: View {
                     countryCode: playerManager.station?.countrycode ?? "us")
                 isBusy = false
             } catch {
+                isBusy = false
                 AppLogger.logPublic(error)
             }
         }
