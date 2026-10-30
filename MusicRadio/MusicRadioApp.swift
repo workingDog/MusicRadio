@@ -43,6 +43,13 @@ struct MusicRadioApp: App {
             ContentView()
                 .environment(colorsModel)
                 .environment(\.networker, networker)
+                .onAppear {
+                    #if targetEnvironment(macCatalyst)
+                    if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                        windowScene.titlebar?.titleVisibility = .hidden
+                    }
+                    #endif
+                }
         }
         .modelContainer(sharedModelContainer)
     }

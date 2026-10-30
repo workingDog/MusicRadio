@@ -115,16 +115,30 @@ struct LyricLineView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
+//    private func wordText1(_ words: [LyricWord]) -> some View {
+//        words.enumerated().reduce(Text("")) { result, element in
+//            let (index, word) = element
+//            let endMs = word.endMs ?? words.dropFirst(index + 1).first?.startMs
+//            let isCurrent = currentTimeMs >= word.startMs &&
+//                (endMs.map { currentTimeMs < $0 } ?? true)
+//            
+//            return result + Text(word.text + " ")
+//                .foregroundColor(isCurrent ? .purple : .primary)
+//                .bold(isCurrent)
+//        }
+//    }
+    
     private func wordText(_ words: [LyricWord]) -> some View {
-        words.enumerated().reduce(Text("")) { result, element in
-            let (index, word) = element
-            let endMs = word.endMs ?? words.dropFirst(index + 1).first?.startMs
-            let isCurrent = currentTimeMs >= word.startMs &&
-                (endMs.map { currentTimeMs < $0 } ?? true)
-            
-            return result + Text(word.text + " ")
-                .foregroundColor(isCurrent ? .purple : .primary)
-                .bold(isCurrent)
+        HStack(spacing: 0) {
+            ForEach(Array(words.enumerated()), id: \.offset) { index, word in
+                let endMs = word.endMs ?? words.dropFirst(index + 1).first?.startMs
+                let isCurrent = currentTimeMs >= word.startMs &&
+                    (endMs.map { currentTimeMs < $0 } ?? true)
+
+                Text(word.text + " ")
+                    .foregroundStyle(isCurrent ? .purple : .primary)
+                    .bold(isCurrent)
+            }
         }
     }
 
