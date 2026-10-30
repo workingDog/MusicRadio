@@ -61,8 +61,9 @@ struct StationView: View {
                         } message: { Text("Really remove this station from favourites?") }
                     
                     Spacer()
-                    
+  
                     Text(StationTag.inferDominantGenre(from: station.tags).displayName)
+                        .font(.system(size: 18, design: .serif)).bold()
                     
                     Spacer()
                     
@@ -94,6 +95,7 @@ struct StationView: View {
                 Text(station.name)
                     .lineLimit(1)
                     .padding(5)
+                    .font(.system(size: 17, weight: .medium, design: .serif))
                 
             }
         }

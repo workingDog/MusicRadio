@@ -37,7 +37,8 @@ struct NewStationView: View {
 //                }
 //                .padding(8)
                 
-                Text("Add a New Station").font(.title)
+                Text("Add a New Station")
+                    .font(.system(size: 30, weight: .semibold, design: .serif))
                 
                 VStack(spacing: 30) {
                     TextField("Station name", text: $name)

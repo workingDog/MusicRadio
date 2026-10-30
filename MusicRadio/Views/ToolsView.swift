@@ -95,7 +95,7 @@ struct ToolsView: View {
     private func iconColor(for view: ViewTypes) -> Color {
         switch view {
             case .favourites: colorsModel.favouriteColor
-            case .countries: .blue
+            case .countries: .primary
             case .stations: .primary
         }
     }

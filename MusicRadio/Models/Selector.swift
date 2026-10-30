@@ -87,7 +87,7 @@ enum StationTag: String, CaseIterable, Codable, Identifiable {
     case metal
     case news
     case talk
-    case worldMusic = "world music"
+    case worldMusic = "world"
     case oldies
     case country
     case blues
@@ -101,7 +101,7 @@ enum StationTag: String, CaseIterable, Codable, Identifiable {
     case children
     case sports
     case tv
-    case community
+    case local
     case adultHits = "Adult hits"
     
     var id: String { rawValue }
@@ -168,7 +168,7 @@ enum StationTag: String, CaseIterable, Codable, Identifiable {
         
             .children: ["kids", "children", "nursery", "disney"],
 
-            .community: [
+            .local: [
                 "public radio", "community radio", "college radio",
                 "university radio", "community"
             ],

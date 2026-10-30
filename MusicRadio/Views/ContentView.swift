@@ -31,6 +31,8 @@ struct ContentView: View {
                 .animation(.easeInOut(duration: 0.4), value: selector.view)
             
             VStack {
+                
+                Text("MusicRadio").font(.system(size: 34, design: .serif)).bold()
                 ToolsView()
                 
                 if selector.view != .countries {

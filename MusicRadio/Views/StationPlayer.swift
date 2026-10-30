@@ -40,6 +40,7 @@ struct StationPlayer: View {
                 
                 VStack {
                     Text(playerManager.station?.name ?? "no station")
+                        .font(.system(size: 28, weight: .bold, design: .serif))
                     Text(playerManager.currentSong)
                 }
                 .font(.headline)

@@ -68,7 +68,7 @@ struct CountryCard: View {
                 .clipShape(RoundedRectangle(cornerRadius: 8))
             
             Text(country.name)
-                .font(.headline)
+                .font(.system(size: 17, weight: .medium, design: .serif))
                 .foregroundColor(.primary)
                 .multilineTextAlignment(.center)
 
@@ -81,7 +81,6 @@ struct CountryCard: View {
             .padding(.vertical, 4)
             .padding(.horizontal, 3)
             .glassEffect(.regular, in: .capsule)
-            .background(colorsModel.countryBackColor.opacity(0.7))
             .clipShape(Capsule())
         }
         .padding()

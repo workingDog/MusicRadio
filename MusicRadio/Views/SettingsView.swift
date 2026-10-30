@@ -39,7 +39,7 @@ struct SettingsView: View {
                     .frame(width: 380)
                     .padding(.vertical, 20)
                     
-                    Text("Colors").font(.largeTitle).padding(.top, 12)
+                    Text("Colours").font(.largeTitle).padding(.top, 12)
                     
                     ScrollView {
                         VStack(spacing: 20) {

@@ -12,14 +12,27 @@ import SwiftUI
 @Observable
 class ColorsModel {
     
-    var favouriteColor = Color.teal
-    var netColor = Color.blue
-    var starColor = Color.orange
-    var equaliserColor = Color.accentColor
-    var backColor = Color.mint.opacity(0.4)
-    var stationBackColor = Color.white.opacity(0.4)
-    var countryBackColor = Color.teal.opacity(0.4)
-    var toolsColor = Color.accentColor
+    private static let defaultfavouriteColor = Color.teal.opacity(0.7)
+    //Color(red: 0.161, green: 0.161, blue: 0.137) // Charcoal
+    private static let defaultnetColor = Color(red: 0.216, green: 0.435, blue: 0.439) // Teal
+    private static let defaultstarColor = Color(red: 0.694, green: 0.541, blue: 0.329) // Brass
+    private static let defaultequaliserColor = Color(red: 0.216, green: 0.435, blue: 0.439) // Teal
+    private static let defaultbackColor = Color(red: 0.953, green: 0.922, blue: 0.859) // Ivory
+    private static let defaultstationBackColor = Color(red: 1.0, green: 0.976, blue: 0.929) // Cream
+    private static let defaultcountryBackColor = Color(red: 0.976, green: 0.957, blue: 0.914) // Light cream
+    private static let defaulttoolsColor = Color.gray.opacity(0.3)
+    //Color(red: 0.157, green: 0.337, blue: 0.341) // Dark teal
+    private static let defaultborderColor = Color(red: 0.839, green: 0.776, blue: 0.659) // Brass beige
+    
+    var favouriteColor = ColorsModel.defaultfavouriteColor
+    var netColor = ColorsModel.defaultnetColor
+    var starColor = ColorsModel.defaultstarColor
+    var equaliserColor = ColorsModel.defaultequaliserColor
+    var backColor = ColorsModel.defaultbackColor
+    var stationBackColor = ColorsModel.defaultstationBackColor
+    var countryBackColor = ColorsModel.defaultcountryBackColor
+    var toolsColor = ColorsModel.defaulttoolsColor
+    var borderColor = ColorsModel.defaultborderColor
     
     // keys for UserDefaults
     static let keyFavouriteColor: String = "favouriteColor"
@@ -30,12 +43,8 @@ class ColorsModel {
     static let keyStationBackColor: String = "stationBackColor"
     static let keyCountryBackColor: String = "countryBackColor"
     static let keyToolsColor: String = "toolsColor"
-    
-    // convenience color gradient
-    public var gradient: LinearGradient {
-        LinearGradient(gradient: Gradient(colors: [backColor.opacity(1), backColor.opacity(0.3)]), startPoint: .top, endPoint: .bottom)
-    }
-    
+    static let keyBorderColor: String = "borderColor"
+
     // store settings in UserDefaults
     public func storeSettings() {
         saveColor(favouriteColor, key: ColorsModel.keyFavouriteColor)
@@ -46,30 +55,39 @@ class ColorsModel {
         saveColor(stationBackColor, key: ColorsModel.keyStationBackColor)
         saveColor(countryBackColor, key: ColorsModel.keyCountryBackColor)
         saveColor(toolsColor, key: ColorsModel.keyToolsColor)
+        saveColor(borderColor, key: ColorsModel.keyBorderColor)
     }
     
     // retrieve settings from UserDefaults
     public func retrieveSettings() {
+        favouriteColor = retrieveColorFor(ColorsModel.keyFavouriteColor)
+            ?? ColorsModel.defaultfavouriteColor
         
-        let fav = retrieveColorFor(ColorsModel.keyFavouriteColor)
-        let net = retrieveColorFor(ColorsModel.keyNetColor)
-        let star = retrieveColorFor(ColorsModel.keyStarColor)
-        let equ = retrieveColorFor(ColorsModel.keyEqualiserColor)
-        let back = retrieveColorFor(ColorsModel.keyBackColor)
-        let sback = retrieveColorFor(ColorsModel.keyStationBackColor)
-        let cback = retrieveColorFor(ColorsModel.keyCountryBackColor)
-        let tcol = retrieveColorFor(ColorsModel.keyToolsColor)
+        netColor = retrieveColorFor(ColorsModel.keyNetColor)
+            ?? ColorsModel.defaultnetColor
         
-        self.favouriteColor = (fav != nil) ? fav! : Color.teal
-        self.netColor = (net != nil) ? net! : Color.blue
-        self.starColor = (star != nil) ? star! : Color.orange
-        self.equaliserColor = (equ != nil) ? equ! : Color.accentColor
-        self.backColor = (back != nil) ? back! : Color.mint.opacity(0.4)
-        self.stationBackColor = (sback != nil) ? sback! : Color.white.opacity(0.4)
-        self.countryBackColor = (cback != nil) ? cback! : Color.teal.opacity(0.4)
-        self.toolsColor = (tcol != nil) ? tcol! : Color.accentColor
+        starColor = retrieveColorFor(ColorsModel.keyStarColor)
+            ?? ColorsModel.defaultstarColor
+        
+        equaliserColor = retrieveColorFor(ColorsModel.keyEqualiserColor)
+            ?? ColorsModel.defaultequaliserColor
+        
+        backColor = retrieveColorFor(ColorsModel.keyBackColor)
+            ?? ColorsModel.defaultbackColor
+        
+        stationBackColor = retrieveColorFor(ColorsModel.keyStationBackColor)
+            ?? ColorsModel.defaultstationBackColor
+        
+        countryBackColor = retrieveColorFor(ColorsModel.keyCountryBackColor)
+            ?? ColorsModel.defaultcountryBackColor
+        
+        toolsColor = retrieveColorFor(ColorsModel.keyToolsColor)
+            ?? ColorsModel.defaulttoolsColor
+        
+        borderColor = retrieveColorFor(ColorsModel.keyBorderColor)
+            ?? ColorsModel.defaultborderColor
     }
-    
+
     func saveColor(_ color: Color, key: String) {
         guard let rgba = color.rgba() else { return }
         
