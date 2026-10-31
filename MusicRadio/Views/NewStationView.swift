@@ -14,7 +14,7 @@ struct NewStationView: View {
     @Environment(\.dismiss) private var dismiss
     
     @State private var name = ""
-    @State private var stationUrl = "https://"
+    @State private var stationUrl = ""
     @State private var artUrl = ""
     @State private var errorMessage: String?
     
@@ -44,13 +44,13 @@ struct NewStationView: View {
                     TextField("Station name", text: $name)
                         .textFieldStyle(.roundedBorder)
                     
-                    TextField("Stream URL", text: $stationUrl)
+                    TextField("Full stream URL", text: $stationUrl)
                         .textFieldStyle(.roundedBorder)
                         .keyboardType(.URL)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
                     
-                    TextField("Artwork URL (optional)", text: $artUrl)
+                    TextField("Full artwork URL (optional)", text: $artUrl)
                         .textFieldStyle(.roundedBorder)
                         .keyboardType(.URL)
                         .textInputAutocapitalization(.never)

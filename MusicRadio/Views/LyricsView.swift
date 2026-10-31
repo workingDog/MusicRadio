@@ -37,9 +37,6 @@ struct LyricsView: View {
                 do {
                     isBusy = true
                     lyricsRecord = try await networker.findLyrics(artist!)
-                    
-               //     lyricsRecord = try await networker.getTestLyrics(36497565)
-                       
                     if let rec = lyricsRecord, let lyricsf = rec.lyricsfile {
                         lyricsfile = networker.decodeLyricsfile(lyricsfile: lyricsf)
                     }
@@ -56,7 +53,7 @@ struct LyricsView: View {
         if lyricsRecord?.hasWordSync == true,
            let lyricsfile {
             SyncedLyricsView(lyrics: lyricsfile) {
-                Int(playerManager.currentTime)  // <--- in seconds, want ms
+                Int(playerManager.currentTime)  // <--- in seconds
             }
         } else if let lyrics = lyricsRecord?.plainLyrics {
             Text(lyrics)
@@ -115,19 +112,6 @@ struct LyricLineView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
-//    private func wordText1(_ words: [LyricWord]) -> some View {
-//        words.enumerated().reduce(Text("")) { result, element in
-//            let (index, word) = element
-//            let endMs = word.endMs ?? words.dropFirst(index + 1).first?.startMs
-//            let isCurrent = currentTimeMs >= word.startMs &&
-//                (endMs.map { currentTimeMs < $0 } ?? true)
-//            
-//            return result + Text(word.text + " ")
-//                .foregroundColor(isCurrent ? .purple : .primary)
-//                .bold(isCurrent)
-//        }
-//    }
-    
     private func wordText(_ words: [LyricWord]) -> some View {
         HStack(spacing: 0) {
             ForEach(Array(words.enumerated()), id: \.offset) { index, word in
@@ -151,10 +135,38 @@ struct SyncedLyricsView: View {
     var body: some View {
         TimelineView(.periodic(from: .now, by: 0.05)) { _ in
             let currentTimeMs = playbackTime()
-  //          VStack {
-  //              Text("Playback: \(currentTimeMs) ms")
-                LyricsSyncView(lyrics: lyrics, currentTimeMs: currentTimeMs)
-  //          }
+            LyricsSyncView(lyrics: lyrics, currentTimeMs: currentTimeMs)
         }
     }
 }
+
+
+
+
+/*
+ 
+ 
+ //    private func wordText1(_ words: [LyricWord]) -> some View {
+ //        words.enumerated().reduce(Text("")) { result, element in
+ //            let (index, word) = element
+ //            let endMs = word.endMs ?? words.dropFirst(index + 1).first?.startMs
+ //            let isCurrent = currentTimeMs >= word.startMs &&
+ //                (endMs.map { currentTimeMs < $0 } ?? true)
+ //
+ //            return result + Text(word.text + " ")
+ //                .foregroundColor(isCurrent ? .purple : .primary)
+ //                .bold(isCurrent)
+ //        }
+ //    }
+     
+ 
+ //          VStack {
+ //              Text("Playback: \(currentTimeMs) ms")
+               LyricsSyncView(lyrics: lyrics, currentTimeMs: currentTimeMs)
+ //          }
+ 
+//     lyricsRecord = try await networker.getTestLyrics(36497565)
+  
+ 
+ 
+ */
