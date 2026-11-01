@@ -45,7 +45,7 @@ final class RadioStation: Codable {
     var faviconData: Data? = nil
     // is a TV station
     var isTV: Bool {
-        return url.lowercased().hasSuffix(".m3u8")
+        return url.lowercased().trim().hasSuffix(".m3u8")
     }
     
     var changeuuid: String

@@ -108,8 +108,22 @@ final class PlayerManager {
         videoPlayer?.pause()
         videoPlayer = nil
     }
+    
+    func toggleVideo() {
+        if let station = station, station.isTV {
+            if isPlaying {
+                stopVideo()
+            } else {
+                if let url = URL(string: station.url.trim()) {
+                    playVideo(url: url)
+                }
+            }
+        }
+    }
 
     func togglePlayback() {
+        toggleVideo()
+        
         if isPlaying {
             pause()
         } else {
@@ -119,19 +133,29 @@ final class PlayerManager {
 
     func play() {
         guard station != nil else { return }
-        audio.resume()
+        isPlaying = true
+        if station!.isTV {
+            if let url = URL(string: station!.url.trim()) {
+                playVideo(url: url)
+            }
+        } else {
+            audio.resume()
+        }
     }
 
     func pause() {
-        audio.pause()
         isPlaying = false
+        videoPlayer?.pause()
+        audio.pause()
     }
 
     func stop() {
+        isPlaying = false
+        stopVideo()
+        
         audio.stop()
         station = nil
         currentSong = ""
-        isPlaying = false
     }
     
     func setCustomGain(_ gain: Float, at index: Int) {

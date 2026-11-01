@@ -107,6 +107,7 @@ struct StationView: View {
             
             playerManager.pause()
             playerManager.currentSong = ""
+            
             // tap on same station to unselect it
             if playerManager.station == station {
                 playerManager.station = nil

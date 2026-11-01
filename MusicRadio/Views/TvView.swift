@@ -24,6 +24,7 @@ struct TvView: View {
                 HStack {
                     Button("Done") {
                         playerManager.stopVideo()
+                        playerManager.isPlaying = false
                         showArt = false
                     }
                     .buttonStyle(.bordered)

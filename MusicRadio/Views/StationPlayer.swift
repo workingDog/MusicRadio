@@ -64,6 +64,7 @@ struct StationPlayer: View {
                 
                 Spacer()
                 
+                // play button
                 Button {
                     playerManager.togglePlayback()
                     if let station = playerManager.station, station.isTV, playerManager.isPlaying {
@@ -91,8 +92,16 @@ struct StationPlayer: View {
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .shadow(radius: 5)
         .onChange(of: playerManager.station?.id) {
-            if playerManager.station != nil {
-                playerManager.setStation(playerManager.station!)
+            if let station = playerManager.station {
+                if station.isTV {
+                    if let url = URL(string: station.url.trim()) {
+                        playerManager.pause()
+                        playerManager.playVideo(url: url)
+                        showArt = true
+                    }
+                } else {
+                    playerManager.setStation(station)
+                }
             }
             else {
                 playerManager.station = nil

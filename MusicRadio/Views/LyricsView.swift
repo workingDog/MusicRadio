@@ -43,6 +43,7 @@ struct LyricsView: View {
                     isBusy = false
                 } catch {
                     AppLogger.logPublic(error)
+                    isBusy = false
                 }
             }
         }

@@ -316,8 +316,6 @@ struct Networker {
             return try await lyricsClient.getLyrics(trackName: track, artistName: name)
         } catch let LRCLIBKit.ServerError.apiError(error, retryAfter: _) where error.statusCode == 404 {
             return nil
-        } catch {
-            return nil
         }
     }
     
