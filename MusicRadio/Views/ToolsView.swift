@@ -32,7 +32,7 @@ struct ToolsView: View {
                 } label: {
                     Image(systemName: "gear").tint(.primary)
                 }
-                .font(.system(size: 26))
+                .font(.system(size: 32))
                 .padding(5)
                 
             }
@@ -88,7 +88,7 @@ struct ToolsView: View {
         switch view {
             case .favourites: "heart.fill"
             case .countries: "globe"
-            case .stations: "antenna.radiowaves.left.and.right" 
+            case .stations: "radio"   // "antenna.radiowaves.left.and.right"
         }
     }
     

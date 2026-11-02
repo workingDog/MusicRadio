@@ -152,6 +152,12 @@ struct SettingsView: View {
                         NewStationView()
                     } label: {
                         Image(systemName: "radio")
+                            .overlay(alignment: .bottomTrailing) {
+                                Image(systemName: "plus.circle.fill")
+                                    .font(.system(size: 12))
+                                    .background(.background, in: Circle())
+                                    .offset(x: 5, y: 4)
+                            }
                     }
                 }
             }
