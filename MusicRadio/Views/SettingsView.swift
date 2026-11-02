@@ -144,7 +144,7 @@ struct SettingsView: View {
                     NavigationLink {
                         SoundEqualizerControl()
                     } label: {
-                        Image(systemName: "slider.horizontal.3")
+                        Image(systemName: "slider.vertical.3")
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
