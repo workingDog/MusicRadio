@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import LRCLIBKit
 
 
 struct ContentView: View {
@@ -129,6 +130,57 @@ struct ContentView: View {
             } catch {
                 AppLogger.logPublic(error)
             }
+            
+ //           await test()
+            
+        }
+    }
+
+    func test() async {
+  //      let url = URL(string: "https://api.betterlyrics.org/getLyrics")!
+        
+        let url = URL(string: "https://api.betterlyrics.org/getLyrics?s=E85&a=Don%20Toliver&al=OCTANE&d=154")!
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("test1/1.0", forHTTPHeaderField: "User-Agent")
+        
+        do {
+            let (data, _) = try await URLSession.shared.data(for: request)
+            
+  //          print("---> data:\n \(String(data: data, encoding: .utf8) as AnyObject)\n")
+           
+            let results = try JSONDecoder().decode(BetterLyrics.self, from: data)
+            
+  //          print("---> results: \(results)\n")
+            
+            let ttml: LyricsTTML = try TTMLParser().parse(results.ttml)
+            
+            let lyricsFile = LyricsFile(
+                ttml: ttml,
+                title: "E85",
+                artist: "Don Toliver",
+                album: "OCTANE",
+                durationMs: 153181
+            )
+            
+ //           print("---> lyricsFile: \(lyricsFile)")
+            
+//            for part in ttml.songParts {
+//                print("---> Section: \(part.name ?? "")")
+//                
+//                for line in part.lines {
+//                    print("---> Line: \(line.text)")
+//                    print("---> Start: \(line.start) End: \(line.end)")
+//                    
+//                    for word in line.words {
+//                        print("---> \(word.text) \(word.start) - \(word.end)")
+//                    }
+//                }
+//            }
+
+        } catch {
+            print(error)
         }
     }
     

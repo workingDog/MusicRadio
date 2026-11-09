@@ -1,5 +1,5 @@
 {
-  "originHash" : "b6a966d26835a5f4e047a05df11e514926482297434057aaf0335189fa81c0f1",
+  "originHash" : "ec564e12e1b19abc5a6d38927a6ab94efad4e66811da97db02c248641255e2a0",
   "pins" : [
     {
       "identity" : "audiostreaming",
@@ -16,7 +16,7 @@
       "location" : "https://github.com/workingDog/LRCLIBKit",
       "state" : {
         "branch" : "main",
-        "revision" : "a2440f766a4a60c43f10787d5d8841d56b69d7fc"
+        "revision" : "b39023be13e34b701d5e8cce45b1129b8fc25df4"
       }
     },
     {
