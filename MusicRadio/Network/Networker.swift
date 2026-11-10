@@ -8,7 +8,6 @@ import Foundation
 import UIKit
 import SwiftUI
 import LRCLIBKit
-//import Yams
 
 
 extension String {
@@ -16,7 +15,6 @@ extension String {
         trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
-
 
 // for testing
 struct StationsTags: Codable {
@@ -61,7 +59,6 @@ struct Networker {
     // lyrics client
     let lyricsClient: LrcClient
     let lrclibID = "uffDOEor4luWEl3ltIARG5BFdaw29uImqIKBTIHVBYY"
-//    let YAMLdecoder = YAMLDecoder()
     
     // artists
     let itunesServer = URL(string: "https://itunes.apple.com/search")!
@@ -295,19 +292,7 @@ struct Networker {
     
     // see: https://lrclib.net/
     // https://lrclib.net/docs
-    
-    
-    // for testing, to be removed
-    func getTestLyrics(_ id: Int64) async throws -> LyricsRecord? {
-        do {
-            return try await lyricsClient.getLyrics(id: id)
-        } catch let LRCLIBKit.ServerError.apiError(error, retryAfter: _) where error.statusCode == 404 {
-            return nil
-        } catch LRCLIBKit.ServerError.httpErrorCode(404) {
-            return nil
-        }
-    }
-    
+
     func findLyrics(_ artist: Artist) async throws -> LyricsRecord? {
         guard let name = artist.artistName, let track = artist.trackName else {
             return nil
@@ -324,16 +309,6 @@ struct Networker {
             return nil
         }
     }
-    
-//    func decodeLyricsfile(lyricsfile: String?) -> LyricsFile? {
-//        guard let lyricsfile else { return nil }
-//        do {
-//            return try YAMLdecoder.decode(LyricsFile.self, from: lyricsfile)
-//        } catch  {
-//            print("getLyricsfile error: \(error)")
-//        }
-//        return nil
-//    }
 
     private func fetchFavicon(for station: RadioStation) async {
         if station.favicon == "null" || station.favicon.isEmpty { return }

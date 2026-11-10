@@ -12,9 +12,7 @@ import LRCLIBKit
 struct LyricsView: View {
     @Environment(\.networker) private var networker
     @Environment(PlayerManager.self) var playerManager
-    
-    let betterLyricsClient = LyricsTTMLClient()
-    
+
     let artist: Artist?
     
     @State private var isBusy: Bool = false
@@ -39,26 +37,6 @@ struct LyricsView: View {
                 do {
                     isBusy = true
                     lyricsRecord = try await networker.findLyrics(artist)
-                    
-//                    if let rec = lyricsRecord, let lyricsf = rec.lyricsfile {
-//                        lyricsfile = networker.decodeLyricsfile(lyricsfile: lyricsf)
-                        
- //  print("\n-----> LyricsView before lyricsfile: \(lyricsfile?.lines.count)\n")
-                        
-// print("\n-----> LyricsView before lyricsfile: \(lyricsfile?.plain)\n")
-
-                        // if no words/lines sync from lrclib, try the betterlyrics
-//                        if lyricsfile?.lines.count == 0 {
-//                            if let betterlyrics = await tryBetterlyrics(artist) {
-//                                if betterlyrics.lines.count > 0 {
-//                                    lyricsfile = betterlyrics
-//                                    print("\n-----> LyricsView after tryBetterlyrics: \(lyricsfile?.lines.count)\n")
-//                                }
-//                            }
-//                        }
-                        
-//                    }
-                    
                     isBusy = false
                 } catch {
                     AppLogger.logPublic(error)
@@ -77,144 +55,6 @@ struct LyricsView: View {
                 .padding(15)
         }
         
-//        if lyricsRecord?.hasWordSync == true,
-//           let lyricsfile {
-//            SyncedLyricsView(lyrics: lyricsfile) {
-//                Int(playerManager.currentTime)  // <--- in seconds
-//            }
-//        } else if let lyrics = lyricsRecord?.plainLyrics {
-//            Text(lyrics)
-//                .font(.title2)
-//                .padding(15)
-//        }
     }
     
-//    func tryBetterlyrics(_ artist: Artist) async -> LyricsFile? {
-//        do {
-//            if let name = artist.artistName,
-//               let track = artist.trackName,
-//               let album = artist.collectionName,
-//               let duration = artist.trackTimeMillis {
-//                
-//               return try await betterLyricsClient.getLyricsFile(
-//                    trackName: track,
-//                    artistName: name,
-//                    albumName: album,
-//                    duration: UInt(duration / 1000)
-//                )
-//            }
-//        } catch {
-//            print(error)
-//        }
-//        return nil
-//    }
-
 }
-
-/*
-struct LyricsSyncView: View {
-    let lyrics: LyricsFile
-    let currentTimeMs: Int
-    
-    private var currentLineIndex: Int? {
-        lyrics.lines.lastIndex {
-            currentTimeMs >= $0.startMs
-        }
-    }
-    
-    var body: some View {
-        ScrollViewReader { proxy in
-            ScrollView {
-                LazyVStack(alignment: .leading, spacing: 16) {
-                    ForEach(Array(lyrics.lines.enumerated()), id: \.offset) { index, line in
-                        LyricLineView(line: line, currentTimeMs: currentTimeMs)
-                    }
-                }
-                .padding()
-            }
-            .onChange(of: currentLineIndex) { _, index in
-                guard let index else { return }
-                withAnimation(.easeInOut(duration: 0.25)) {
-                    proxy.scrollTo(index, anchor: .center)
-                }
-            }
-        }
-    }
-}
-
-struct LyricLineView: View {
-    @Environment(ColorsModel.self) var colorsModel
-    
-    let line: LyricLine
-    let currentTimeMs: Int
-
-    var body: some View {
-        Group {
-            if let words = line.words, !words.isEmpty {
-                wordText(words)
-            } else {
-                Text(line.text).foregroundStyle(.primary)
-            }
-        }
-        .font(.title3)
-        .frame(maxWidth: .infinity, alignment: .leading)
-    }
-
-    private func wordText(_ words: [LyricWord]) -> some View {
-        HStack(spacing: 0) {
-            ForEach(Array(words.enumerated()), id: \.offset) { index, word in
-                let endMs = word.endMs ?? words.dropFirst(index + 1).first?.startMs
-                let isCurrent = currentTimeMs >= word.startMs &&
-                    (endMs.map { currentTimeMs < $0 } ?? true)
-
-                Text(word.text + " ")
-                    .foregroundStyle(isCurrent ? .purple : .primary)
-                    .bold(isCurrent)
-            }
-        }
-    }
-
-}
-
-struct SyncedLyricsView: View {
-    let lyrics: LyricsFile
-    let playbackTime: () -> Int
-
-    var body: some View {
-        TimelineView(.periodic(from: .now, by: 0.05)) { _ in
-            let currentTimeMs = playbackTime()
-            LyricsSyncView(lyrics: lyrics, currentTimeMs: currentTimeMs)
-        }
-    }
-}
-
-*/
-
-
-/*
- 
- 
- //    private func wordText1(_ words: [LyricWord]) -> some View {
- //        words.enumerated().reduce(Text("")) { result, element in
- //            let (index, word) = element
- //            let endMs = word.endMs ?? words.dropFirst(index + 1).first?.startMs
- //            let isCurrent = currentTimeMs >= word.startMs &&
- //                (endMs.map { currentTimeMs < $0 } ?? true)
- //
- //            return result + Text(word.text + " ")
- //                .foregroundColor(isCurrent ? .purple : .primary)
- //                .bold(isCurrent)
- //        }
- //    }
-     
- 
- //          VStack {
- //              Text("Playback: \(currentTimeMs) ms")
-               LyricsSyncView(lyrics: lyrics, currentTimeMs: currentTimeMs)
- //          }
- 
-//     lyricsRecord = try await networker.getTestLyrics(36497565)
-  
- 
- 
- */
