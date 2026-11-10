@@ -53,6 +53,10 @@ struct LyricsView: View {
             Text(lyrics)
                 .font(.title2)
                 .padding(15)
+        } else {
+            Text("no lyrics")
+                .font(.title2)
+                .padding(15)
         }
         
     }
