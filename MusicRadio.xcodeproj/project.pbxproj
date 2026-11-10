@@ -8,13 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		C75632BD3092B634009FC20A /* AudioStreaming in Frameworks */ = {isa = PBXBuildFile; productRef = C75632BC3092B634009FC20A /* AudioStreaming */; };
-		C785E3DD308F3CF9003E6A64 /* Yams in Frameworks */ = {isa = PBXBuildFile; productRef = C785E3DC308F3CF9003E6A64 /* Yams */; };
 		C797BDEF2EC7FE6A007F738D /* click1.wav in Resources */ = {isa = PBXBuildFile; fileRef = C797BDEE2EC7FE6A007F738D /* click1.wav */; };
 		C797BDF12EC7FF23007F738D /* click2.wav in Resources */ = {isa = PBXBuildFile; fileRef = C797BDF02EC7FF23007F738D /* click2.wav */; };
 		C797BDF32EC7FFA2007F738D /* click3.wav in Resources */ = {isa = PBXBuildFile; fileRef = C797BDF22EC7FFA2007F738D /* click3.wav */; };
 		C79B44DC2EB6F0C100FCC9B9 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C79B44DA2EB6F0B400FCC9B9 /* README.md */; };
 		C7A60157308B89BB00D12F6D /* LRCLIBKit in Frameworks */ = {isa = PBXBuildFile; productRef = C7A60156308B89BB00D12F6D /* LRCLIBKit */; };
-		C7E3A3CD308B99EF00388868 /* LRCLIBKit in Frameworks */ = {isa = PBXBuildFile; productRef = C7E3A3CC308B99EF00388868 /* LRCLIBKit */; };
+		C7D2F9A930A2CEDF0026CEAA /* LRCLIBKit in Frameworks */ = {isa = PBXBuildFile; productRef = C7D2F9A830A2CEDF0026CEAA /* LRCLIBKit */; };
+		C7D2F9AC30A2CF030026CEAA /* LRCLIBKit in Frameworks */ = {isa = PBXBuildFile; productRef = C7D2F9AB30A2CF030026CEAA /* LRCLIBKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,10 +58,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7D2F9A930A2CEDF0026CEAA /* LRCLIBKit in Frameworks */,
+				C7D2F9AC30A2CF030026CEAA /* LRCLIBKit in Frameworks */,
 				C7A60157308B89BB00D12F6D /* LRCLIBKit in Frameworks */,
-				C785E3DD308F3CF9003E6A64 /* Yams in Frameworks */,
 				C75632BD3092B634009FC20A /* AudioStreaming in Frameworks */,
-				C7E3A3CD308B99EF00388868 /* LRCLIBKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,9 +121,9 @@
 			name = MusicRadio;
 			packageProductDependencies = (
 				C7A60156308B89BB00D12F6D /* LRCLIBKit */,
-				C7E3A3CC308B99EF00388868 /* LRCLIBKit */,
-				C785E3DC308F3CF9003E6A64 /* Yams */,
 				C75632BC3092B634009FC20A /* AudioStreaming */,
+				C7D2F9A830A2CEDF0026CEAA /* LRCLIBKit */,
+				C7D2F9AB30A2CF030026CEAA /* LRCLIBKit */,
 			);
 			productName = MusicRadio;
 			productReference = C79B44CA2EB6EFAE00FCC9B9 /* MusicRadio.app */;
@@ -154,9 +154,8 @@
 			mainGroup = C79B44C12EB6EFAE00FCC9B9;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				C7E3A3CB308B99EF00388868 /* XCRemoteSwiftPackageReference "LRCLIBKit" */,
-				C785E3DB308F3CF9003E6A64 /* XCRemoteSwiftPackageReference "Yams" */,
 				C75632BB3092B634009FC20A /* XCRemoteSwiftPackageReference "AudioStreaming" */,
+				C7D2F9AA30A2CF030026CEAA /* XCRemoteSwiftPackageReference "LRCLIBKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C79B44CB2EB6EFAE00FCC9B9 /* Products */;
@@ -456,15 +455,7 @@
 				minimumVersion = 1.4.5;
 			};
 		};
-		C785E3DB308F3CF9003E6A64 /* XCRemoteSwiftPackageReference "Yams" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/jpsim/Yams";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 6.2.2;
-			};
-		};
-		C7E3A3CB308B99EF00388868 /* XCRemoteSwiftPackageReference "LRCLIBKit" */ = {
+		C7D2F9AA30A2CF030026CEAA /* XCRemoteSwiftPackageReference "LRCLIBKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/workingDog/LRCLIBKit";
 			requirement = {
@@ -480,18 +471,17 @@
 			package = C75632BB3092B634009FC20A /* XCRemoteSwiftPackageReference "AudioStreaming" */;
 			productName = AudioStreaming;
 		};
-		C785E3DC308F3CF9003E6A64 /* Yams */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C785E3DB308F3CF9003E6A64 /* XCRemoteSwiftPackageReference "Yams" */;
-			productName = Yams;
-		};
 		C7A60156308B89BB00D12F6D /* LRCLIBKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = LRCLIBKit;
 		};
-		C7E3A3CC308B99EF00388868 /* LRCLIBKit */ = {
+		C7D2F9A830A2CEDF0026CEAA /* LRCLIBKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = C7E3A3CB308B99EF00388868 /* XCRemoteSwiftPackageReference "LRCLIBKit" */;
+			productName = LRCLIBKit;
+		};
+		C7D2F9AB30A2CF030026CEAA /* LRCLIBKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C7D2F9AA30A2CF030026CEAA /* XCRemoteSwiftPackageReference "LRCLIBKit" */;
 			productName = LRCLIBKit;
 		};
 /* End XCSwiftPackageProductDependency section */

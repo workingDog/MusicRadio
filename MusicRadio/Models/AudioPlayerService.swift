@@ -128,23 +128,17 @@ final class AudioPlayerService {
     
     func cycleLoopMode() {
         switch player.loopMode {
-        case .off:
-            player.loopMode = .single(times: nil)
-        case .single:
-            player.loopMode = .all(times: nil)
-        case .all:
-            player.loopMode = .off
+            case .off: player.loopMode = .single(times: nil)
+            case .single: player.loopMode = .all(times: nil)
+            case .all: player.loopMode = .off
         }
     }
     
     func setLoopTimes(_ times: Int?) {
         switch player.loopMode {
-        case .off:
-            break
-        case .single:
-            player.loopMode = .single(times: times)
-        case .all:
-            player.loopMode = .all(times: times)
+        case .off: break
+        case .single: player.loopMode = .single(times: times)
+        case .all: player.loopMode = .all(times: times)
         }
     }
     
@@ -170,7 +164,7 @@ final class AudioPlayerService {
     private func configureAudioSession() {
 #if os(iOS)
         do {
-            print("AudioSession category is AVAudioSessionCategoryPlayback")
+ //           print("AudioSession category is AVAudioSessionCategoryPlayback")
             try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, policy: .longFormAudio, options: [])
             try AVAudioSession.sharedInstance().setPreferredIOBufferDuration(0.1)
         } catch let error as NSError {
@@ -182,7 +176,7 @@ final class AudioPlayerService {
     private func activateAudioSession() {
 #if os(iOS)
         do {
-            print("AudioSession is active")
+//            print("AudioSession is active")
             try AVAudioSession.sharedInstance().setActive(true, options: [])
         } catch let error as NSError {
             print("Couldn't set audio session to active: \(error.localizedDescription)")
@@ -193,7 +187,7 @@ final class AudioPlayerService {
     private func deactivateAudioSession() {
 #if os(iOS)
         do {
-            print("AudioSession is deactivated")
+//            print("AudioSession is deactivated")
             try AVAudioSession.sharedInstance().setActive(false)
         } catch let error as NSError {
             print("Couldn't deactivate audio session: \(error.localizedDescription)")
@@ -205,7 +199,7 @@ final class AudioPlayerService {
 extension AudioPlayerService: AudioPlayerDelegate {
     
     func audioPlayerDidStartPlaying(player _: AudioPlayer, with id: AudioEntryId) {
-        print("audioPlayerDidStartPlaying entryId: \(id)")
+//        print("audioPlayerDidStartPlaying entryId: \(id)")
         delegate?.didStartPlaying(id: id)
         Task { await playingStartedStopped.send((true, id, nil)) }
     }
@@ -213,7 +207,7 @@ extension AudioPlayerService: AudioPlayerDelegate {
     func audioPlayerDidFinishBuffering(player _: AudioPlayer, with _: AudioEntryId) {}
     
     func audioPlayerStateChanged(player _: AudioPlayer, with newState: AudioPlayerState, previous _: AudioPlayerState) {
-        print("audioPlayerStateChanged newState: \(newState)")
+//        print("audioPlayerStateChanged newState: \(newState)")
         Task { await statusChangedNotifier.send(newState) }
         delegate?.statusChanged(status: newState)
     }
@@ -224,7 +218,7 @@ extension AudioPlayerService: AudioPlayerDelegate {
                                      progress _: Double,
                                      duration _: Double)
     {
-        print("audioPlayerDidFinishPlaying entryId: \(id), reason: \(reason)")
+//        print("audioPlayerDidFinishPlaying entryId: \(id), reason: \(reason)")
         Task { await playingStartedStopped.send((false, id, reason)) }
         delegate?.didStopPlaying(id: id, reason: reason)
     }

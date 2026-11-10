@@ -84,10 +84,6 @@ struct ContentView: View {
             .onAppear {
                 selector.retrieveSettings()
                 colorsModel.retrieveSettings()
-                
-//                for station in stations {
-//                    print("---> \(station.name)\n \(station.url)\n  \(station.favicon)")
-//                }
             }
         }
         .environment(playerManager)
@@ -130,82 +126,7 @@ struct ContentView: View {
             } catch {
                 AppLogger.logPublic(error)
             }
-            
- //           await test()
-            
         }
-    }
-
-    func test() async {
-        let betterLyricsClient = LyricsTTMLClient()
-        do {
-            if let artist = try await networker.fetchArtist(for: "E85", countryCode: "us"),
-               let name = artist.artistName,
-               let track = artist.trackName,
-               let album = artist.collectionName,
-               let duration = artist.trackTimeMillis {
-   
-                let testlyricsfile = try await betterLyricsClient.getLyricsFile(
-                    trackName: track,
-                    artistName: name,
-                    albumName: album,
-                    duration: UInt(duration / 1000)
-                )
- //               print("\n---> test testlyricsfile: \(testlyricsfile)\n")
-            }
-        } catch {
-            print(error)
-        }
-    }
-    
-    func test1() async {
-  //      let url = URL(string: "https://api.betterlyrics.org/getLyrics")!
-        
-        let url = URL(string: "https://api.betterlyrics.org/getLyrics?s=E85&a=Don%20Toliver&al=OCTANE&d=154")!
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue("test1/1.0", forHTTPHeaderField: "User-Agent")
-        
-        do {
-            let (data, _) = try await URLSession.shared.data(for: request)
-            
-  //          print("---> data:\n \(String(data: data, encoding: .utf8) as AnyObject)\n")
-           
-            let results = try JSONDecoder().decode(BetterLyrics.self, from: data)
-            
-  //          print("---> results: \(results)\n")
-            
-            let ttml: LyricsTTML = try TTMLParser().parse(results.ttml)
-            
-            let lyricsFile = LyricsFile(
-                ttml: ttml,
-                title: "E85",
-                artist: "Don Toliver",
-                album: "OCTANE",
-                durationMs: 153181
-            )
-            
- //           print("---> lyricsFile: \(lyricsFile)")
-            
-//            for part in ttml.songParts {
-//                print("---> Section: \(part.name ?? "")")
-//                
-//                for line in part.lines {
-//                    print("---> Line: \(line.text)")
-//                    print("---> Start: \(line.start) End: \(line.end)")
-//                    
-//                    for word in line.words {
-//                        print("---> \(word.text) \(word.start) - \(word.end)")
-//                    }
-//                }
-//            }
-
-        } catch {
-            print(error)
-        }
-        
-        
     }
     
 }

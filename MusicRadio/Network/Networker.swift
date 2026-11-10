@@ -8,7 +8,7 @@ import Foundation
 import UIKit
 import SwiftUI
 import LRCLIBKit
-import Yams
+//import Yams
 
 
 extension String {
@@ -61,7 +61,7 @@ struct Networker {
     // lyrics client
     let lyricsClient: LrcClient
     let lrclibID = "uffDOEor4luWEl3ltIARG5BFdaw29uImqIKBTIHVBYY"
-    let YAMLdecoder = YAMLDecoder()
+//    let YAMLdecoder = YAMLDecoder()
     
     // artists
     let itunesServer = URL(string: "https://itunes.apple.com/search")!
@@ -325,15 +325,15 @@ struct Networker {
         }
     }
     
-    func decodeLyricsfile(lyricsfile: String?) -> LyricsFile? {
-        guard let lyricsfile else { return nil }
-        do {
-            return try YAMLdecoder.decode(LyricsFile.self, from: lyricsfile)
-        } catch  {
-            print("getLyricsfile error: \(error)")
-        }
-        return nil
-    }
+//    func decodeLyricsfile(lyricsfile: String?) -> LyricsFile? {
+//        guard let lyricsfile else { return nil }
+//        do {
+//            return try YAMLdecoder.decode(LyricsFile.self, from: lyricsfile)
+//        } catch  {
+//            print("getLyricsfile error: \(error)")
+//        }
+//        return nil
+//    }
 
     private func fetchFavicon(for station: RadioStation) async {
         if station.favicon == "null" || station.favicon.isEmpty { return }

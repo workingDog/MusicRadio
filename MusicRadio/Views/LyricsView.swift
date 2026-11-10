@@ -39,19 +39,26 @@ struct LyricsView: View {
                 do {
                     isBusy = true
                     lyricsRecord = try await networker.findLyrics(artist)
-                    if let rec = lyricsRecord, let lyricsf = rec.lyricsfile {
-                        lyricsfile = networker.decodeLyricsfile(lyricsfile: lyricsf)
+                    
+//                    if let rec = lyricsRecord, let lyricsf = rec.lyricsfile {
+//                        lyricsfile = networker.decodeLyricsfile(lyricsfile: lyricsf)
                         
-                        print("\n-----> LyricsView before lyricsfile: \(lyricsfile?.lines.count)\n")
+ //  print("\n-----> LyricsView before lyricsfile: \(lyricsfile?.lines.count)\n")
+                        
+// print("\n-----> LyricsView before lyricsfile: \(lyricsfile?.plain)\n")
 
-                        // if nothing from lrclib, try the betterlyrics
-                        if lyricsfile?.plain.isEmpty ?? true {
-                            if let betterlyrics = await tryBetterlyrics(artist) {
-                                lyricsfile = betterlyrics
-                            }
-                            print("\n-----> LyricsView after tryBetterlyrics: \(lyricsfile?.lines.count)\n")
-                        }
-                    }
+                        // if no words/lines sync from lrclib, try the betterlyrics
+//                        if lyricsfile?.lines.count == 0 {
+//                            if let betterlyrics = await tryBetterlyrics(artist) {
+//                                if betterlyrics.lines.count > 0 {
+//                                    lyricsfile = betterlyrics
+//                                    print("\n-----> LyricsView after tryBetterlyrics: \(lyricsfile?.lines.count)\n")
+//                                }
+//                            }
+//                        }
+                        
+//                    }
+                    
                     isBusy = false
                 } catch {
                     AppLogger.logPublic(error)
@@ -64,40 +71,47 @@ struct LyricsView: View {
     
     @ViewBuilder
     var lyricsContent: some View {
-        if lyricsRecord?.hasWordSync == true,
-           let lyricsfile {
-            SyncedLyricsView(lyrics: lyricsfile) {
-                Int(playerManager.currentTime)  // <--- in seconds
-            }
-        } else if let lyrics = lyricsRecord?.plainLyrics {
+        if let lyrics = lyricsRecord?.plainLyrics {
             Text(lyrics)
                 .font(.title2)
                 .padding(15)
         }
+        
+//        if lyricsRecord?.hasWordSync == true,
+//           let lyricsfile {
+//            SyncedLyricsView(lyrics: lyricsfile) {
+//                Int(playerManager.currentTime)  // <--- in seconds
+//            }
+//        } else if let lyrics = lyricsRecord?.plainLyrics {
+//            Text(lyrics)
+//                .font(.title2)
+//                .padding(15)
+//        }
     }
     
-    func tryBetterlyrics(_ artist: Artist) async -> LyricsFile? {
-        do {
-            if let name = artist.artistName,
-               let track = artist.trackName,
-               let album = artist.collectionName,
-               let duration = artist.trackTimeMillis {
-                
-               return try await betterLyricsClient.getLyricsFile(
-                    trackName: track,
-                    artistName: name,
-                    albumName: album,
-                    duration: UInt(duration / 1000)
-                )
-            }
-        } catch {
-            print(error)
-        }
-        return nil
-    }
+//    func tryBetterlyrics(_ artist: Artist) async -> LyricsFile? {
+//        do {
+//            if let name = artist.artistName,
+//               let track = artist.trackName,
+//               let album = artist.collectionName,
+//               let duration = artist.trackTimeMillis {
+//                
+//               return try await betterLyricsClient.getLyricsFile(
+//                    trackName: track,
+//                    artistName: name,
+//                    albumName: album,
+//                    duration: UInt(duration / 1000)
+//                )
+//            }
+//        } catch {
+//            print(error)
+//        }
+//        return nil
+//    }
 
 }
 
+/*
 struct LyricsSyncView: View {
     let lyrics: LyricsFile
     let currentTimeMs: Int
@@ -174,7 +188,7 @@ struct SyncedLyricsView: View {
     }
 }
 
-
+*/
 
 
 /*

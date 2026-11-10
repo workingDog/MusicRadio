@@ -6,7 +6,7 @@
 //
 import Foundation
 import LRCLIBKit
-import Yams
+//import Yams
 
 /// A Better Lyrics API client.
 ///
