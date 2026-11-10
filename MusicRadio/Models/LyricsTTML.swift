@@ -54,9 +54,13 @@ extension LyricsFile {
     }
 }
 
-public struct LyricsTTML: Identifiable {
+public struct LyricsTTML: Codable, Identifiable, Sendable {
     public let id = UUID()
     public var songParts: [LyricTTMLPart] = []
+    
+    public enum CodingKeys: CodingKey {
+        case songParts
+    }
     
     public init() { }
     
@@ -65,10 +69,15 @@ public struct LyricsTTML: Identifiable {
     }
 }
 
-public struct LyricTTMLPart: Identifiable {
+public struct LyricTTMLPart: Identifiable, Codable {
     public let id = UUID()
     public var name: String?
     public var lines: [LyricTTMLLine] = []
+    
+    public enum CodingKeys: CodingKey {
+        case name
+        case lines
+    }
     
     public init(name: String? = nil, lines: [LyricTTMLLine]) {
         self.name = name
@@ -76,12 +85,19 @@ public struct LyricTTMLPart: Identifiable {
     }
 }
 
-public struct LyricTTMLLine: Identifiable {
+public struct LyricTTMLLine: Identifiable, Codable {
     public let id = UUID()
     public var text: String
     public var start: Double
     public var end: Double
     public var words: [LyricTTMLWord] = []
+    
+    public enum CodingKeys: CodingKey {
+        case text
+        case start
+        case end
+        case words
+    }
     
     public init(text: String, start: Double, end: Double, words: [LyricTTMLWord]) {
         self.text = text
@@ -91,11 +107,17 @@ public struct LyricTTMLLine: Identifiable {
     }
 }
 
-public struct LyricTTMLWord: Identifiable {
+public struct LyricTTMLWord: Identifiable, Codable {
     public let id = UUID()
     public var text: String
     public var start: Double
     public var end: Double
+    
+    public enum CodingKeys: CodingKey {
+        case text
+        case start
+        case end
+    }
     
     public init(text: String, start: Double, end: Double) {
         self.text = text

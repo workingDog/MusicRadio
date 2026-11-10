@@ -137,6 +137,28 @@ struct ContentView: View {
     }
 
     func test() async {
+        let betterLyricsClient = LyricsTTMLClient()
+        do {
+            if let artist = try await networker.fetchArtist(for: "E85", countryCode: "us"),
+               let name = artist.artistName,
+               let track = artist.trackName,
+               let album = artist.collectionName,
+               let duration = artist.trackTimeMillis {
+   
+                let testlyricsfile = try await betterLyricsClient.getLyricsFile(
+                    trackName: track,
+                    artistName: name,
+                    albumName: album,
+                    duration: UInt(duration / 1000)
+                )
+ //               print("\n---> test testlyricsfile: \(testlyricsfile)\n")
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
+    func test1() async {
   //      let url = URL(string: "https://api.betterlyrics.org/getLyrics")!
         
         let url = URL(string: "https://api.betterlyrics.org/getLyrics?s=E85&a=Don%20Toliver&al=OCTANE&d=154")!
@@ -182,6 +204,8 @@ struct ContentView: View {
         } catch {
             print(error)
         }
+        
+        
     }
     
 }

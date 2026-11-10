@@ -233,21 +233,21 @@ struct Networker {
         }
     }
     
-    // Fetch the artist artwork from iTunes from the US,
+    // Fetch the artist and artwork from iTunes from the US,
     // will also try the local station country if need be
     func fetchArtist(for queryText: String, countryCode: String) async throws -> Artist? {
         if let artist = try await searchArtist(queryText, countryCode: "us") {
-            return try await fetchArtwork(for: artist)
+            return try await fetchArtwork(for: artist)  // the artist with artwork
         }
         guard countryCode.lowercased() != "us" else { return nil }
         guard let artist = try await searchArtist(queryText, countryCode: countryCode) else { return nil }
-        return try await fetchArtwork(for: artist)
+        return try await fetchArtwork(for: artist)  // the artist artwork
     }
     
     private func searchArtist(_ queryText: String, countryCode: String) async throws -> Artist? {
         guard !queryText.isEmpty else { return nil }
         
-        print("----> searchArtist: \(queryText)   country: \(countryCode)")
+        print("----> searchArtist: \(queryText)   country: \(countryCode)\n")
 
         var components = URLComponents(url: itunesServer, resolvingAgainstBaseURL: false)!
         components.queryItems = [
@@ -313,7 +313,13 @@ struct Networker {
             return nil
         }
         do {
-            return try await lyricsClient.getLyrics(trackName: track, artistName: name)
+            let durationSec = artist.trackTimeMillis.map { UInt($0 / 1000) }
+            return try await lyricsClient.getLyrics(
+                trackName: track,
+                artistName: name,
+                albumName: artist.collectionName,
+                duration: durationSec
+            )
         } catch let LRCLIBKit.ServerError.apiError(error, retryAfter: _) where error.statusCode == 404 {
             return nil
         }

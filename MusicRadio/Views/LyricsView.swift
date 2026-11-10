@@ -13,6 +13,8 @@ struct LyricsView: View {
     @Environment(\.networker) private var networker
     @Environment(PlayerManager.self) var playerManager
     
+    let betterLyricsClient = LyricsTTMLClient()
+    
     let artist: Artist?
     
     @State private var isBusy: Bool = false
@@ -33,12 +35,22 @@ struct LyricsView: View {
             }
         }
         .task {
-            if artist != nil {
+            if let artist {
                 do {
                     isBusy = true
-                    lyricsRecord = try await networker.findLyrics(artist!)
+                    lyricsRecord = try await networker.findLyrics(artist)
                     if let rec = lyricsRecord, let lyricsf = rec.lyricsfile {
                         lyricsfile = networker.decodeLyricsfile(lyricsfile: lyricsf)
+                        
+                        print("\n-----> LyricsView before lyricsfile: \(lyricsfile?.lines.count)\n")
+
+                        // if nothing from lrclib, try the betterlyrics
+                        if lyricsfile?.plain.isEmpty ?? true {
+                            if let betterlyrics = await tryBetterlyrics(artist) {
+                                lyricsfile = betterlyrics
+                            }
+                            print("\n-----> LyricsView after tryBetterlyrics: \(lyricsfile?.lines.count)\n")
+                        }
                     }
                     isBusy = false
                 } catch {
@@ -47,6 +59,7 @@ struct LyricsView: View {
                 }
             }
         }
+        
     }
     
     @ViewBuilder
@@ -61,6 +74,26 @@ struct LyricsView: View {
                 .font(.title2)
                 .padding(15)
         }
+    }
+    
+    func tryBetterlyrics(_ artist: Artist) async -> LyricsFile? {
+        do {
+            if let name = artist.artistName,
+               let track = artist.trackName,
+               let album = artist.collectionName,
+               let duration = artist.trackTimeMillis {
+                
+               return try await betterLyricsClient.getLyricsFile(
+                    trackName: track,
+                    artistName: name,
+                    albumName: album,
+                    duration: UInt(duration / 1000)
+                )
+            }
+        } catch {
+            print(error)
+        }
+        return nil
     }
 
 }
