@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/workingDog/LRCLIBKit",
       "state" : {
-        "branch" : "main",
-        "revision" : "b39023be13e34b701d5e8cce45b1129b8fc25df4"
+        "revision" : "b39023be13e34b701d5e8cce45b1129b8fc25df4",
+        "version" : "1.1.1"
       }
     },
     {
